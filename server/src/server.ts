@@ -1,8 +1,14 @@
 import http, { IncomingMessage, ServerResponse } from 'node:http';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 import { checkDatabaseConnection } from './database/pool.db.js';
 import { syncUsersSchema } from './database/users.db.js';
 import { syncAuthTokenSchema } from './database/auth-tokens.db.js';
 import { syncWatchlistSchema } from './database/watchlist.db.js';
+import {
+  serveHTMLFile,
+  serveStaticFile,
+} from './middlewares/static.middleware.js';
 
 const PORT = process.env.PORT;
 
@@ -29,6 +35,27 @@ const server = http.createServer(
     if (req.method === 'OPTIONS') {
       res.statusCode = 204;
       res.end();
+      return;
+    }
+
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const __clientdir = path.join(__dirname, '..', '..', 'client');
+
+    if (req.url?.startsWith('/api')) {
+    } else if (req.url?.includes('.well-known')) {
+      res.statusCode = 404;
+      res.end();
+      return;
+    } else {
+      const extention = path.extname(req.url || '');
+
+      if (extention) {
+        serveStaticFile(req, res, extention, __clientdir);
+        return;
+      }
+
+      serveHTMLFile(req, res, __clientdir);
       return;
     }
   },
