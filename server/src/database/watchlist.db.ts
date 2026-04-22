@@ -11,7 +11,7 @@ export async function syncWatchlistSchema() {
         poster_url TEXT NOT NULL,
         imdb_id TEXT,
         
-        added_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+        added_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 
         UNIQUE (user_id, tmdb_id)
         )`);
