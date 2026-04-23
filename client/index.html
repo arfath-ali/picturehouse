@@ -8,8 +8,10 @@
     <link rel="icon" href="./src/assets/images/favicon.png" />
     <title>Picturehouse</title>
   </head>
-  <body>
-    <header class="px-8 pt-4 pb-2">
+  <body data-state="">
+    <header
+      class="hidden px-8 pt-4 pb-2 home:block search:block watchlist:block"
+    >
       <div class="flex justify-between items-center">
         <div class="flex items-center gap-16">
           <img
@@ -28,9 +30,17 @@
         <img
           class="w-[clamp(2rem,1.857rem+0.714vw,2.5rem)] h-auto"
           src="./src/assets/images/profile.png"
-          alt="Profile Logo"
+          alt="Profile Icon"
         />
       </div>
     </header>
+
+    <main class="pb-12">
+      <section class="hidden home:block"></section>
+      <section class="hidden details:block"></section>
+      <section class="hidden search:block"></section>
+      <section class="hidden watchlist:block"></section>
+      <section class="hidden profile:block"></section>
+    </main>
   </body>
 </html>
