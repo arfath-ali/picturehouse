@@ -151,7 +151,7 @@
         font-weight: var(--font-regular);
         line-height: var(--leading-base);
         letter-spacing: var(--tracking-normal);
-        color: var(--color-text-primary);
+        color: var(--color-primary);
         background-color: var(--color-page);
     }
 }
