@@ -10,7 +10,7 @@
   </head>
   <body data-state="">
     <header
-      class="hidden px-8 pt-4 pb-2 home:block search:block watchlist:block"
+      class="hidden px-8 pt-4 pb-2 home:block movies:block tv-shows:block search:block watchlist:block"
     >
       <div class="flex justify-between items-center">
         <div class="flex items-center gap-16">
@@ -23,6 +23,12 @@
             class="fixed bottom-0 w-full left-0 flex py-4 px-8 items-center justify-between md:static md:gap-16 md:w-auto"
           >
             <a class="nav-item home:nav-item--active" href="/home">Home</a>
+            <a class="nav-item movies:nav-item--active" href="/movies">
+              Movies
+            </a>
+            <a class="nav-item tv-shows:nav-item--active" href="/tv-shows">
+              TV Shows
+            </a>
             <a class="nav-item search:nav-item--active" href="/search">
               Search
             </a>
@@ -44,6 +50,8 @@
 
     <main class="pb-12">
       <section class="hidden home:block">Home</section>
+      <section class="hidden movies:block">Movies</section>
+      <section class="hidden tv-shows:block">TV Shows</section>
       <section class="hidden details:block">Details</section>
       <section class="hidden search:block">Search</section>
       <section class="hidden watchlist:block">Watchlist</section>

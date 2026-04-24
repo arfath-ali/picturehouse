@@ -3,6 +3,8 @@ import type { AppState } from '../types/app-state.types.js';
 const TITLES: Record<AppState, string> = {
   '': 'Picturehouse',
   home: 'Picturehouse | Discover Cinema',
+  movies: 'Movies | Picturehouse',
+  'tv-shows': 'TV Shows | Picturehouse',
   details: 'Details | Picturehouse',
   search: 'Search | Picturehouse',
   watchlist: 'My Watchlist | Picturehouse',

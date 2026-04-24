@@ -139,10 +139,12 @@
 }
 
 @custom-variant home ([data-state='home'] &);
-@custom-variant details ([data-state="details"] &);
+@custom-variant movies ([data-state='movies'] &);
+@custom-variant tv-shows ([data-state='tv-shows'] &);
+@custom-variant details ([data-state='details'] &);
 @custom-variant search ([data-state='search'] &);
-@custom-variant watchlist ([data-state="watchlist"] &);
-@custom-variant profile ([data-state="profile"] &);
+@custom-variant watchlist ([data-state='watchlist'] &);
+@custom-variant profile ([data-state='profile'] &);
 
 @layer base {
     body {

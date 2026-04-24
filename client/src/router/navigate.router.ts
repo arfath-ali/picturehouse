@@ -11,6 +11,8 @@ export function navigate() {
 
   const validAppStates: AppState[] = [
     'home',
+    'movies',
+    'tv-shows',
     'details',
     'search',
     'watchlist',
