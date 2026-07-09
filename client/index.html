@@ -3,59 +3,336 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./dist/styles.css" />
-    <script type="module" src="./dist/main.js"></script>
-    <link rel="icon" href="./src/assets/images/favicon.png" />
+    <link rel="stylesheet" href="/dist/styles.css" />
+    <script type="module" src="/dist/main.js"></script>
+    <link rel="icon" href="/src/assets/images/favicon.svg" />
     <title>Picturehouse</title>
   </head>
-  <body data-state="">
-    <header
-      class="hidden px-8 pt-4 pb-2 home:block movies:block tv-shows:block search:block watchlist:block"
-    >
-      <div class="flex justify-between items-center">
-        <div class="flex items-center gap-16">
+
+  <body class="relative" data-state="">
+    <iframe id="native-loader-bridge" style="display: none"></iframe>
+
+    <header class="site-header">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center md:gap-16">
           <img
-            class="w-[clamp(10rem,8.214rem+8.929vw,16.25rem)] h-auto"
-            src="./src/assets/images/brand.png"
+            class="h-auto w-[clamp(11.25rem,7.679rem+9.524vw,16.25rem)]"
+            src="/src/assets/images/brand.png"
             alt="Picturehouse Logo"
           />
+
           <nav
-            class="fixed bottom-0 w-full left-0 flex py-4 px-8 items-center justify-between md:static md:gap-16 md:w-auto"
+            class="hidden items-center justify-between gap-8 md:flex lg:gap-16"
+            aria-label="Desktop Primary Navigation"
           >
-            <a class="nav-item home:nav-item--active" href="/home">Home</a>
-            <a class="nav-item movies:nav-item--active" href="/movies">
+            <a class="nav-item home:nav-item--active" href="/home"> Home </a>
+
+            <a
+              class="nav-item movies:nav-item--active tv-shows:nav-item--active lg:hidden"
+              href="/discover"
+            >
+              Discover
+            </a>
+
+            <a
+              class="nav-item movies:nav-item--active hidden lg:block"
+              href="/movies"
+            >
               Movies
             </a>
-            <a class="nav-item tv-shows:nav-item--active" href="/tv-shows">
+
+            <a
+              class="nav-item tv-shows:nav-item--active hidden lg:block"
+              href="/tv-shows"
+            >
               TV Shows
             </a>
+
             <a class="nav-item search:nav-item--active" href="/search">
               Search
             </a>
 
-            <a class="nav-item watchlist:nav-item--active" href="/watchlist">
+            <a
+              class="nav-item watchlist:nav-item--active watchlist-movies:nav-item--active watchlist-tv-shows:nav-item--active"
+              href="/watchlist"
+            >
               Watchlist
             </a>
           </nav>
         </div>
-        <a href="/profile">
-          <img
-            class="w-[clamp(2rem,1.857rem+0.714vw,2.5rem)] h-auto"
-            src="./src/assets/images/profile.png"
-            alt="Profile Icon"
-          />
+        <a href="/profile" aria-label="Profile">
+          <svg
+            class="h-auto w-[clamp(2rem,1.857rem+0.714vw,2.5rem)]"
+            aria-hidden="true"
+          >
+            <use href="#icon-profile"></use>
+          </svg>
+        </a>
+      </div>
+
+      <div class="filter-tabs-container mt-3 flex gap-4 lg:hidden">
+        <a class="filter-tab movies:filter-tab--active" href="/movies">
+          Movies
+        </a>
+
+        <a class="filter-tab tv-shows:filter-tab--active" href="/tv-shows">
+          TV Shows
         </a>
       </div>
     </header>
 
-    <main class="pb-12">
-      <section class="hidden home:block">Home</section>
-      <section class="hidden movies:block">Movies</section>
-      <section class="hidden tv-shows:block">TV Shows</section>
-      <section class="hidden details:block">Details</section>
-      <section class="hidden search:block">Search</section>
-      <section class="hidden watchlist:block">Watchlist</section>
-      <section class="hidden profile:block">Profile</section>
+    <main>
+      <div class="browse-page home:block movies:block tv-shows:block hidden">
+        <section class="featured"></section>
+        <div class="media-shelves-container"></div>
+      </div>
+
+      <div class="search-page search:block hidden">
+        <section class="search">
+          <header class="search__header">
+            <h1 class="sr-only">Search</h1>
+            <form class="search__bar">
+              <label class="shrink-0 cursor-text" for="search">
+                <svg
+                  class="h-auto w-[clamp(1.125rem,1.018rem+0.536vw,1.5rem)]"
+                  aria-hidden="true"
+                >
+                  <use href="#icon-search"></use>
+                </svg>
+              </label>
+              <input
+                id="search"
+                class="search__input"
+                name="search"
+                type="search"
+                placeholder="Search Picturehouse"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+              />
+              <button class="search__action-btn" type="button">
+                <svg
+                  class="search__clear-icon h-auto w-[clamp(1.125rem,1.018rem+0.536vw,1.5rem)]"
+                  aria-hidden="true"
+                >
+                  <use href="#icon-search-clear"></use>
+                </svg>
+                <div class="search__spinner"></div>
+              </button>
+            </form>
+          </header>
+
+          <div class="search__marketing">
+            <h1 class="search__marketing-heading">
+              Explore millions of
+              <span class="search__marketing-highlight">movies</span> and
+              <span class="search__marketing-highlight">TV shows</span>
+              around the world.
+            </h1>
+          </div>
+
+          <div class="search__empty-state">
+            <svg
+              class="h-auto w-[clamp(4rem,3rem+2vw,5rem)]"
+              aria-hidden="true"
+            >
+              <use href="#icon-search"></use>
+            </svg>
+
+            <h2 class="search__empty-title">No results found</h2>
+            <p class="search__empty-message">
+              We couldn't find anything matching
+              <span class="search__empty-query">"adjabskfj"</span>
+            </p>
+            <p class="search__empty-suggestion text-secondary">
+              Try searching for a different movie or TV show
+            </p>
+          </div>
+
+          <div class="search__results"></div>
+        </section>
+      </div>
+
+      <div class="details-page details:block hidden min-h-screen w-screen p-0">
+        <section class="media-details"></section>
+      </div>
+
+      <div
+        class="watchlist-page watchlist:block watchlist-movies:block watchlist-tv-shows:block hidden"
+      >
+        <section class="watchlist">
+          <header class="watchlist__header">
+            <h2 class="watchlist__heading">My Watchlist</h2>
+            <div class="watchlist__nav">
+              <div class="watchlist__search-bar-container">
+                <form class="watchlist__search-bar">
+                  <label class="shrink-0 cursor-text" for="watchlist-search">
+                    <svg
+                      class="h-auto w-[clamp(1.125rem,1.018rem+0.536vw,1.5rem)]"
+                      aria-hidden="true"
+                    >
+                      <use href="#icon-search"></use>
+                    </svg>
+                  </label>
+                  <input
+                    id="watchlist-search"
+                    class="watchlist__search-input"
+                    name="search"
+                    type="search"
+                    placeholder="Search Watchlist"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                  />
+                  <button class="watchlist__search-action-btn" type="button">
+                    <svg
+                      class="watchlist__search-clear-icon aspect-square h-auto w-[clamp(1.125rem,1.018rem+0.536vw,1.5rem)]"
+                      aria-hidden="true"
+                    >
+                      <use href="#icon-search-clear"></use>
+                    </svg>
+                    <div class="watchlist__search-spinner"></div>
+                  </button>
+                </form>
+              </div>
+
+              <div class="watchlist__tabs-container">
+                <a
+                  class="watchlist__tab watchlist:watchlist__tab--active"
+                  href="/watchlist"
+                  >All</a
+                >
+                <a
+                  class="watchlist__tab watchlist-movies:watchlist__tab--active"
+                  href="/watchlist-movies"
+                >
+                  Movies
+                </a>
+
+                <a
+                  class="watchlist__tab watchlist-tv-shows:watchlist__tab--active"
+                  href="/watchlist-tv-shows"
+                >
+                  TV Shows
+                </a>
+              </div>
+
+              <div class="watchlist__sort">
+                <button
+                  class="watchlist__sort-btn btn btn--secondary"
+                  data-value="recently-added"
+                >
+                  <span>
+                    <span>Sort by: </span>
+                    <span class="watchlist__sort-value">Recently Added</span>
+                  </span>
+                  <svg
+                    class="watchlist__sort-btn-icon btn__icon"
+                    aria-hidden="true"
+                  >
+                    <use href="#icon-dropdown-down"></use>
+                  </svg>
+                </button>
+
+                <ul class="watchlist__sort-select">
+                  <li
+                    class="watchlist__sort-select-option"
+                    data-value="recently-added"
+                  >
+                    Recently Added
+                  </li>
+                  <li
+                    class="watchlist__sort-select-option"
+                    data-value="oldest-added"
+                  >
+                    Oldest Added
+                  </li>
+                  <li
+                    class="watchlist__sort-select-option"
+                    data-value="title-asc"
+                  >
+                    Title: A–Z
+                  </li>
+                  <li
+                    class="watchlist__sort-select-option"
+                    data-value="title-desc"
+                  >
+                    Title: Z–A
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </header>
+
+          <div class="watchlist__content">
+            <div class="watchlist__empty">
+              <svg
+                class="mb-4 h-auto w-[clamp(3.5rem,3.143rem+1.786vw,4.75rem)] opacity-30"
+                aria-hidden="true"
+              >
+                <use href="#icon-watchlist-empty"></use>
+              </svg>
+              <p>Your watchlist is empty</p>
+              <p>Movies and TV shows you save will appear here.</p>
+            </div>
+            <div class="watchlist__media">
+              <ul class="watchlist__media-list"></ul>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="profile:block hidden"></section>
+
+      <section
+        class="not-found:flex hidden min-h-screen flex-col px-[clamp(0.25rem,-0.25rem+2.5vw,2rem)] py-[clamp(1rem,0.714rem+1.429vw,2rem)]"
+      >
+        <header class="error-header">
+          <img
+            class="h-auto w-[clamp(11.25rem,7.679rem+9.524vw,16.25rem)] pl-3 lg:pl-0"
+            src="/src/assets/images/brand.png"
+            alt="Picturehouse Logo"
+          />
+        </header>
+
+        <div
+          class="flex flex-1 flex-col items-center justify-center gap-2 text-center"
+        >
+          <svg
+            class="fill-brand-500 stroke-brand-500 h-auto w-[clamp(5rem,4.643rem+1.786vw,6.25rem)]"
+            aria-hidden="true"
+          >
+            <use href="#icon-error"></use>
+          </svg>
+
+          <h1>Page Not Found</h1>
+          <p>
+            The page you're looking for doesn't exist or may have been moved.
+          </p>
+
+          <a class="btn btn--primary mt-4" href="/home">
+            <svg class="btn__icon btn__icon--light" aria-hidden="true">
+              <use href="#icon-arrow-back"></use>
+            </svg>
+            Go Home
+          </a>
+        </div>
+      </section>
     </main>
+    <nav class="site-mobile-navigation" aria-label="Mobile Global Navigation">
+      <a class="nav-item home:nav-item--active" href="/home"> Home </a>
+      <a
+        class="nav-item movies:nav-item--active tv-shows:nav-item--active lg:hidden"
+        href="/discover"
+      >
+        Discover
+      </a>
+      <a class="nav-item search:nav-item--active" href="/search"> Search </a>
+      <a class="nav-item watchlist:nav-item--active" href="/watchlist">
+        Watchlist
+      </a>
+    </nav>
   </body>
 </html>

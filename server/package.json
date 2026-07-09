@@ -3,12 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
-    "dev": "tsx --watch --env-file=.env src/server.ts"
+    "dev": "tsx --watch --env-file=.env src/server.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "pg": "^8.20.0",
+    "redis": "^5.12.1",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.20.0",
+    "@types/sharp": "^0.31.1"
+  }
 }

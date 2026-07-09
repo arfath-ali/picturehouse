@@ -1,0 +1,28 @@
+{
+  "home": [
+    { "tmdbId": 911430, "mediaType": "movie" },
+    { "tmdbId": 1399, "mediaType": "tv" },
+    { "tmdbId": 155, "mediaType": "movie" },
+    { "tmdbId": 66732, "mediaType": "tv" },
+    { "tmdbId": 285, "mediaType": "movie" },
+    { "tmdbId": 76479, "mediaType": "tv" },
+    { "tmdbId": 157336, "mediaType": "movie" },
+    { "tmdbId": 87108, "mediaType": "tv" },
+    { "tmdbId": 106646, "mediaType": "movie" },
+    { "tmdbId": 1668, "mediaType": "tv" }
+  ],
+  "movies": [
+    { "tmdbId": 27205, "mediaType": "movie" },
+    { "tmdbId": 872585, "mediaType": "movie" },
+    { "tmdbId": 76600, "mediaType": "movie" },
+    { "tmdbId": 603, "mediaType": "movie" },
+    { "tmdbId": 155, "mediaType": "movie" }
+  ],
+  "tv-shows": [
+    { "tmdbId": 125988, "mediaType": "tv" },
+    { "tmdbId": 60625, "mediaType": "tv" },
+    { "tmdbId": 71446, "mediaType": "tv" },
+    { "tmdbId": 94605, "mediaType": "tv" },
+    { "tmdbId": 1100, "mediaType": "tv" }
+  ]
+}

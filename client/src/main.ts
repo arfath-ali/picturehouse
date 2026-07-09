@@ -1,10 +1,31 @@
-import { initLinkInterceptor } from './router/initLinkInterceptor.router.js';
-import { navigate } from './router/navigate.router.js';
+import { initUserRegion } from "./config/region.js";
+import { initLinkInterceptor } from "./router/linkInterceptor.js";
+import { navigate } from "./router/navigate.js";
+import { initHeaderScroll } from "./scroll/header.js";
+import { initWindowScrollManager } from "./scroll/window.js";
+import { initWatchlistState } from "./watchlist/state.js";
+import { injectSprite } from "./utils/sprite.js";
+import { setAppState } from "./state/app.js";
 
-function bootstrap() {
-  initLinkInterceptor();
-  navigate();
-  window.addEventListener('popstate', navigate);
+async function bootstrap() {
+  try {
+    sessionStorage.setItem("app-initialized", "true");
+    initWindowScrollManager();
+
+    await Promise.all([injectSprite(), initUserRegion(), initWatchlistState()]);
+
+    navigate();
+    initLinkInterceptor();
+    initHeaderScroll();
+
+    window.addEventListener("popstate", () => {
+      navigate();
+    });
+  } catch (error: any) {
+    console.error("Watchlist fetch failed:", error);
+
+    setAppState("not-found");
+  }
 }
 
-window.addEventListener('DOMContentLoaded', bootstrap);
+window.addEventListener("DOMContentLoaded", bootstrap);
