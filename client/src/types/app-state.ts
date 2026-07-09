@@ -10,4 +10,5 @@ export type AppState =
   | "watchlist-movies"
   | "watchlist-tv-shows"
   | "profile"
-  | "not-found";
+  | "not-found"
+  | "error";

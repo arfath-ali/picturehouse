@@ -6,7 +6,6 @@ const body = getElement<HTMLBodyElement>("body");
 
 export function setAppState(state: AppState) {
   body.dataset.state = state;
-  console.log(body.dataset.state);
 
   if (state === "details") {
     updatePageTitle("details", null, true);
