@@ -174,7 +174,7 @@ async function fetchFeaturedItem(media: MediaReferanceItems) {
     return mediaPayload;
   } catch (error: any) {
     console.error(
-      `❌ Failed to fetch content ID ${media.tmdbId}. Status: ${error.statusCode ?? 'Unknown'} | Message: ${error.message}`,
+      `❌ Failed to fetch content ID ${media.tmdbId}. Status: ${error.status ?? 'Unknown'} | Message: ${error.message}`,
     );
   }
 }
