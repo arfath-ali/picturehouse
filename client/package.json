@@ -15,7 +15,7 @@
     "build:css": "npx @tailwindcss/cli -i ./src/styles/global.css -o ./dist/styles.css",
     "build:ts": "tsc",
     "dev:css": "npx @tailwindcss/cli -i ./src/styles/global.css -o ./dist/styles.css --watch=always",
-    "dev:ts": "tsc --watch --noEmit --noEmitOnError false --preserveWatchOutput"
+    "dev:ts": "tsc --watch --noEmitOnError false --preserveWatchOutput"
   },
   "keywords": [],
   "author": "",
