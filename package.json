@@ -9,8 +9,9 @@
   "scripts": {
     "build:client": "npm run build:css -w client && npm run build:ts -w client",
     "build:server": "npm run build -w server",
-    "dev:client": "concurrently \"npm run dev:css -w client\" \" npm run dev:ts -w client\"",
-    "dev:server": "npm run dev -w server"
+    "dev:client": "concurrently \"npm run dev:css -w client\" \"npm run dev:ts -w client\"",
+    "dev:server": "npm run dev -w server",
+    "dev:picturehouse": "concurrently --handle-input true --restart-tries -1 \"npm run dev:client\" \"npm run dev:server\""
   },
   "keywords": [],
   "author": "",

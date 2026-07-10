@@ -5,13 +5,25 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - '8000:5000'
-    volumes:
-      - .:/app
-      - /app/node_modules/
-      - /app/client/node_modules/
-      - /app/server/node_modules/
     env_file:
       - ./server/.env
     environment:
-      - NODE_ENV=production
-    command: sh -c "npm run dev:client & npm run dev:server"
+      - NODE_ENV=development
+    command: npm run dev:picturehouse
+
+    develop:
+      watch:
+        - action: sync
+          path: ./client
+          target: /app/client
+          ignore:
+            - node_modules/
+
+        - action: sync
+          path: ./server
+          target: /app/server
+          ignore:
+            - node_modules/
+
+        - action: rebuild
+          path: ./package.json

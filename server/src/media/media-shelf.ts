@@ -1,5 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import shelf from '../data/media-shelf.json' with { type: 'json' };
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs';
 import type { TMDBMediaShelf } from '../types/tmdb-content.js';
 import fetchFromTMDB from '../api/tmdb-service.js';
 import { redisClient } from '../cache/redis.js';
@@ -10,9 +12,28 @@ import { inFlightIndexKeys, waitForFlightIn } from '../utils/in-flight.js';
 export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
   if (!req.params) return;
 
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
   const { page, mediaShelf } = req.params;
 
   if (!page || !mediaShelf) return;
+
+  let mediaShelves = {};
+
+  try {
+    const jsonPath = path.join(__dirname, '..', 'data', 'media-shelf.json');
+    const data = fs.readFileSync(jsonPath, 'utf-8');
+    mediaShelves = JSON.parse(data);
+  } catch (err: any) {
+    const error: any = new Error(
+      `[File Error]: ${err.message}. Internal Reason:`,
+      {
+        cause: err,
+      },
+    );
+    error.status = err.status || 500;
+    throw error;
+  }
 
   const isTrending =
     mediaShelf === 'trending-movies' || mediaShelf === 'trending-tv-shows';
@@ -20,7 +41,7 @@ export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
   let contentReferenceItems: MediaReferanceItems[] = [];
 
   if (!isTrending) {
-    contentReferenceItems = (shelf as any)[page][mediaShelf];
+    contentReferenceItems = (mediaShelves as any)[page][mediaShelf];
 
     if (!contentReferenceItems) {
       res.statusCode = 404;
@@ -92,12 +113,6 @@ export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
         const cachedEntry = mediaEntries[i];
         const cachedResult = pipelineResults[i];
 
-        if (typeof cachedResult !== 'string') {
-          updatedMediaEntries.push(cachedEntry);
-          console.warn(`⚠️ Cache miss: [${cachedEntry}]. Skipping.`);
-          continue;
-        }
-
         if (cachedEntry !== expectedEntry) {
           const mediaPayload = await fetchMediaShelfItem(item, featuredIds);
 
@@ -106,6 +121,12 @@ export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
             updatedMediaEntries.push(expectedEntry);
           }
 
+          continue;
+        }
+
+        if (typeof cachedResult !== 'string') {
+          updatedMediaEntries.push(cachedEntry);
+          console.warn(`⚠️ Cache miss: [${cachedEntry}]. Skipping.`);
           continue;
         }
 

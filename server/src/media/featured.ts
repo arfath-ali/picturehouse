@@ -1,11 +1,13 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import featured from '../data/featured.json' with { type: 'json' };
+import path from 'node:path';
+import fs from 'node:fs';
 import type { TMDBMediaFeatured } from '../types/tmdb-content.js';
 import fetchFromTMDB from '../api/tmdb-service.js';
 import { redisClient } from '../cache/redis.js';
 import type { MediaReferanceItems } from '../types/media-reference-items.js';
 import { parseMediaFeatured } from '../services/tmdb-parser.js';
 import { inFlightIndexKeys, waitForFlightIn } from '../utils/in-flight.js';
+import { fileURLToPath } from 'node:url';
 
 export async function getMediaFeatured(
   req: IncomingMessage,
@@ -13,8 +15,27 @@ export async function getMediaFeatured(
 ) {
   if (!req.params) return;
 
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
   const { page } = req.params;
   if (!page) return;
+
+  let featured = {};
+
+  try {
+    const jsonPath = path.join(__dirname, '..', 'data', 'featured.json');
+    const data = fs.readFileSync(jsonPath, 'utf-8');
+    featured = JSON.parse(data);
+  } catch (err: any) {
+    const error: any = new Error(
+      `[File Error]: ${err.message}. Internal Reason:`,
+      {
+        cause: err,
+      },
+    );
+    error.status = err.status || 500;
+    throw error;
+  }
 
   const contentReferenceItems = (featured as any)[page];
 
@@ -24,10 +45,8 @@ export async function getMediaFeatured(
     res.end(JSON.stringify({ error: 'Category not found' }));
     return;
   }
-
   const featuredIndexKey = `featured-${page}`;
   const cachedIndexData = await redisClient.get(featuredIndexKey);
-
   if (cachedIndexData) {
     const { mediaEntries, timestamp } = JSON.parse(cachedIndexData);
     const isCacheExpired = Date.now() - timestamp > 24 * 60 * 60 * 1000;
@@ -65,12 +84,6 @@ export async function getMediaFeatured(
       const cachedEntry = mediaEntries[i];
       const cachedResult = pipelineResults[i];
 
-      if (typeof cachedResult !== 'string') {
-        updatedMediaEntries.push(cachedEntry);
-        console.warn(`⚠️ Cache miss: [${cachedEntry}]. Skipping.`);
-        continue;
-      }
-
       if (cachedEntry !== expectedEntry) {
         const mediaPayload = await fetchFeaturedItem(item);
 
@@ -79,6 +92,12 @@ export async function getMediaFeatured(
           updatedMediaEntries.push(expectedEntry);
         }
 
+        continue;
+      }
+
+      if (typeof cachedResult !== 'string') {
+        updatedMediaEntries.push(cachedEntry);
+        console.warn(`⚠️ Cache miss: [${cachedEntry}]. Skipping.`);
         continue;
       }
 
