@@ -64,7 +64,7 @@ export default async function fetchFromTMDB(
   };
 
   const MAX_ATTEMPTS = 20;
-  let delay = 400;
+  let delay = 25;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
