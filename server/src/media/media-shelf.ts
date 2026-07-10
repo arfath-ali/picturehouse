@@ -247,17 +247,20 @@ async function fetchMediaShelfItem(
   featuredIds: string[],
 ) {
   try {
-    if (!featuredIds.includes(String(media.tmdbId))) {
-      const tmdbData = (await fetchFromTMDB(media)) as any;
-      const mediaPayload = parseMediaShelf(tmdbData, media.mediaType);
+    const cacheKey = `media:${media.mediaType}:${media.tmdbId}`;
 
-      await redisClient.set(
-        `media:${mediaPayload.type}:${mediaPayload.id}`,
-        JSON.stringify(mediaPayload),
-      );
+    const cachedData = await redisClient.get(cacheKey);
 
-      return mediaPayload;
+    if (cachedData) {
+      return JSON.parse(cachedData);
     }
+
+    const tmdbData = (await fetchFromTMDB(media)) as any;
+    const mediaPayload = parseMediaShelf(tmdbData, media.mediaType);
+
+    await redisClient.set(cacheKey, JSON.stringify(mediaPayload));
+
+    return mediaPayload;
   } catch (error: any) {
     console.error(
       `❌ Failed to fetch content ID ${media.tmdbId}. Status: ${error.status ?? 'Unknown'} | Message: ${error.message}`,
