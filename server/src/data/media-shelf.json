@@ -1,667 +1,2811 @@
 {
   "home": {
     "top-rated-films": [
-      { "tmdbId": 278, "mediaType": "movie" },
-      { "tmdbId": 238, "mediaType": "movie" },
-      { "tmdbId": 20453, "mediaType": "movie" },
-      { "tmdbId": 389, "mediaType": "movie" },
-      { "tmdbId": 855400, "mediaType": "movie" },
-      { "tmdbId": 122, "mediaType": "movie" },
-      { "tmdbId": 680, "mediaType": "movie" },
-      { "tmdbId": 129, "mediaType": "movie" },
-      { "tmdbId": 769, "mediaType": "movie" },
-      { "tmdbId": 244049, "mediaType": "movie" },
-      { "tmdbId": 550, "mediaType": "movie" },
-      { "tmdbId": 424, "mediaType": "movie" },
-      { "tmdbId": 544795, "mediaType": "movie" },
-      { "tmdbId": 244786, "mediaType": "movie" },
-      { "tmdbId": 68718, "mediaType": "movie" },
-      { "tmdbId": 497, "mediaType": "movie" },
-      { "tmdbId": 360814, "mediaType": "movie" },
-      { "tmdbId": 807, "mediaType": "movie" },
-      { "tmdbId": 11216, "mediaType": "movie" },
-      { "tmdbId": 1124, "mediaType": "movie" }
+      {
+        "title": "The Shawshank Redemption",
+        "tmdbId": 278,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Godfather",
+        "tmdbId": 238,
+        "mediaType": "movie"
+      },
+      {
+        "title": "3 Idiots",
+        "tmdbId": 20453,
+        "mediaType": "movie"
+      },
+      {
+        "title": "12 Angry Men",
+        "tmdbId": 389,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Kumbalangi Nights",
+        "tmdbId": 575351,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Lord of the Rings: The Return of the King",
+        "tmdbId": 122,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Pulp Fiction",
+        "tmdbId": 680,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Spirited Away",
+        "tmdbId": 129,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Goodfellas",
+        "tmdbId": 769,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Drishyam",
+        "tmdbId": 244049,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Fight Club",
+        "tmdbId": 550,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Schindler's List",
+        "tmdbId": 424,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Agent Sai Srinivasa Athreya",
+        "tmdbId": 610482,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Whiplash",
+        "tmdbId": 244786,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Django Unchained",
+        "tmdbId": 68718,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Green Mile",
+        "tmdbId": 497,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Nayakan",
+        "tmdbId": 29971,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Se7en",
+        "tmdbId": 807,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Cinema Paradiso",
+        "tmdbId": 11216,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Prestige",
+        "tmdbId": 1124,
+        "mediaType": "movie"
+      }
     ],
     "top-rated-shows": [
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 87108, "mediaType": "tv" },
-      { "tmdbId": 4613, "mediaType": "tv" },
-      { "tmdbId": 60059, "mediaType": "tv" },
-      { "tmdbId": 1438, "mediaType": "tv" },
-      { "tmdbId": 126308, "mediaType": "tv" },
-      { "tmdbId": 68595, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 225180, "mediaType": "tv" },
-      { "tmdbId": 70523, "mediaType": "tv" },
-      { "tmdbId": 1429, "mediaType": "tv" },
-      { "tmdbId": 19885, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 46648, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 111188, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 101352, "mediaType": "tv" },
-      { "tmdbId": 67070, "mediaType": "tv" },
-      { "tmdbId": 246, "mediaType": "tv" }
+      {
+        "title": "Breaking Bad",
+        "tmdbId": 1396,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Chernobyl",
+        "tmdbId": 87108,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Scam 1992",
+        "tmdbId": 111188,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Band of Brothers",
+        "tmdbId": 4613,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Better Call Saul",
+        "tmdbId": 60059,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Wire",
+        "tmdbId": 1438,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Game of Thrones",
+        "tmdbId": 1399,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Sherlock",
+        "tmdbId": 19885,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Peaky Blinders",
+        "tmdbId": 60574,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Sopranos",
+        "tmdbId": 1398,
+        "mediaType": "tv"
+      },
+      {
+        "title": "True Detective",
+        "tmdbId": 46648,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Stranger Things",
+        "tmdbId": 66732,
+        "mediaType": "tv"
+      },
+      {
+        "title": "House",
+        "tmdbId": 1408,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Panchayat",
+        "tmdbId": 101352,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Dark",
+        "tmdbId": 70523,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Prison Break",
+        "tmdbId": 2288,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Last of Us",
+        "tmdbId": 100088,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Dexter",
+        "tmdbId": 1405,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Mindhunter",
+        "tmdbId": 67744,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Fleabag",
+        "tmdbId": 67070,
+        "mediaType": "tv"
+      }
     ],
     "award-winning-cinema": [
-      { "tmdbId": 545611, "mediaType": "movie" },
-      { "tmdbId": 19666, "mediaType": "movie" },
-      { "tmdbId": 324857, "mediaType": "movie" },
-      { "tmdbId": 98, "mediaType": "movie" },
-      { "tmdbId": 1041580, "mediaType": "movie" },
-      { "tmdbId": 6977, "mediaType": "movie" },
-      { "tmdbId": 45269, "mediaType": "movie" },
-      { "tmdbId": 579974, "mediaType": "movie" },
-      { "tmdbId": 194662, "mediaType": "movie" },
-      { "tmdbId": 399055, "mediaType": "movie" },
-      { "tmdbId": 913838, "mediaType": "movie" },
-      { "tmdbId": 820693, "mediaType": "movie" },
-      { "tmdbId": 12162, "mediaType": "movie" },
-      { "tmdbId": 12162, "mediaType": "movie" },
-      { "tmdbId": 1422, "mediaType": "movie" },
-      { "tmdbId": 70155, "mediaType": "movie" },
-      { "tmdbId": 610150, "mediaType": "movie" },
-      { "tmdbId": 14906, "mediaType": "movie" },
-      { "tmdbId": 872585, "mediaType": "movie" }
+      {
+        "title": "Gladiator",
+        "tmdbId": 98,
+        "mediaType": "movie"
+      },
+      {
+        "title": "RRR",
+        "tmdbId": 579974,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Elephant Whisperers",
+        "tmdbId": 1041580,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Gravity",
+        "tmdbId": 49047,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Everything Everywhere All at Once",
+        "tmdbId": 545611,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Silence of the Lambs",
+        "tmdbId": 274,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Revenant",
+        "tmdbId": 281957,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Slumdog Millionaire",
+        "tmdbId": 12405,
+        "mediaType": "movie"
+      },
+      {
+        "title": "No Country for Old Men",
+        "tmdbId": 6977,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jai Bhim",
+        "tmdbId": 855400,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The King's Speech",
+        "tmdbId": 45269,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Birdman",
+        "tmdbId": 194662,
+        "mediaType": "movie"
+      },
+      {
+        "title": "A Beautiful Mind",
+        "tmdbId": 453,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Shape of Water",
+        "tmdbId": 399055,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Social Network",
+        "tmdbId": 37799,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Green Book",
+        "tmdbId": 490132,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Bridge on the River Kwai",
+        "tmdbId": 826,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Spotlight",
+        "tmdbId": 314365,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Oppenheimer",
+        "tmdbId": 872585,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Lord of the Rings: The Return of the King",
+        "tmdbId": 122,
+        "mediaType": "movie"
+      }
     ],
     "timeless-classics": [
-      { "tmdbId": 242, "mediaType": "movie" },
-      { "tmdbId": 3082, "mediaType": "movie" },
-      { "tmdbId": 935, "mediaType": "movie" },
-      { "tmdbId": 951, "mediaType": "movie" },
-      { "tmdbId": 652, "mediaType": "movie" },
-      { "tmdbId": 14160, "mediaType": "movie" },
-      { "tmdbId": 901, "mediaType": "movie" },
-      { "tmdbId": 12493, "mediaType": "movie" },
-      { "tmdbId": 289, "mediaType": "movie" },
-      { "tmdbId": 807, "mediaType": "movie" },
-      { "tmdbId": 996, "mediaType": "movie" },
-      { "tmdbId": 1040, "mediaType": "movie" },
-      { "tmdbId": 332, "mediaType": "movie" },
-      { "tmdbId": 535, "mediaType": "movie" },
-      { "tmdbId": 1103, "mediaType": "movie" },
-      { "tmdbId": 961, "mediaType": "movie" },
-      { "tmdbId": 252, "mediaType": "movie" },
-      { "tmdbId": 11645, "mediaType": "movie" },
-      { "tmdbId": 77, "mediaType": "movie" },
-      { "tmdbId": 921, "mediaType": "movie" }
+      {
+        "title": "Sholay",
+        "tmdbId": 12259,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Taxi Driver",
+        "tmdbId": 103,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Raiders of the Lost Ark",
+        "tmdbId": 85,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Ben-Hur",
+        "tmdbId": 665,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Casablanca",
+        "tmdbId": 289,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Thalapathi",
+        "tmdbId": 29811,
+        "mediaType": "movie"
+      },
+      {
+        "title": "2001: A Space Odyssey",
+        "tmdbId": 62,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Mughal-e-Azam",
+        "tmdbId": 44519,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Lawrence of Arabia",
+        "tmdbId": 947,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Maya Bazaar",
+        "tmdbId": 158023,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Citizen Kane",
+        "tmdbId": 15,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Satya",
+        "tmdbId": 21502,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Psycho",
+        "tmdbId": 539,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Mother India",
+        "tmdbId": 917,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Sankarabharanam",
+        "tmdbId": 30088,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Good, the Bad and the Ugly",
+        "tmdbId": 429,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Singin' in the Rain",
+        "tmdbId": 872,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Manichitrathazhu",
+        "tmdbId": 84368,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Baasha",
+        "tmdbId": 49074,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Chinatown",
+        "tmdbId": 829,
+        "mediaType": "movie"
+      }
     ],
     "boxoffice-legends": [
-      { "tmdbId": 19995, "mediaType": "movie" },
-      { "tmdbId": 360814, "mediaType": "movie" },
-      { "tmdbId": 299534, "mediaType": "movie" },
-      { "tmdbId": 1058694, "mediaType": "movie" },
-      { "tmdbId": 597, "mediaType": "movie" },
-      { "tmdbId": 350312, "mediaType": "movie" },
-      { "tmdbId": 58, "mediaType": "movie" },
-      { "tmdbId": 135397, "mediaType": "movie" },
-      { "tmdbId": 634649, "mediaType": "movie" },
-      { "tmdbId": 579974, "mediaType": "movie" },
-      { "tmdbId": 76600, "mediaType": "movie" },
-      { "tmdbId": 361743, "mediaType": "movie" },
-      { "tmdbId": 420818, "mediaType": "movie" },
-      { "tmdbId": 37724, "mediaType": "movie" },
-      { "tmdbId": 505192, "mediaType": "movie" },
-      { "tmdbId": 49026, "mediaType": "movie" },
-      { "tmdbId": 353081, "mediaType": "movie" },
-      { "tmdbId": 696374, "mediaType": "movie" },
-      { "tmdbId": 168259, "mediaType": "movie" },
-      { "tmdbId": 27205, "mediaType": "movie" }
+      {
+        "title": "Avengers: Endgame",
+        "tmdbId": 299534,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Dangal",
+        "tmdbId": 360814,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Avatar",
+        "tmdbId": 19995,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Baahubali 2: The Conclusion",
+        "tmdbId": 350312,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Dark Knight",
+        "tmdbId": 155,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Animal",
+        "tmdbId": 781732,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jurassic World ",
+        "tmdbId": 135397,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Star Wars: The Force Awakens",
+        "tmdbId": 140607,
+        "mediaType": "movie"
+      },
+
+      {
+        "title": "Top Gun: Maverick",
+        "tmdbId": 361743,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Pirates of the Caribbean: Dead Man's Chest",
+        "tmdbId": 58,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Inception",
+        "tmdbId": 27205,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Skyfall",
+        "tmdbId": 37724,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Bajrangi Bhaijaan",
+        "tmdbId": 348892,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Lion King (2019)",
+        "tmdbId": 420818,
+        "mediaType": "movie"
+      },
+
+      {
+        "title": "Avatar: The Way of Water",
+        "tmdbId": 76600,
+        "mediaType": "movie"
+      },
+
+      {
+        "title": "Jaws",
+        "tmdbId": 578,
+        "mediaType": "movie"
+      },
+
+      {
+        "title": "E.T. the Extra-Terrestrial",
+        "tmdbId": 601,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Dilwale Dulhania Le Jayenge",
+        "tmdbId": 19404,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Furious 7",
+        "tmdbId": 168259,
+        "mediaType": "movie"
+      }
     ]
   },
+
   "movies": {
     "drama": [
-      { "tmdbId": 278, "mediaType": "movie" },
-      { "tmdbId": 238, "mediaType": "movie" },
-      { "tmdbId": 240, "mediaType": "movie" },
-      { "tmdbId": 424, "mediaType": "movie" },
-      { "tmdbId": 389, "mediaType": "movie" },
-      { "tmdbId": 497, "mediaType": "movie" },
-      { "tmdbId": 155, "mediaType": "movie" },
-      { "tmdbId": 680, "mediaType": "movie" },
-      { "tmdbId": 13, "mediaType": "movie" },
-      { "tmdbId": 496243, "mediaType": "movie" },
-      { "tmdbId": 122, "mediaType": "movie" },
-      { "tmdbId": 510, "mediaType": "movie" },
-      { "tmdbId": 429, "mediaType": "movie" },
-      { "tmdbId": 372058, "mediaType": "movie" },
-      { "tmdbId": 73, "mediaType": "movie" },
-      { "tmdbId": 120, "mediaType": "movie" },
-      { "tmdbId": 121, "mediaType": "movie" },
-      { "tmdbId": 105, "mediaType": "movie" },
-      { "tmdbId": 315162, "mediaType": "movie" },
-      { "tmdbId": 550, "mediaType": "movie" }
+      {
+        "title": "The Truman Show",
+        "tmdbId": 37165,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Zindagi Na Milegi Dobara",
+        "tmdbId": 61202,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Good Will Hunting",
+        "tmdbId": 489,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Taare Zameen Par",
+        "tmdbId": 7508,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Forrest Gump",
+        "tmdbId": 13,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Meiyazhagan",
+        "tmdbId": 1136423,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Pursuit of Happyness",
+        "tmdbId": 1402,
+        "mediaType": "movie"
+      },
+      {
+        "title": "C/o Kancharapalem",
+        "tmdbId": 544795,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Ford v Ferrari",
+        "tmdbId": 359724,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Maheshinte Prathikaaram",
+        "tmdbId": 381691,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Dead Poets Society",
+        "tmdbId": 207,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Kabhi Khushi Kabhie Gham",
+        "tmdbId": 10757,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Saving Private Ryan",
+        "tmdbId": 857,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Super Deluxe",
+        "tmdbId": 432011,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Gandhi",
+        "tmdbId": 783,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Rang De Basanti",
+        "tmdbId": 7913,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Life of Pi",
+        "tmdbId": 87827,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Dear Zindagi",
+        "tmdbId": 413543,
+        "mediaType": "movie"
+      },
+      {
+        "title": "American Beauty",
+        "tmdbId": 14,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jersey",
+        "tmdbId": 592898,
+        "mediaType": "movie"
+      }
     ],
     "action-adventure": [
-      { "tmdbId": 299534, "mediaType": "movie" },
-      { "tmdbId": 299536, "mediaType": "movie" },
-      { "tmdbId": 19995, "mediaType": "movie" },
-      { "tmdbId": 671, "mediaType": "movie" },
-      { "tmdbId": 120, "mediaType": "movie" },
-      { "tmdbId": 121, "mediaType": "movie" },
-      { "tmdbId": 122, "mediaType": "movie" },
-      { "tmdbId": 155, "mediaType": "movie" },
-      { "tmdbId": 24428, "mediaType": "movie" },
-      { "tmdbId": 284054, "mediaType": "movie" },
-      { "tmdbId": 102899, "mediaType": "movie" },
-      { "tmdbId": 118340, "mediaType": "movie" },
-      { "tmdbId": 603, "mediaType": "movie" },
-      { "tmdbId": 1891, "mediaType": "movie" },
-      { "tmdbId": 1892, "mediaType": "movie" },
-      { "tmdbId": 1895, "mediaType": "movie" },
-      { "tmdbId": 76341, "mediaType": "movie" },
-      { "tmdbId": 414906, "mediaType": "movie" },
-      { "tmdbId": 693134, "mediaType": "movie" },
-      { "tmdbId": 872585, "mediaType": "movie" }
-    ],
-    "crime-thriller": [
-      { "tmdbId": 155, "mediaType": "movie" },
-      { "tmdbId": 238, "mediaType": "movie" },
-      { "tmdbId": 240, "mediaType": "movie" },
-      { "tmdbId": 680, "mediaType": "movie" },
-      { "tmdbId": 101, "mediaType": "movie" },
-      { "tmdbId": 1422, "mediaType": "movie" },
-      { "tmdbId": 807, "mediaType": "movie" },
-      { "tmdbId": 274, "mediaType": "movie" },
-      { "tmdbId": 106646, "mediaType": "movie" },
-      { "tmdbId": 11324, "mediaType": "movie" },
-      { "tmdbId": 49026, "mediaType": "movie" },
-      { "tmdbId": 769, "mediaType": "movie" },
-      { "tmdbId": 550, "mediaType": "movie" },
-      { "tmdbId": 14160, "mediaType": "movie" },
-      { "tmdbId": 1573, "mediaType": "movie" },
-      { "tmdbId": 27205, "mediaType": "movie" },
-      { "tmdbId": 603, "mediaType": "movie" },
-      { "tmdbId": 111, "mediaType": "movie" },
-      { "tmdbId": 311, "mediaType": "movie" },
-      { "tmdbId": 424, "mediaType": "movie" }
-    ],
-    "comedy": [
-      { "tmdbId": 105, "mediaType": "movie" },
-      { "tmdbId": 107, "mediaType": "movie" },
-      { "tmdbId": 12, "mediaType": "movie" },
-      { "tmdbId": 113, "mediaType": "movie" },
-      { "tmdbId": 118, "mediaType": "movie" },
-      { "tmdbId": 133, "mediaType": "movie" },
-      { "tmdbId": 150, "mediaType": "movie" },
-      { "tmdbId": 152, "mediaType": "movie" },
-      { "tmdbId": 2107, "mediaType": "movie" },
-      { "tmdbId": 2108, "mediaType": "movie" },
-      { "tmdbId": 2109, "mediaType": "movie" },
-      { "tmdbId": 808, "mediaType": "movie" },
-      { "tmdbId": 809, "mediaType": "movie" },
-      { "tmdbId": 810, "mediaType": "movie" },
-      { "tmdbId": 812, "mediaType": "movie" },
-      { "tmdbId": 813, "mediaType": "movie" },
-      { "tmdbId": 935, "mediaType": "movie" },
-      { "tmdbId": 38, "mediaType": "movie" },
-      { "tmdbId": 3133, "mediaType": "movie" },
-      { "tmdbId": 2164, "mediaType": "movie" }
-    ],
-    "bollywood-hits": [
-      { "tmdbId": 20453, "mediaType": "movie" },
-      { "tmdbId": 11190, "mediaType": "movie" },
-      { "tmdbId": 12819, "mediaType": "movie" },
-      { "tmdbId": 12102, "mediaType": "movie" },
-      { "tmdbId": 13688, "mediaType": "movie" },
-      { "tmdbId": 26022, "mediaType": "movie" },
-      { "tmdbId": 13035, "mediaType": "movie" },
-      { "tmdbId": 14312, "mediaType": "movie" },
-      { "tmdbId": 37241, "mediaType": "movie" },
-      { "tmdbId": 14324, "mediaType": "movie" },
-      { "tmdbId": 1904, "mediaType": "movie" },
-      { "tmdbId": 50646, "mediaType": "movie" },
-      { "tmdbId": 20439, "mediaType": "movie" },
-      { "tmdbId": 13187, "mediaType": "movie" },
-      { "tmdbId": 20422, "mediaType": "movie" },
-      { "tmdbId": 43539, "mediaType": "movie" },
-      { "tmdbId": 13861, "mediaType": "movie" },
-      { "tmdbId": 12820, "mediaType": "movie" },
-      { "tmdbId": 53556, "mediaType": "movie" },
-      { "tmdbId": 75780, "mediaType": "movie" }
-    ],
-    "horror": [
-      { "tmdbId": 745, "mediaType": "movie" },
-      { "tmdbId": 176, "mediaType": "movie" },
-      { "tmdbId": 619, "mediaType": "movie" },
-      { "tmdbId": 415, "mediaType": "movie" },
-      { "tmdbId": 13533, "mediaType": "movie" },
-      { "tmdbId": 10853, "mediaType": "movie" },
-      { "tmdbId": 694, "mediaType": "movie" },
-      { "tmdbId": 110, "mediaType": "movie" },
-      { "tmdbId": 938, "mediaType": "movie" },
-      { "tmdbId": 9516, "mediaType": "movie" },
-      { "tmdbId": 348, "mediaType": "movie" },
-      { "tmdbId": 345, "mediaType": "movie" },
-      { "tmdbId": 805, "mediaType": "movie" },
-      { "tmdbId": 830, "mediaType": "movie" },
-      { "tmdbId": 10074, "mediaType": "movie" },
-      { "tmdbId": 26428, "mediaType": "movie" },
-      { "tmdbId": 11287, "mediaType": "movie" },
-      { "tmdbId": 411, "mediaType": "movie" },
-      { "tmdbId": 11428, "mediaType": "movie" },
-      { "tmdbId": 13644, "mediaType": "movie" }
-    ],
-    "romance": [
-      { "tmdbId": 11, "mediaType": "movie" },
-      { "tmdbId": 597, "mediaType": "movie" },
-      { "tmdbId": 510, "mediaType": "movie" },
-      { "tmdbId": 13, "mediaType": "movie" },
-      { "tmdbId": 2164, "mediaType": "movie" },
-      { "tmdbId": 112, "mediaType": "movie" },
-      { "tmdbId": 114, "mediaType": "movie" },
-      { "tmdbId": 115, "mediaType": "movie" },
-      { "tmdbId": 116, "mediaType": "movie" },
-      { "tmdbId": 117, "mediaType": "movie" },
-      { "tmdbId": 38, "mediaType": "movie" },
-      { "tmdbId": 39, "mediaType": "movie" },
-      { "tmdbId": 40, "mediaType": "movie" },
-      { "tmdbId": 41, "mediaType": "movie" },
-      { "tmdbId": 42, "mediaType": "movie" },
-      { "tmdbId": 43, "mediaType": "movie" },
-      { "tmdbId": 44, "mediaType": "movie" },
-      { "tmdbId": 45, "mediaType": "movie" },
-      { "tmdbId": 46, "mediaType": "movie" },
-      { "tmdbId": 47, "mediaType": "movie" }
-    ],
-    "telugu-originals": [
-      { "tmdbId": 579974, "mediaType": "movie" },
-      { "tmdbId": 256040, "mediaType": "movie" },
-      { "tmdbId": 341013, "mediaType": "movie" },
-      { "tmdbId": 291170, "mediaType": "movie" },
-      { "tmdbId": 481190, "mediaType": "movie" },
-      { "tmdbId": 321258, "mediaType": "movie" },
-      { "tmdbId": 421658, "mediaType": "movie" },
-      { "tmdbId": 451480, "mediaType": "movie" },
-      { "tmdbId": 468225, "mediaType": "movie" },
-      { "tmdbId": 640265, "mediaType": "movie" },
-      { "tmdbId": 718320, "mediaType": "movie" },
-      { "tmdbId": 630004, "mediaType": "movie" },
-      { "tmdbId": 612470, "mediaType": "movie" },
-      { "tmdbId": 593120, "mediaType": "movie" },
-      { "tmdbId": 75780, "mediaType": "movie" },
-      { "tmdbId": 111327, "mediaType": "movie" },
-      { "tmdbId": 331446, "mediaType": "movie" },
-      { "tmdbId": 273574, "mediaType": "movie" },
-      { "tmdbId": 160351, "mediaType": "movie" },
-      { "tmdbId": 526227, "mediaType": "movie" }
+      {
+        "title": "Raiders of the Lost Ark",
+        "tmdbId": 85,
+        "mediaType": "movie"
+      },
+      {
+        "title": "John Wick: Chapter 4",
+        "tmdbId": 603692,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jurassic Park",
+        "tmdbId": 329,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Kaithi",
+        "tmdbId": 587030,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Casino Royale",
+        "tmdbId": 36557,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Baahubali 2: The Conclusion",
+        "tmdbId": 350312,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Mission: Impossible – Fallout",
+        "tmdbId": 353081,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Apocalypto",
+        "tmdbId": 1579,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Spider-Man: No Way Home",
+        "tmdbId": 634649,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Pirates of the Caribbean: The Curse of the Black Pearl",
+        "tmdbId": 22,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Dune: Part Two",
+        "tmdbId": 693134,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Kingsman: The Secret Service",
+        "tmdbId": 207703,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Fast Five",
+        "tmdbId": 51497,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Mad Max: Fury Road",
+        "tmdbId": 76341,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Bullet Train",
+        "tmdbId": 718930,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Kill Bill: Vol. 1",
+        "tmdbId": 24,
+        "mediaType": "movie"
+      },
+      {
+        "title": "1917",
+        "tmdbId": 530915,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Nobody",
+        "tmdbId": 615457,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Aliens",
+        "tmdbId": 679,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Drunken Master",
+        "tmdbId": 11230,
+        "mediaType": "movie"
+      }
     ],
     "science-fiction": [
-      { "tmdbId": 27205, "mediaType": "movie" },
-      { "tmdbId": 157336, "mediaType": "movie" },
-      { "tmdbId": 603, "mediaType": "movie" },
-      { "tmdbId": 11, "mediaType": "movie" },
-      { "tmdbId": 1891, "mediaType": "movie" },
-      { "tmdbId": 1892, "mediaType": "movie" },
-      { "tmdbId": 671, "mediaType": "movie" },
-      { "tmdbId": 76341, "mediaType": "movie" },
-      { "tmdbId": 414906, "mediaType": "movie" },
-      { "tmdbId": 693134, "mediaType": "movie" },
-      { "tmdbId": 299534, "mediaType": "movie" },
-      { "tmdbId": 299536, "mediaType": "movie" },
-      { "tmdbId": 19995, "mediaType": "movie" },
-      { "tmdbId": 102899, "mediaType": "movie" },
-      { "tmdbId": 118340, "mediaType": "movie" },
-      { "tmdbId": 315162, "mediaType": "movie" },
-      { "tmdbId": 284054, "mediaType": "movie" },
-      { "tmdbId": 387, "mediaType": "movie" },
-      { "tmdbId": 12, "mediaType": "movie" },
-      { "tmdbId": 13, "mediaType": "movie" }
-    ],
-    "tamil-malayalam-cinema": [
-      { "tmdbId": 37241, "mediaType": "movie" },
-      { "tmdbId": 26022, "mediaType": "movie" },
-      { "tmdbId": 14312, "mediaType": "movie" },
-      { "tmdbId": 13035, "mediaType": "movie" },
-      { "tmdbId": 50646, "mediaType": "movie" },
-      { "tmdbId": 13187, "mediaType": "movie" },
-      { "tmdbId": 20422, "mediaType": "movie" },
-      { "tmdbId": 43539, "mediaType": "movie" },
-      { "tmdbId": 13861, "mediaType": "movie" },
-      { "tmdbId": 53556, "mediaType": "movie" },
-      { "tmdbId": 75780, "mediaType": "movie" },
-      { "tmdbId": 331446, "mediaType": "movie" },
-      { "tmdbId": 273574, "mediaType": "movie" },
-      { "tmdbId": 160351, "mediaType": "movie" },
-      { "tmdbId": 526227, "mediaType": "movie" },
-      { "tmdbId": 579974, "mediaType": "movie" },
-      { "tmdbId": 256040, "mediaType": "movie" },
-      { "tmdbId": 341013, "mediaType": "movie" },
-      { "tmdbId": 291170, "mediaType": "movie" },
-      { "tmdbId": 481190, "mediaType": "movie" }
-    ],
-    "documentary": [
-      { "tmdbId": 11190, "mediaType": "movie" },
-      { "tmdbId": 12819, "mediaType": "movie" },
-      { "tmdbId": 12102, "mediaType": "movie" },
-      { "tmdbId": 13688, "mediaType": "movie" },
-      { "tmdbId": 14324, "mediaType": "movie" },
-      { "tmdbId": 1904, "mediaType": "movie" },
-      { "tmdbId": 20439, "mediaType": "movie" },
-      { "tmdbId": 12820, "mediaType": "movie" },
-      { "tmdbId": 37241, "mediaType": "movie" },
-      { "tmdbId": 26022, "mediaType": "movie" },
-      { "tmdbId": 14312, "mediaType": "movie" },
-      { "tmdbId": 13035, "mediaType": "movie" },
-      { "tmdbId": 50646, "mediaType": "movie" },
-      { "tmdbId": 13187, "mediaType": "movie" },
-      { "tmdbId": 20422, "mediaType": "movie" },
-      { "tmdbId": 43539, "mediaType": "movie" },
-      { "tmdbId": 13861, "mediaType": "movie" },
-      { "tmdbId": 53556, "mediaType": "movie" },
-      { "tmdbId": 75780, "mediaType": "movie" },
-      { "tmdbId": 331446, "mediaType": "movie" }
-    ],
-    "korean-cinema": [
-      { "tmdbId": 496243, "mediaType": "movie" },
-      { "tmdbId": 11423, "mediaType": "movie" },
-      { "tmdbId": 243, "mediaType": "movie" },
-      { "tmdbId": 110, "mediaType": "movie" },
-      { "tmdbId": 11428, "mediaType": "movie" },
-      { "tmdbId": 345, "mediaType": "movie" },
-      { "tmdbId": 805, "mediaType": "movie" },
-      { "tmdbId": 830, "mediaType": "movie" },
-      { "tmdbId": 10074, "mediaType": "movie" },
-      { "tmdbId": 26428, "mediaType": "movie" },
-      { "tmdbId": 11287, "mediaType": "movie" },
-      { "tmdbId": 411, "mediaType": "movie" },
-      { "tmdbId": 13644, "mediaType": "movie" },
-      { "tmdbId": 11190, "mediaType": "movie" },
-      { "tmdbId": 12819, "mediaType": "movie" },
-      { "tmdbId": 12102, "mediaType": "movie" },
-      { "tmdbId": 13688, "mediaType": "movie" },
-      { "tmdbId": 14324, "mediaType": "movie" },
-      { "tmdbId": 1904, "mediaType": "movie" },
-      { "tmdbId": 20439, "mediaType": "movie" }
-    ]
-  },
-  "tv-shows": {
-    "trending-tv-shows": [
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 1402, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1403, "mediaType": "tv" },
-      { "tmdbId": 76479, "mediaType": "tv" },
-      { "tmdbId": 2316, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" }
-    ],
-    "popular": [
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1402, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" },
-      { "tmdbId": 76479, "mediaType": "tv" },
-      { "tmdbId": 2316, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" },
-      { "tmdbId": 1391, "mediaType": "tv" }
-    ],
-    "critically-acclaimed": [
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 31911, "mediaType": "tv" },
-      { "tmdbId": 37854, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 46648, "mediaType": "tv" },
-      { "tmdbId": 65494, "mediaType": "tv" },
-      { "tmdbId": 94954, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 67026, "mediaType": "tv" },
-      { "tmdbId": 68349, "mediaType": "tv" },
-      { "tmdbId": 19150, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 40075, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" }
-    ],
-    "drama": [
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1402, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" },
-      { "tmdbId": 76479, "mediaType": "tv" },
-      { "tmdbId": 2316, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" },
-      { "tmdbId": 1391, "mediaType": "tv" }
+      {
+        "title": "2001: A Space Odyssey",
+        "tmdbId": 62,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Koi... Mil Gaya",
+        "tmdbId": 25516,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Interstellar",
+        "tmdbId": 157336,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Arrival",
+        "tmdbId": 329865,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Matrix",
+        "tmdbId": 603,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Contact",
+        "tmdbId": 686,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Blade Runner 2049",
+        "tmdbId": 335984,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Kalki 2898 AD",
+        "tmdbId": 801688,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Back to the Future",
+        "tmdbId": 105,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Avatar: Fire and Ash",
+        "tmdbId": 83533,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Martian",
+        "tmdbId": 286217,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Godzilla Minus One",
+        "tmdbId": 940721,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Avengers: Infinity War",
+        "tmdbId": 299536,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Close Encounters of the Third Kind",
+        "tmdbId": 840,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Dasavathaaram",
+        "tmdbId": 17888,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Terminator 2: Judgment Day",
+        "tmdbId": 280,
+        "mediaType": "movie"
+      },
+      {
+        "title": "E.T. the Extra-Terrestrial",
+        "tmdbId": 601,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Coherence",
+        "tmdbId": 220289,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Star Wars: Episode V - The Empire Strikes Back",
+        "tmdbId": 1891,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Inception",
+        "tmdbId": 27205,
+        "mediaType": "movie"
+      }
     ],
     "crime-thriller": [
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1402, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" },
-      { "tmdbId": 76479, "mediaType": "tv" },
-      { "tmdbId": 2316, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" },
-      { "tmdbId": 1391, "mediaType": "tv" }
+      {
+        "title": "The Godfather Part II",
+        "tmdbId": 240,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Memories of Murder",
+        "tmdbId": 11423,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Dark Knight",
+        "tmdbId": 155,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Ratsasan",
+        "tmdbId": 412862,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Goodfellas",
+        "tmdbId": 769,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Silence of the Lambs",
+        "tmdbId": 274,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Gangs of Wasseypur",
+        "tmdbId": 117691,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Prisoners",
+        "tmdbId": 146233,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Scarface",
+        "tmdbId": 111,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jana Gana Mana",
+        "tmdbId": 792358,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Se7en",
+        "tmdbId": 807,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Usual Suspects",
+        "tmdbId": 629,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Heat",
+        "tmdbId": 949,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Fight Club",
+        "tmdbId": 550,
+        "mediaType": "movie"
+      },
+      {
+        "title": "HIT: The First Case",
+        "tmdbId": 678391,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Departed",
+        "tmdbId": 1422,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Reservoir Dogs",
+        "tmdbId": 500,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Nightcrawler",
+        "tmdbId": 242582,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Zodiac",
+        "tmdbId": 1949,
+        "mediaType": "movie"
+      },
+      {
+        "title": "L.A. Confidential",
+        "tmdbId": 2118,
+        "mediaType": "movie"
+      }
     ],
-    "action-adventure": [
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1402, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" },
-      { "tmdbId": 76479, "mediaType": "tv" },
-      { "tmdbId": 2316, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" },
-      { "tmdbId": 1391, "mediaType": "tv" }
-    ],
-    "comedy-sitcom": [
-      { "tmdbId": 1400, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" },
-      { "tmdbId": 76479, "mediaType": "tv" },
-      { "tmdbId": 2316, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" },
-      { "tmdbId": 1391, "mediaType": "tv" }
-    ],
-    "sci-fi-fantasy": [
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1402, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" },
-      { "tmdbId": 76479, "mediaType": "tv" },
-      { "tmdbId": 2316, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" },
-      { "tmdbId": 1391, "mediaType": "tv" }
+    "comedy": [
+      {
+        "title": "Hera Pheri",
+        "tmdbId": 21614,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Hangover",
+        "tmdbId": 18785,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jathi Ratnalu",
+        "tmdbId": 796368,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Nice Guys",
+        "tmdbId": 290250,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Munna Bhai M.B.B.S.",
+        "tmdbId": 19625,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Grand Budapest Hotel",
+        "tmdbId": 120467,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Venky",
+        "tmdbId": 73112,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Rush Hour",
+        "tmdbId": 2109,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Deadpool",
+        "tmdbId": 293660,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Mathu Vadalara 2",
+        "tmdbId": 1249902,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Superbad",
+        "tmdbId": 8363,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Go Goa Gone",
+        "tmdbId": 191562,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Golmaal 3",
+        "tmdbId": 44978,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Intern",
+        "tmdbId": 257211,
+        "mediaType": "movie"
+      },
+      {
+        "title": "April 1 Vidudala",
+        "tmdbId": 40906,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Airplane!",
+        "tmdbId": 813,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Bangalore Days",
+        "tmdbId": 268660,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Dictator",
+        "tmdbId": 76493,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Monty Python and the Holy Grail",
+        "tmdbId": 762,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Once Upon a Time in Hollywood",
+        "tmdbId": 466272,
+        "mediaType": "movie"
+      }
     ],
     "horror": [
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1402, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" },
-      { "tmdbId": 76479, "mediaType": "tv" },
-      { "tmdbId": 2316, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" },
-      { "tmdbId": 1391, "mediaType": "tv" }
+      {
+        "title": "The Shining",
+        "tmdbId": 694,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Tumbbad",
+        "tmdbId": 538858,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Exorcist",
+        "tmdbId": 9552,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Train to Busan",
+        "tmdbId": 396535,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Hereditary",
+        "tmdbId": 493922,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Thing",
+        "tmdbId": 1091,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Chandramukhi",
+        "tmdbId": 53122,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Get Out",
+        "tmdbId": 419430,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Conjuring",
+        "tmdbId": 138843,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Arundhati",
+        "tmdbId": 31629,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Us",
+        "tmdbId": 458723,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Alien",
+        "tmdbId": 348,
+        "mediaType": "movie"
+      },
+      {
+        "title": "A Quiet Place",
+        "tmdbId": 447332,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Sixth Sense",
+        "tmdbId": 745,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Bramayugam",
+        "tmdbId": 1166133,
+        "mediaType": "movie"
+      },
+      {
+        "title": "It",
+        "tmdbId": 346364,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Don't Breathe",
+        "tmdbId": 300669,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Wailing",
+        "tmdbId": 293670,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Insidious",
+        "tmdbId": 49018,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Stree",
+        "tmdbId": 533991,
+        "mediaType": "movie"
+      }
+    ],
+    "romance": [
+      {
+        "title": "Yeh Jawaani Hai Deewani",
+        "tmdbId": 185008,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Alaipayuthey",
+        "tmdbId": 49035,
+        "mediaType": "movie"
+      },
+      {
+        "title": "About Time",
+        "tmdbId": 122906,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Arjun Reddy",
+        "tmdbId": 473234,
+        "mediaType": "movie"
+      },
+      {
+        "title": "La La Land",
+        "tmdbId": 313369,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Veer-Zaara",
+        "tmdbId": 4251,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Eternal Sunshine of the Spotless Mind",
+        "tmdbId": 38,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jab We Met",
+        "tmdbId": 11807,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Titanic",
+        "tmdbId": 597,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Geethanjali",
+        "tmdbId": 148808,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Before Sunrise",
+        "tmdbId": 76,
+        "mediaType": "movie"
+      },
+      {
+        "title": "96",
+        "tmdbId": 441717,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Charlie",
+        "tmdbId": 372297,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Dilwale Dulhania Le Jayenge",
+        "tmdbId": 19404,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Notebook",
+        "tmdbId": 11036,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Rockstar",
+        "tmdbId": 79464,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Sita Ramam",
+        "tmdbId": 894803,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jodhaa Akbar",
+        "tmdbId": 14073,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Premam",
+        "tmdbId": 341895,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Hum Aapke Hain Koun..!",
+        "tmdbId": 46387,
+        "mediaType": "movie"
+      }
+    ],
+    "hindi-cinema": [
+      {
+        "title": "Rab Ne Bana Di Jodi",
+        "tmdbId": 14072,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Animal",
+        "tmdbId": 781732,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Dhurandhar",
+        "tmdbId": 1291608,
+        "mediaType": "movie"
+      },
+      {
+        "title": "PK",
+        "tmdbId": 297222,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Padmaavat",
+        "tmdbId": 432527,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Tamasha",
+        "tmdbId": 339274,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Lunchbox",
+        "tmdbId": 191714,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Andhadhun",
+        "tmdbId": 534780,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Haider",
+        "tmdbId": 280795,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Gangubai Kathiawadi",
+        "tmdbId": 664332,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Dil Dhadakne Do",
+        "tmdbId": 338065,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Delhi Belly",
+        "tmdbId": 67109,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Chak De! India",
+        "tmdbId": 14163,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Satya",
+        "tmdbId": 21502,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Dil Chahta Hai",
+        "tmdbId": 14752,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Guide",
+        "tmdbId": 80484,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Hum Aapke Hain Koun..!",
+        "tmdbId": 46387,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Kuch Kuch Hota Hai",
+        "tmdbId": 11854,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Laal Kaptaan",
+        "tmdbId": 621003,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Baton Baton Mein",
+        "tmdbId": 44059,
+        "mediaType": "movie"
+      }
+    ],
+    "telugu-cinema": [
+      {
+        "title": "Khaleja",
+        "tmdbId": 56986,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Nuvvu Naaku Nachav",
+        "tmdbId": 82255,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Baahubali: The Beginning",
+        "tmdbId": 256040,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Court: State vs. A Nobody",
+        "tmdbId": 1424217,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Ninnu Kori",
+        "tmdbId": 465099,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Rangasthalam",
+        "tmdbId": 461126,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Aha Naa Pellanta!",
+        "tmdbId": 37612,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Mahanati",
+        "tmdbId": 459713,
+        "mediaType": "movie"
+      },
+      {
+        "title": "DJ Tillu",
+        "tmdbId": 937036,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jagadeka Veerudu Athiloka Sundari",
+        "tmdbId": 77031,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Brochevarevarura",
+        "tmdbId": 611754,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Leader",
+        "tmdbId": 55283,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Fidaa",
+        "tmdbId": 467649,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Aditya 369",
+        "tmdbId": 280363,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Seethamma Vakitlo Sirimalle Chettu",
+        "tmdbId": 193197,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Athadu",
+        "tmdbId": 37172,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Aaradhana",
+        "tmdbId": 279292,
+        "mediaType": "movie"
+      },
+
+      {
+        "title": "Gundamma Katha",
+        "tmdbId": 86146,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Ee Nagaraniki Emaindi",
+        "tmdbId": 532789,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Manmadhudu",
+        "tmdbId": 81083,
+        "mediaType": "movie"
+      }
+    ],
+    "tamil-malayalam-cinema": [
+      {
+        "title": "Anbe Sivam",
+        "tmdbId": 26910,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Aavesham",
+        "tmdbId": 1084812,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jigarthanda DoubleX",
+        "tmdbId": 1007074,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Kumbalangi Nights",
+        "tmdbId": 575351,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Ghajini",
+        "tmdbId": 69636,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Premalu",
+        "tmdbId": 1149791,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Master",
+        "tmdbId": 626392,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Drishyam 2",
+        "tmdbId": 706872,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jailer",
+        "tmdbId": 937020,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Ayyappanum Koshiyum",
+        "tmdbId": 657996,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Vada Chennai",
+        "tmdbId": 410331,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Romancham",
+        "tmdbId": 976121,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Kishkindha Kaandam",
+        "tmdbId": 1025125,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Love Today",
+        "tmdbId": 1032627,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Asuran",
+        "tmdbId": 576928,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Lucifer",
+        "tmdbId": 564701,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Ponniyin Selvan: Part I",
+        "tmdbId": 660046,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Anniyan",
+        "tmdbId": 19978,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Nayakan",
+        "tmdbId": 29971,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Manichitrathazhu",
+        "tmdbId": 84368,
+        "mediaType": "movie"
+      }
+    ],
+
+    "korean-cinema": [
+      {
+        "title": "Parasite",
+        "tmdbId": 496243,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Train to Busan",
+        "tmdbId": 396535,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Oldboy",
+        "tmdbId": 670,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Handmaiden",
+        "tmdbId": 290098,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Memories of Murder",
+        "tmdbId": 11423,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Decision to Leave",
+        "tmdbId": 705996,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Wailing",
+        "tmdbId": 293670,
+        "mediaType": "movie"
+      },
+      {
+        "title": "I Saw the Devil",
+        "tmdbId": 49797,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Extreme Job",
+        "tmdbId": 567646,
+        "mediaType": "movie"
+      },
+      {
+        "title": "A Taxi Driver",
+        "tmdbId": 437068,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Burning",
+        "tmdbId": 491584,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Man from Nowhere",
+        "tmdbId": 51608,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Miracle in Cell No. 7",
+        "tmdbId": 158445,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Veteran",
+        "tmdbId": 346646,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Chaser",
+        "tmdbId": 13855,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Secret Sunshine",
+        "tmdbId": 2015,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Joint Security Area",
+        "tmdbId": 2440,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Host",
+        "tmdbId": 1255,
+        "mediaType": "movie"
+      },
+      {
+        "title": "My Sassy Girl",
+        "tmdbId": 11178,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Silenced",
+        "tmdbId": 81481,
+        "mediaType": "movie"
+      }
+    ],
+
+    "documentary": [
+      {
+        "title": "Free Solo",
+        "tmdbId": 515042,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Biggest Little Farm",
+        "tmdbId": 543084,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Navalny",
+        "tmdbId": 926676,
+        "mediaType": "movie"
+      },
+      {
+        "title": "My Octopus Teacher",
+        "tmdbId": 682110,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Blackfish",
+        "tmdbId": 158999,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Apollo 11",
+        "tmdbId": 549559,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Cove",
+        "tmdbId": 23128,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Searching for Sugar Man",
+        "tmdbId": 84334,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Jiro Dreams of Sushi",
+        "tmdbId": 80767,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Act of Killing",
+        "tmdbId": 123678,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Man on Wire",
+        "tmdbId": 14048,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Won't You Be My Neighbor?",
+        "tmdbId": 490003,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Icarus",
+        "tmdbId": 432976,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Fire of Love",
+        "tmdbId": 913823,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Inside Job",
+        "tmdbId": 44639,
+        "mediaType": "movie"
+      },
+      {
+        "title": "The Social Dilemma",
+        "tmdbId": 656690,
+        "mediaType": "movie"
+      },
+      {
+        "title": "20 Days in Mariupol",
+        "tmdbId": 1058616,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Amy",
+        "tmdbId": 388895,
+        "mediaType": "movie"
+      },
+      {
+        "title": "Senna",
+        "tmdbId": 58496,
+        "mediaType": "movie"
+      },
+      {
+        "title": "March of the Penguins",
+        "tmdbId": 1667,
+        "mediaType": "movie"
+      }
+    ]
+  },
+
+  "tv-shows": {
+    "popular": [
+      {
+        "title": "Breaking Bad",
+        "tmdbId": 1396,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Game of Thrones",
+        "tmdbId": 1399,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Stranger Things",
+        "tmdbId": 66732,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Last of Us",
+        "tmdbId": 100088,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Boys",
+        "tmdbId": 76479,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Wednesday",
+        "tmdbId": 119051,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Squid Game",
+        "tmdbId": 93405,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Dark",
+        "tmdbId": 70523,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Money Heist",
+        "tmdbId": 71446,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Peaky Blinders",
+        "tmdbId": 60574,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Walking Dead",
+        "tmdbId": 1402,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Sherlock",
+        "tmdbId": 19885,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Friends",
+        "tmdbId": 1668,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Office",
+        "tmdbId": 2316,
+        "mediaType": "tv"
+      },
+      {
+        "title": "From",
+        "tmdbId": 124364,
+        "mediaType": "tv"
+      },
+      {
+        "title": "House of the Dragon",
+        "tmdbId": 94997,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Bear",
+        "tmdbId": 136315,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Chernobyl",
+        "tmdbId": 87108,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Severance",
+        "tmdbId": 95396,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Better Call Saul",
+        "tmdbId": 60059,
+        "mediaType": "tv"
+      }
+    ],
+    "critically-acclaimed": [
+      {
+        "title": "The Sopranos",
+        "tmdbId": 1398,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Wire",
+        "tmdbId": 1438,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Band of Brothers",
+        "tmdbId": 4613,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Succession",
+        "tmdbId": 76331,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Mad Men",
+        "tmdbId": 1104,
+        "mediaType": "tv"
+      },
+      {
+        "title": "True Detective",
+        "tmdbId": 46648,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Fargo",
+        "tmdbId": 60622,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Twin Peaks",
+        "tmdbId": 1920,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Six Feet Under",
+        "tmdbId": 1274,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Deadwood",
+        "tmdbId": 1406,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Leftovers",
+        "tmdbId": 54344,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Americans",
+        "tmdbId": 46533,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Mr. Robot",
+        "tmdbId": 62560,
+        "mediaType": "tv"
+      },
+      {
+        "title": "BoJack Horseman",
+        "tmdbId": 61222,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Fleabag",
+        "tmdbId": 67070,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The West Wing",
+        "tmdbId": 688,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Mare of Easttown",
+        "tmdbId": 115004,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Queen's Gambit",
+        "tmdbId": 87739,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Atlanta",
+        "tmdbId": 65495,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Arcane",
+        "tmdbId": 94605,
+        "mediaType": "tv"
+      }
+    ],
+    "drama": [
+      { "title": "This Is Us", "tmdbId": 67136, "mediaType": "tv" },
+      { "title": "The Crown", "tmdbId": 65494, "mediaType": "tv" },
+      { "title": "Friday Night Lights", "tmdbId": 4278, "mediaType": "tv" },
+      { "title": "Normal People", "tmdbId": 89905, "mediaType": "tv" },
+      { "title": "Downton Abbey", "tmdbId": 33907, "mediaType": "tv" },
+      { "title": "Rectify", "tmdbId": 46619, "mediaType": "tv" },
+      { "title": "The Newsroom", "tmdbId": 15621, "mediaType": "tv" },
+      { "title": "The Morning Show", "tmdbId": 90282, "mediaType": "tv" },
+      { "title": "The Good Wife", "tmdbId": 1435, "mediaType": "tv" },
+      { "title": "Parenthood", "tmdbId": 21762, "mediaType": "tv" },
+      { "title": "Friday Night Dinner", "tmdbId": 34435, "mediaType": "tv" },
+      { "title": "Shōgun", "tmdbId": 126308, "mediaType": "tv" },
+      { "title": "Maid", "tmdbId": 111141, "mediaType": "tv" },
+      { "title": "The Pitt", "tmdbId": 250307, "mediaType": "tv" },
+      { "title": "Dopesick", "tmdbId": 110695, "mediaType": "tv" },
+      { "title": "Pachinko", "tmdbId": 110382, "mediaType": "tv" },
+      { "title": "1883", "tmdbId": 118357, "mediaType": "tv" },
+      { "title": "The Affair", "tmdbId": 61463, "mediaType": "tv" },
+      { "title": "Lessons in Chemistry", "tmdbId": 117303, "mediaType": "tv" },
+      { "title": "Station Eleven", "tmdbId": 90972, "mediaType": "tv" }
+    ],
+    "crime-thriller": [
+      { "title": "Mindhunter", "tmdbId": 67744, "mediaType": "tv" },
+      { "title": "Narcos", "tmdbId": 63351, "mediaType": "tv" },
+      { "title": "Ozark", "tmdbId": 69740, "mediaType": "tv" },
+      { "title": "Dexter", "tmdbId": 1405, "mediaType": "tv" },
+      { "title": "Hannibal", "tmdbId": 40008, "mediaType": "tv" },
+      { "title": "Broadchurch", "tmdbId": 1427, "mediaType": "tv" },
+      { "title": "The Night Of", "tmdbId": 66276, "mediaType": "tv" },
+      { "title": "Bodyguard", "tmdbId": 80307, "mediaType": "tv" },
+      { "title": "Bosch", "tmdbId": 60585, "mediaType": "tv" },
+      { "title": "Luther", "tmdbId": 1426, "mediaType": "tv" },
+      { "title": "The Killing", "tmdbId": 34415, "mediaType": "tv" },
+      { "title": "Line of Duty", "tmdbId": 43982, "mediaType": "tv" },
+      { "title": "Banshee", "tmdbId": 41727, "mediaType": "tv" },
+      { "title": "Gomorrah", "tmdbId": 61068, "mediaType": "tv" },
+      { "title": "Giri/Haji", "tmdbId": 94659, "mediaType": "tv" },
+      { "title": "Your Honor", "tmdbId": 86430, "mediaType": "tv" },
+      { "title": "Slow Horses", "tmdbId": 95480, "mediaType": "tv" },
+      { "title": "The Fall", "tmdbId": 49010, "mediaType": "tv" },
+      { "title": "Black Bird", "tmdbId": 155537, "mediaType": "tv" },
+      { "title": "Mayor of Kingstown", "tmdbId": 97951, "mediaType": "tv" }
+    ],
+    "action-adventure": [
+      {
+        "title": "Prison Break",
+        "tmdbId": 2288,
+        "mediaType": "tv"
+      },
+      {
+        "title": "24",
+        "tmdbId": 1973,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Daredevil",
+        "tmdbId": 61889,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Reacher",
+        "tmdbId": 108978,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Tom Clancy's Jack Ryan",
+        "tmdbId": 73375,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Warrior",
+        "tmdbId": 73544,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Spartacus",
+        "tmdbId": 46296,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Vikings",
+        "tmdbId": 44217,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Strike Back",
+        "tmdbId": 32573,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Punisher",
+        "tmdbId": 67178,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Into the Badlands",
+        "tmdbId": 47450,
+        "mediaType": "tv"
+      },
+      {
+        "title": "See",
+        "tmdbId": 80752,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Mandalorian",
+        "tmdbId": 82856,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Andor",
+        "tmdbId": 83867,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Arrow",
+        "tmdbId": 1412,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Terminal List",
+        "tmdbId": 120911,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Fauda",
+        "tmdbId": 69557,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Halo",
+        "tmdbId": 52814,
+        "mediaType": "tv"
+      },
+      {
+        "title": "SAS: Rogue Heroes",
+        "tmdbId": 93870,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Last Kingdom",
+        "tmdbId": 63333,
+        "mediaType": "tv"
+      }
+    ],
+    "comedy-sitcom": [
+      {
+        "title": "The Big Bang Theory",
+        "tmdbId": 1418,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Brooklyn Nine-Nine",
+        "tmdbId": 48891,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Modern Family",
+        "tmdbId": 1421,
+        "mediaType": "tv"
+      },
+      {
+        "title": "How I Met Your Mother",
+        "tmdbId": 1100,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Parks and Recreation",
+        "tmdbId": 8592,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Community",
+        "tmdbId": 18347,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Ted Lasso",
+        "tmdbId": 97546,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Schitt's Creek",
+        "tmdbId": 61662,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Arrested Development",
+        "tmdbId": 4589,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The IT Crowd",
+        "tmdbId": 2490,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Silicon Valley",
+        "tmdbId": 60573,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Good Place",
+        "tmdbId": 66573,
+        "mediaType": "tv"
+      },
+      {
+        "title": "What We Do in the Shadows",
+        "tmdbId": 83631,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Scrubs",
+        "tmdbId": 4556,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Derry Girls",
+        "tmdbId": 76148,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Sex Education",
+        "tmdbId": 81356,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Only Murders in the Building",
+        "tmdbId": 107113,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Curb Your Enthusiasm",
+        "tmdbId": 4546,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Everybody Loves Raymond",
+        "tmdbId": 2140,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Malcolm in the Middle",
+        "tmdbId": 2004,
+        "mediaType": "tv"
+      }
+    ],
+    "sci-fi-fantasy": [
+      {
+        "title": "Severance",
+        "tmdbId": 95396,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Black Mirror",
+        "tmdbId": 42009,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Lost",
+        "tmdbId": 4607,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Westworld",
+        "tmdbId": 63247,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Expanse",
+        "tmdbId": 63639,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Silo",
+        "tmdbId": 125988,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Foundation",
+        "tmdbId": 93740,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Fringe",
+        "tmdbId": 1705,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Person of Interest",
+        "tmdbId": 1411,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Doctor Who",
+        "tmdbId": 57243,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The OA",
+        "tmdbId": 69061,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Sense8",
+        "tmdbId": 61664,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Fallout",
+        "tmdbId": 106379,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Raised by Wolves",
+        "tmdbId": 85723,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Lost in Space",
+        "tmdbId": 75758,
+        "mediaType": "tv"
+      },
+      {
+        "title": "12 Monkeys",
+        "tmdbId": 60948,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Travelers",
+        "tmdbId": 67683,
+        "mediaType": "tv"
+      },
+      {
+        "title": "For All Mankind",
+        "tmdbId": 87917,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Umbrella Academy",
+        "tmdbId": 75006,
+        "mediaType": "tv"
+      },
+      {
+        "title": "His Dark Materials",
+        "tmdbId": 68507,
+        "mediaType": "tv"
+      }
+    ],
+    "horror": [
+      {
+        "title": "The Haunting of Hill House",
+        "tmdbId": 72844,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Haunting of Bly Manor",
+        "tmdbId": 109958,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Midnight Mass",
+        "tmdbId": 97400,
+        "mediaType": "tv"
+      },
+      {
+        "title": "IT: Welcome to Derry",
+        "tmdbId": 200875,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Fall of the House of Usher",
+        "tmdbId": 157065,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Marianne",
+        "tmdbId": 92916,
+        "mediaType": "tv"
+      },
+      {
+        "title": "From",
+        "tmdbId": 124364,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Kingdom",
+        "tmdbId": 70593,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Penny Dreadful",
+        "tmdbId": 54671,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Castle Rock",
+        "tmdbId": 71116,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Channel Zero",
+        "tmdbId": 67752,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Archive 81",
+        "tmdbId": 112314,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Brand New Cherry Flavor",
+        "tmdbId": 129418,
+        "mediaType": "tv"
+      },
+      {
+        "title": "All of Us Are Dead",
+        "tmdbId": 99966,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Ash vs Evil Dead",
+        "tmdbId": 62264,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Servant",
+        "tmdbId": 88055,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Strain",
+        "tmdbId": 47640,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Chapelwaite",
+        "tmdbId": 126118,
+        "mediaType": "tv"
+      },
+
+      {
+        "title": "American Horror Story",
+        "tmdbId": 1413,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Evil",
+        "tmdbId": 86848,
+        "mediaType": "tv"
+      }
     ],
     "mystery-suspense": [
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1402, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" },
-      { "tmdbId": 76479, "mediaType": "tv" },
-      { "tmdbId": 2316, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" },
-      { "tmdbId": 1391, "mediaType": "tv" }
+      {
+        "title": "1899",
+        "tmdbId": 90669,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Sinner",
+        "tmdbId": 39852,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Sharp Objects",
+        "tmdbId": 70453,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Yellowjackets",
+        "tmdbId": 117488,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Manifest",
+        "tmdbId": 79696,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Undoing",
+        "tmdbId": 83851,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Missing",
+        "tmdbId": 61555,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Dark Winds",
+        "tmdbId": 128904,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Resort",
+        "tmdbId": 194728,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Only Murders in the Building",
+        "tmdbId": 107113,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Outsider",
+        "tmdbId": 84661,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Behind Her Eyes",
+        "tmdbId": 97173,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Devil's Hour",
+        "tmdbId": 157061,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Bodies",
+        "tmdbId": 233629,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Patient",
+        "tmdbId": 135868,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Under the Banner of Heaven",
+        "tmdbId": 128095,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Capture",
+        "tmdbId": 93166,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Mare of Easttown",
+        "tmdbId": 115004,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Poker Face",
+        "tmdbId": 120998,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Presumed Innocent",
+        "tmdbId": 156933,
+        "mediaType": "tv"
+      }
     ],
     "anime": [
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 37854, "mediaType": "tv" },
-      { "tmdbId": 31911, "mediaType": "tv" },
-      { "tmdbId": 46261, "mediaType": "tv" },
-      { "tmdbId": 65701, "mediaType": "tv" },
-      { "tmdbId": 63926, "mediaType": "tv" },
-      { "tmdbId": 61663, "mediaType": "tv" },
-      { "tmdbId": 110316, "mediaType": "tv" },
-      { "tmdbId": 95479, "mediaType": "tv" },
-      { "tmdbId": 2098, "mediaType": "tv" },
-      { "tmdbId": 31964, "mediaType": "tv" },
-      { "tmdbId": 13916, "mediaType": "tv" },
-      { "tmdbId": 46298, "mediaType": "tv" },
-      { "tmdbId": 1429, "mediaType": "tv" },
-      { "tmdbId": 1433, "mediaType": "tv" },
-      { "tmdbId": 46518, "mediaType": "tv" },
-      { "tmdbId": 85931, "mediaType": "tv" },
-      { "tmdbId": 1425, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 126485, "mediaType": "tv" }
+      {
+        "title": "Attack on Titan",
+        "tmdbId": 1429,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Fullmetal Alchemist: Brotherhood",
+        "tmdbId": 31911,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Death Note",
+        "tmdbId": 13916,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Monster",
+        "tmdbId": 30981,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Steins;Gate",
+        "tmdbId": 42509,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Vinland Saga",
+        "tmdbId": 88803,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Hunter × Hunter",
+        "tmdbId": 46298,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Code Geass",
+        "tmdbId": 31724,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Demon Slayer: Kimetsu no Yaiba",
+        "tmdbId": 85937,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Jujutsu Kaisen",
+        "tmdbId": 95479,
+        "mediaType": "tv"
+      },
+      {
+        "title": "One Piece",
+        "tmdbId": 37854,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Naruto",
+        "tmdbId": 46260,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Bleach",
+        "tmdbId": 30984,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Cowboy Bebop",
+        "tmdbId": 30991,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Neon Genesis Evangelion",
+        "tmdbId": 890,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Haikyuu!!",
+        "tmdbId": 60863,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Your Lie in April",
+        "tmdbId": 61663,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Mob Psycho 100",
+        "tmdbId": 67075,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Made in Abyss",
+        "tmdbId": 72636,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Frieren: Beyond Journey's End",
+        "tmdbId": 209867,
+        "mediaType": "tv"
+      }
     ],
     "indian-originals": [
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 94954, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" },
-      { "tmdbId": 1391, "mediaType": "tv" },
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1402, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" }
+      {
+        "title": "Scam 1992",
+        "tmdbId": 111188,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Sacred Games",
+        "tmdbId": 79352,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Mirzapur",
+        "tmdbId": 84105,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Family Man",
+        "tmdbId": 93352,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Paatal Lok",
+        "tmdbId": 103051,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Panchayat",
+        "tmdbId": 101352,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Farzi",
+        "tmdbId": 132117,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Aspirants",
+        "tmdbId": 124411,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Kota Factory",
+        "tmdbId": 89113,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Rocket Boys",
+        "tmdbId": 138211,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Delhi Crime",
+        "tmdbId": 87508,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Special OPS",
+        "tmdbId": 100612,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Asur",
+        "tmdbId": 100911,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Rana Naidu",
+        "tmdbId": 203202,
+        "mediaType": "tv"
+      },
+      {
+        "title": "#90’s - A Middle Class Biopic",
+        "tmdbId": 242983,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Suzhal: The Vortex",
+        "tmdbId": 200861,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Gullak",
+        "tmdbId": 90966,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Made in Heaven",
+        "tmdbId": 87407,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Railway Men",
+        "tmdbId": 213895,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Criminal Justice",
+        "tmdbId": 88177,
+        "mediaType": "tv"
+      }
     ],
     "documentary": [
-      { "tmdbId": 1396, "mediaType": "tv" },
-      { "tmdbId": 1399, "mediaType": "tv" },
-      { "tmdbId": 1100, "mediaType": "tv" },
-      { "tmdbId": 60625, "mediaType": "tv" },
-      { "tmdbId": 66732, "mediaType": "tv" },
-      { "tmdbId": 1434, "mediaType": "tv" },
-      { "tmdbId": 456, "mediaType": "tv" },
-      { "tmdbId": 4604, "mediaType": "tv" },
-      { "tmdbId": 1402, "mediaType": "tv" },
-      { "tmdbId": 1412, "mediaType": "tv" },
-      { "tmdbId": 94605, "mediaType": "tv" },
-      { "tmdbId": 100088, "mediaType": "tv" },
-      { "tmdbId": 82856, "mediaType": "tv" },
-      { "tmdbId": 60574, "mediaType": "tv" },
-      { "tmdbId": 71446, "mediaType": "tv" },
-      { "tmdbId": 76479, "mediaType": "tv" },
-      { "tmdbId": 2316, "mediaType": "tv" },
-      { "tmdbId": 125910, "mediaType": "tv" },
-      { "tmdbId": 124364, "mediaType": "tv" },
-      { "tmdbId": 1391, "mediaType": "tv" }
+      {
+        "title": "Planet Earth",
+        "tmdbId": 1044,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Last Dance",
+        "tmdbId": 79525,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Formula 1: Drive to Survive",
+        "tmdbId": 87083,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Chef's Table",
+        "tmdbId": 62391,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Cosmos: A Spacetime Odyssey",
+        "tmdbId": 58474,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Wild Wild Country",
+        "tmdbId": 77601,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Vietnam War",
+        "tmdbId": 46434,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Making a Murderer",
+        "tmdbId": 64439,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Jinx",
+        "tmdbId": 61929,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Tiger King",
+        "tmdbId": 100698,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Don't F**k with Cats",
+        "tmdbId": 96129,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Welcome to Wrexham",
+        "tmdbId": 126929,
+        "mediaType": "tv"
+      },
+      {
+        "title": "100 Foot Wave",
+        "tmdbId": 121481,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Beatles: Get Back",
+        "tmdbId": 128876,
+        "mediaType": "tv"
+      },
+      {
+        "title": "How To with John Wilson",
+        "tmdbId": 110971,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The World at War",
+        "tmdbId": 751,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Blue Planet II",
+        "tmdbId": 74313,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Our Planet",
+        "tmdbId": 83880,
+        "mediaType": "tv"
+      },
+      {
+        "title": "The Toys That Made Us",
+        "tmdbId": 75871,
+        "mediaType": "tv"
+      },
+      {
+        "title": "Clarkson's Farm",
+        "tmdbId": 117648,
+        "mediaType": "tv"
+      }
     ]
   }
 }

@@ -1,28 +1,129 @@
 {
   "home": [
-    { "tmdbId": 911430, "mediaType": "movie" },
-    { "tmdbId": 1399, "mediaType": "tv" },
-    { "tmdbId": 155, "mediaType": "movie" },
-    { "tmdbId": 66732, "mediaType": "tv" },
-    { "tmdbId": 285, "mediaType": "movie" },
-    { "tmdbId": 76479, "mediaType": "tv" },
-    { "tmdbId": 157336, "mediaType": "movie" },
-    { "tmdbId": 87108, "mediaType": "tv" },
-    { "tmdbId": 106646, "mediaType": "movie" },
-    { "tmdbId": 1668, "mediaType": "tv" }
+    {
+      "title": "Swades",
+      "tmdbId": 15774,
+      "mediaType": "movie"
+    },
+    {
+      "title": "F1",
+      "tmdbId": 911430,
+      "mediaType": "movie"
+    },
+    {
+      "title": "Our Planet",
+      "tmdbId": 83880,
+      "mediaType": "tv"
+    },
+    {
+      "title": "Chernobyl",
+      "tmdbId": 87108,
+      "mediaType": "tv"
+    },
+    {
+      "title": "Dune: Part Two",
+      "tmdbId": 693134,
+      "mediaType": "movie"
+    },
+
+    {
+      "title": "Wake Up Dead Man: A Knives Out Mystery",
+      "tmdbId": 812583,
+      "mediaType": "movie"
+    },
+    {
+      "title": "Severance",
+      "tmdbId": 95396,
+      "mediaType": "tv"
+    },
+    {
+      "title": "Dilwale Dulhania Le Jayenge",
+      "tmdbId": 19404,
+      "mediaType": "movie"
+    }
   ],
   "movies": [
-    { "tmdbId": 27205, "mediaType": "movie" },
-    { "tmdbId": 872585, "mediaType": "movie" },
-    { "tmdbId": 76600, "mediaType": "movie" },
-    { "tmdbId": 603, "mediaType": "movie" },
-    { "tmdbId": 155, "mediaType": "movie" }
+    {
+      "title": "Dhurandhar",
+      "tmdbId": 1291608,
+      "mediaType": "movie"
+    },
+    {
+      "title": "Oppenheimer",
+      "tmdbId": 872585,
+      "mediaType": "movie"
+    },
+    {
+      "title": "Manjummel Boys",
+      "tmdbId": 1069945,
+      "mediaType": "movie"
+    },
+    {
+      "title": "Interstellar",
+      "tmdbId": 157336,
+      "mediaType": "movie"
+    },
+    {
+      "title": "Pushpa: The Rise",
+      "tmdbId": 690957,
+      "mediaType": "movie"
+    },
+    {
+      "title": "Top Gun: Maverick",
+      "tmdbId": 361743,
+      "mediaType": "movie"
+    },
+    {
+      "title": "3 Idiots",
+      "tmdbId": 20453,
+      "mediaType": "movie"
+    },
+    {
+      "title": "Vikram",
+      "tmdbId": 743563,
+      "mediaType": "movie"
+    }
   ],
   "tv-shows": [
-    { "tmdbId": 125988, "mediaType": "tv" },
-    { "tmdbId": 60625, "mediaType": "tv" },
-    { "tmdbId": 71446, "mediaType": "tv" },
-    { "tmdbId": 94605, "mediaType": "tv" },
-    { "tmdbId": 1100, "mediaType": "tv" }
+    {
+      "title": "Cosmos",
+      "tmdbId": 58474,
+      "mediaType": "tv"
+    },
+    {
+      "title": "Dark",
+      "tmdbId": 70523,
+      "mediaType": "tv"
+    },
+    {
+      "title": "From",
+      "tmdbId": 124364,
+      "mediaType": "tv"
+    },
+    {
+      "title": "Mr. Robot",
+      "tmdbId": 62560,
+      "mediaType": "tv"
+    },
+    {
+      "title": "A Knight of the Seven Kingdoms",
+      "tmdbId": 224372,
+      "mediaType": "tv"
+    },
+    {
+      "title": "Silo",
+      "tmdbId": 125988,
+      "mediaType": "tv"
+    },
+    {
+      "title": "Death Note",
+      "tmdbId": 13916,
+      "mediaType": "tv"
+    },
+    {
+      "title": "Succession",
+      "tmdbId": 76331,
+      "mediaType": "tv"
+    }
   ]
 }
