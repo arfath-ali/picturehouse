@@ -25,7 +25,7 @@ export function initFeaturedScroll() {
 
   if (!featuredSlider || featuredSlider.children.length === 0) return;
 
-  initInfiniteScroll(page, featuredSliderContainer, signal);
+  initInfiniteScroll(page, featuredSlider, signal);
 
   const { startAutoplay, stopAutoplay } = initAutoplay(featuredSlider, signal);
 
@@ -42,55 +42,55 @@ export function initFeaturedScroll() {
 
 function initInfiniteScroll(
   page: string,
-  featuredSliderContainer: HTMLElement,
+  featuredSlider: HTMLElement,
   signal: AbortSignal,
 ) {
-  const slides = Array.from(featuredSliderContainer.children);
+  const slides = Array.from(featuredSlider.children);
 
   const firstClone = slides[0].cloneNode(true) as HTMLElement;
   const lastClone = slides[slides.length - 1].cloneNode(true) as HTMLElement;
 
-  featuredSliderContainer.appendChild(firstClone);
-  featuredSliderContainer.prepend(lastClone);
+  featuredSlider.appendChild(firstClone);
+  featuredSlider.prepend(lastClone);
 
-  featuredSliderContainer.classList.add("no-smooth");
+  featuredSlider.classList.add("no-smooth");
 
   const savedFeaturedScroll = sessionStorage.getItem(`scroll-featured-${page}`);
 
   if (savedFeaturedScroll) {
-    featuredSliderContainer.scrollLeft = parseInt(savedFeaturedScroll, 10);
+    featuredSlider.scrollLeft = parseInt(savedFeaturedScroll, 10);
   } else {
-    featuredSliderContainer.scrollLeft = featuredSliderContainer.clientWidth;
+    featuredSlider.scrollLeft = featuredSlider.clientWidth;
   }
 
-  void featuredSliderContainer.offsetWidth;
+  void featuredSlider.offsetWidth;
 
-  featuredSliderContainer.classList.remove("no-smooth");
+  featuredSlider.classList.remove("no-smooth");
 
-  featuredSliderContainer.addEventListener(
+  featuredSlider.addEventListener(
     "scroll",
     () => {
-      const slideWidth = featuredSliderContainer.clientWidth;
-      const scrollPosition = featuredSliderContainer.scrollLeft;
-      const totalWidth = featuredSliderContainer.scrollWidth;
+      const slideWidth = featuredSlider.clientWidth;
+      const scrollPosition = featuredSlider.scrollLeft;
+      const totalWidth = featuredSlider.scrollWidth;
 
       sessionStorage.setItem(
         `scroll-featured-${page}`,
-        featuredSliderContainer.scrollLeft.toString(),
+        featuredSlider.scrollLeft.toString(),
       );
 
       if (scrollPosition >= totalWidth - slideWidth) {
-        featuredSliderContainer.classList.add("no-smooth");
-        featuredSliderContainer.scrollLeft = slideWidth;
-        void featuredSliderContainer.offsetWidth;
-        featuredSliderContainer.classList.remove("no-smooth");
+        featuredSlider.classList.add("no-smooth");
+        featuredSlider.scrollLeft = slideWidth;
+        void featuredSlider.offsetWidth;
+        featuredSlider.classList.remove("no-smooth");
       }
 
       if (scrollPosition <= 0) {
-        featuredSliderContainer.classList.add("no-smooth");
-        featuredSliderContainer.scrollLeft = totalWidth - 2 * slideWidth;
-        void featuredSliderContainer.offsetWidth;
-        featuredSliderContainer.classList.remove("no-smooth");
+        featuredSlider.classList.add("no-smooth");
+        featuredSlider.scrollLeft = totalWidth - 2 * slideWidth;
+        void featuredSlider.offsetWidth;
+        featuredSlider.classList.remove("no-smooth");
       }
     },
     { signal },

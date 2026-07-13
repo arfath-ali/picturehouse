@@ -597,27 +597,29 @@ export async function renderDetails(
             }
           };
 
-          const swapToPlaceholder = () => {
-            const icon = createIcon("icon-actor-profile", [
+          let photoNode: HTMLImageElement | SVGSVGElement;
+
+          if (actor.profileImg) {
+            const actorPhoto = document.createElement("img");
+            actorPhoto.classList.add("media-details__cast-photo");
+            actorPhoto.src = actor.profileImg;
+            actorPhoto.alt = actor.name;
+            actorPhoto.loading = "lazy";
+
+            actorPhoto.onerror = () => {
+              const icon = createIcon("icon-actor-profile", [
+                "media-details__cast-photo",
+                "media-details__cast-photo--placeholder",
+              ]);
+              actorPhoto.replaceWith(icon);
+            };
+
+            photoNode = actorPhoto;
+          } else {
+            photoNode = createIcon("icon-actor-profile", [
               "media-details__cast-photo",
               "media-details__cast-photo--placeholder",
             ]);
-
-            actorPhoto.replaceWith(icon);
-          };
-
-          if (actor.profileImg) {
-            actorPhoto.onerror = () => {
-              swapSkeletonWithCard();
-              swapToPlaceholder();
-            };
-
-            actorPhoto.src = actor.profileImg;
-            actorPhoto.alt = actor.name;
-            swapSkeletonWithCard();
-          } else {
-            swapToPlaceholder();
-            swapSkeletonWithCard();
           }
 
           actorPhoto.loading = "lazy";
@@ -633,7 +635,9 @@ export async function renderDetails(
           );
           actorCharacter.textContent = actor.character ?? "";
 
-          actorCard.append(actorPhoto, actorName, actorCharacter);
+          actorCard.append(photoNode, actorName, actorCharacter);
+
+          swapSkeletonWithCard();
         },
       );
 
