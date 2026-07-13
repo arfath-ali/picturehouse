@@ -63,6 +63,7 @@ export function initShelfScroll() {
 
       shelfList.scrollTo({
         left: cards[targetIndex].offsetLeft - cardWidth / 2,
+        behavior: "smooth",
       });
     });
 
@@ -81,6 +82,7 @@ export function initShelfScroll() {
 
       shelfList.scrollTo({
         left: nextCard.offsetLeft - (nextCard.offsetWidth + gap) / 2,
+        behavior: "smooth",
       });
     });
 
