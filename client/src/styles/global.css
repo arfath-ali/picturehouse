@@ -786,7 +786,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     gap: clamp(0.75rem, 0.607rem + 0.714vw, 1.25rem);
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
     @apply py-5 -mt-5
 }
 
