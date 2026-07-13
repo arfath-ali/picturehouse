@@ -25,7 +25,7 @@ export function initFeaturedScroll() {
 
   if (!featuredSlider || featuredSlider.children.length === 0) return;
 
-  initInfiniteScroll(page, featuredSlider, signal);
+  initInfiniteScroll(page, featuredSliderContainer, signal);
 
   const { startAutoplay, stopAutoplay } = initAutoplay(featuredSlider, signal);
 
@@ -42,55 +42,55 @@ export function initFeaturedScroll() {
 
 function initInfiniteScroll(
   page: string,
-  featuredSlider: HTMLElement,
+  featuredSliderContainer: HTMLElement,
   signal: AbortSignal,
 ) {
-  const slides = Array.from(featuredSlider.children);
+  const slides = Array.from(featuredSliderContainer.children);
 
   const firstClone = slides[0].cloneNode(true) as HTMLElement;
   const lastClone = slides[slides.length - 1].cloneNode(true) as HTMLElement;
 
-  featuredSlider.appendChild(firstClone);
-  featuredSlider.prepend(lastClone);
+  featuredSliderContainer.appendChild(firstClone);
+  featuredSliderContainer.prepend(lastClone);
 
-  featuredSlider.classList.add("no-smooth");
+  featuredSliderContainer.classList.add("no-smooth");
 
   const savedFeaturedScroll = sessionStorage.getItem(`scroll-featured-${page}`);
 
   if (savedFeaturedScroll) {
-    featuredSlider.scrollLeft = parseInt(savedFeaturedScroll, 10);
+    featuredSliderContainer.scrollLeft = parseInt(savedFeaturedScroll, 10);
   } else {
-    featuredSlider.scrollLeft = featuredSlider.clientWidth;
+    featuredSliderContainer.scrollLeft = featuredSliderContainer.clientWidth;
   }
 
-  void featuredSlider.offsetWidth;
+  void featuredSliderContainer.offsetWidth;
 
-  featuredSlider.classList.remove("no-smooth");
+  featuredSliderContainer.classList.remove("no-smooth");
 
-  featuredSlider.addEventListener(
+  featuredSliderContainer.addEventListener(
     "scroll",
     () => {
-      const slideWidth = featuredSlider.clientWidth;
-      const scrollPosition = featuredSlider.scrollLeft;
-      const totalWidth = featuredSlider.scrollWidth;
+      const slideWidth = featuredSliderContainer.clientWidth;
+      const scrollPosition = featuredSliderContainer.scrollLeft;
+      const totalWidth = featuredSliderContainer.scrollWidth;
 
       sessionStorage.setItem(
         `scroll-featured-${page}`,
-        featuredSlider.scrollLeft.toString(),
+        featuredSliderContainer.scrollLeft.toString(),
       );
 
       if (scrollPosition >= totalWidth - slideWidth) {
-        featuredSlider.classList.add("no-smooth");
-        featuredSlider.scrollLeft = slideWidth;
-        void featuredSlider.offsetWidth;
-        featuredSlider.classList.remove("no-smooth");
+        featuredSliderContainer.classList.add("no-smooth");
+        featuredSliderContainer.scrollLeft = slideWidth;
+        void featuredSliderContainer.offsetWidth;
+        featuredSliderContainer.classList.remove("no-smooth");
       }
 
       if (scrollPosition <= 0) {
-        featuredSlider.classList.add("no-smooth");
-        featuredSlider.scrollLeft = totalWidth - 2 * slideWidth;
-        void featuredSlider.offsetWidth;
-        featuredSlider.classList.remove("no-smooth");
+        featuredSliderContainer.classList.add("no-smooth");
+        featuredSliderContainer.scrollLeft = totalWidth - 2 * slideWidth;
+        void featuredSliderContainer.offsetWidth;
+        featuredSliderContainer.classList.remove("no-smooth");
       }
     },
     { signal },
