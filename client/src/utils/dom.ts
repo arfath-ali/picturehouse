@@ -6,7 +6,7 @@ export function getElement<T extends Element>(selector: string): T {
   return element;
 }
 
-export function getElements<T extends HTMLElement>(selector: string): T[] {
+export function getElements<T extends Element>(selector: string): T[] {
   const elements = document.querySelectorAll<T>(selector);
 
   if (elements.length === 0) throw new Error(`Elements not found: ${selector}`);

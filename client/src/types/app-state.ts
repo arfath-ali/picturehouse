@@ -1,5 +1,8 @@
 export type AppState =
   | ""
+  | "sign-in"
+  | "sign-up"
+  | "forgot-password"
   | "home"
   | "discover"
   | "movies"

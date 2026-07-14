@@ -49,8 +49,8 @@ export function navigate() {
   let route = location.pathname.slice(1) as AppState;
 
   if (route === "") {
-    history.replaceState({}, "", "/home");
-    route = "home";
+    history.replaceState({}, "", "/sign-in");
+    route = "sign-in";
   }
 
   if (route === "discover") {
@@ -71,6 +71,9 @@ export function navigate() {
   }
 
   const validAppStates: AppState[] = [
+    "sign-in",
+    "sign-up",
+    "forgot-password",
     "home",
     "discover",
     "movies",

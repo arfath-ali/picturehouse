@@ -5,7 +5,7 @@ import { updatePageTitle } from "../utils/title.js";
 const body = getElement<HTMLBodyElement>("body");
 
 export function setAppState(state: AppState) {
- /* body.dataset.state = state;*/
+  body.dataset.state = state;
 
   if (state === "details") {
     updatePageTitle("details", null, true);

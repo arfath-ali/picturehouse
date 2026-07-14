@@ -82,7 +82,7 @@
     </header>
 
     <main>
-      <div class="auth">
+      <div class="sign-in:auth hidden">
         <section class="auth-card">
           <header class="auth-header">
             <img
@@ -118,7 +118,7 @@
               </div>
             </div>
 
-            <div class="auth__form-row">
+            <div class="auth-form__checkbox-row">
               <div class="auth-form__field auth-form__field--checkbox">
                 <input
                   id="signin-checkbox"
@@ -135,7 +135,11 @@
                   <span>Remember me</span>
                 </label>
               </div>
-              <a class="auth-link">Forgot Password?</a>
+              <a
+                class="auth-link auth-link--forgot-password text-secondary"
+                href="/forgot-password"
+                >Forgot Password?</a
+              >
             </div>
 
             <button class="btn btn--primary btn--auth auth-form__btn">
@@ -154,9 +158,91 @@
             <span>Continue with Google</span>
           </button>
 
-          <div class="auth-switch">
+          <div class="auth-switch text-secondary">
             <p>Don't have an account?</p>
-            <a class="auth-link">Sign Up</a>
+            <a class="auth-link" href="/sign-up">Sign Up</a>
+          </div>
+        </section>
+      </div>
+
+      <div class="sign-up:auth hidden">
+        <section class="auth-card">
+          <header class="auth-header">
+            <img
+              class="h-auto w-[clamp(11.25rem,7.679rem+9.524vw,16.25rem)]"
+              src="/src/assets/images/brand.png"
+              alt="Picturehouse Logo"
+            />
+            <h2>Create your account</h2>
+            <p class="auth-header__description">
+              Sign up to start discovering movies and TV shows.
+            </p>
+          </header>
+
+          <button class="btn btn--secondary btn--auth auth-google">
+            <svg class="btn__icon" aria-hidden="true">
+              <use href="#icon-google"></use>
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+
+          <div class="auth-divider">
+            <span>OR</span>
+          </div>
+
+          <form class="auth-form">
+            <div class="auth-form__field">
+              <label for="signup-name">Name</label>
+              <input id="signup-name" class="auth-form__input" type="text" />
+            </div>
+
+            <div class="auth-form__field">
+              <label for="signup-email">Email</label>
+              <input id="signup-email" class="auth-form__input" type="email" />
+            </div>
+
+            <div class="auth-form__field">
+              <label for="signup-password">Password</label>
+              <div class="auth-form__password-input-row">
+                <input
+                  id="signup-password"
+                  class="auth-form__input auth-form__input--password"
+                  type="password"
+                />
+                <svg
+                  class="auth-form__password-visibility-icon"
+                  aria-hidden="true"
+                >
+                  <use href="#icon-password-visible-off"></use>
+                </svg>
+              </div>
+            </div>
+
+            <div class="auth-form__field">
+              <label for="signup-confirm-password">Confirm Password</label>
+              <div class="auth-form__password-input-row">
+                <input
+                  id="signup-confirm-password"
+                  class="auth-form__input auth-form__input--password"
+                  type="password"
+                />
+                <svg
+                  class="auth-form__password-visibility-icon"
+                  aria-hidden="true"
+                >
+                  <use href="#icon-password-visible-off"></use>
+                </svg>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--auth auth-form__btn">
+              Create Account
+            </button>
+          </form>
+
+          <div class="auth-switch text-secondary">
+            <p>Already have an account?</p>
+            <a class="auth-link" href="/sign-in">Sign In</a>
           </div>
         </section>
       </div>
