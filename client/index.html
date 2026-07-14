@@ -247,6 +247,42 @@
         </section>
       </div>
 
+      <div class="forgot-password:auth hidden">
+        <section class="auth-card">
+          <header class="auth-header">
+            <img
+              class="h-auto w-[clamp(11.25rem,7.679rem+9.524vw,16.25rem)]"
+              src="/src/assets/images/brand.png"
+              alt="Picturehouse Logo"
+            />
+            <h2>Forgot Password?</h2>
+            <p class="auth-header__description">
+              No worries! Enter your email address and we'll send you a link to
+              reset your password
+            </p>
+          </header>
+          <form class="auth-form">
+            <div class="auth-form__field">
+              <label for="forgot-password-email">Email</label>
+              <input
+                id="forgot-password-email"
+                class="auth-form__input"
+                type="email"
+              />
+            </div>
+
+            <button class="btn btn--primary btn--auth auth-form__btn">
+              Send Reset Link
+            </button>
+          </form>
+
+          <div class="auth-switch text-secondary">
+            <p>Remember your password?</p>
+            <a class="auth-link" href="/sign-in">Sign In</a>
+          </div>
+        </section>
+      </div>
+
       <div class="browse-page home:block movies:block tv-shows:block hidden">
         <section class="featured"></section>
         <div class="media-shelves-container"></div>
