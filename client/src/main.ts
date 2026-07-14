@@ -6,6 +6,7 @@ import { initWindowScrollManager } from "./scroll/window.js";
 import { initWatchlistState } from "./watchlist/state.js";
 import { injectSprite } from "./utils/sprite.js";
 import { setAppState } from "./state/app.js";
+import { togglePasswordVisibilty } from "./utils/toggle-password-visibility.js";
 
 async function bootstrap() {
   try {
@@ -17,6 +18,7 @@ async function bootstrap() {
     navigate();
     initLinkInterceptor();
     initHeaderScroll();
+    togglePasswordVisibilty();
 
     window.addEventListener("popstate", () => {
       navigate();
