@@ -29,14 +29,7 @@ export function serveStaticFile(
     console.error(
       `❌ No MIME type configured for ${staticFileName} (${extension})`,
     );
-
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(
-      JSON.stringify({
-        error: 'Internal Server Error',
-      }),
-    );
+    serveHTMLFile(req, res, __clientdir);
     return;
   }
 

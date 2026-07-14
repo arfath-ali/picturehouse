@@ -4,9 +4,7 @@ import type { AppState } from "../types/app-state.js";
 import { initFeatured } from "../init/media-featured.js";
 import { initShelves } from "../init/media-shelf.js";
 import { initSearchInput } from "../init/search-input.js";
-import { initWatchlistSearch } from "../watchlist/search.js";
 import { initWatchlistSort } from "../watchlist/sort.js";
-import { initWatchlistUI } from "../watchlist/ui.js";
 import { getElement } from "../utils/dom.js";
 import { initWatchlist } from "../watchlist/init.js";
 
@@ -47,6 +45,11 @@ function restoreVerticalScroll(category: string) {
 }
 export function navigate() {
   let route = location.pathname.slice(1) as AppState;
+
+  if (location.search) {
+    setAppState("not-found");
+    return;
+  }
 
   if (route === "") {
     history.replaceState({}, "", "/sign-in");
