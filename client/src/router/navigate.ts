@@ -73,8 +73,11 @@ export function navigate() {
   const validAppStates: AppState[] = [
     "sign-in",
     "sign-up",
+    "verify-email",
     "forgot-password",
     "reset-password-email-sent",
+    "reset-password",
+    "reset-password-success",
     "home",
     "discover",
     "movies",

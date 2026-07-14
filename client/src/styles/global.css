@@ -163,8 +163,11 @@
 
 @custom-variant sign-in ([data-state='sign-in'] &);
 @custom-variant sign-up ([data-state='sign-up'] &);
+@custom-variant verify-email ([data-state='verify-email'] &);
 @custom-variant forgot-password ([data-state='forgot-password'] &);
 @custom-variant reset-password-email-sent ([data-state='reset-password-email-sent'] &);
+@custom-variant reset-password ([data-state='reset-password'] &);
+@custom-variant reset-password-success ([data-state='reset-password-success'] &);
 @custom-variant home ([data-state='home'] &);
 @custom-variant movies ([data-state='movies'] &);
 @custom-variant tv-shows ([data-state='tv-shows'] &);
@@ -595,7 +598,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 
 .auth-card__notice {
     display: flex;
-    align-items:flex-start;
+    align-items: flex-start;
     gap: 0.75rem;
     padding: 1.5rem;
     border: 1px solid var(--color-info-500);
@@ -626,7 +629,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .auth-form__input {
     width: 100%;
     height: clamp(3rem, 2.857rem + 0.714vw, 3.5rem);
-    padding-inline: clamp(0.875rem, 0.768rem + 0.536vw, 1.25rem);
+    padding-inline: clamp(0.875rem, 0.821rem + 0.268vw, 1rem);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg)
 }

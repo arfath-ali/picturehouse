@@ -333,6 +333,62 @@
         </section>
       </div>
 
+      <div class="reset-password:auth hidden">
+        <section class="auth-card">
+          <header class="auth-header">
+            <img
+              class="h-auto w-[clamp(11.25rem,7.679rem+9.524vw,16.25rem)]"
+              src="/src/assets/images/brand.png"
+              alt="Picturehouse Logo"
+            />
+            <h2>Reset your password</h2>
+            <p class="auth-header__description">
+              Enter your new password below.Make sure it's strong and secure
+            </p>
+          </header>
+
+          <form class="auth-form">
+            <div class="auth-form__field">
+              <label for="reset-password">New Password</label>
+              <div class="auth-form__password-input-row">
+                <input
+                  id="reset-password"
+                  class="auth-form__input auth-form__input--password"
+                  type="password"
+                />
+                <svg
+                  class="auth-form__password-visibility-icon"
+                  aria-hidden="true"
+                >
+                  <use href="#icon-password-visible-off"></use>
+                </svg>
+              </div>
+            </div>
+
+            <div class="auth-form__field">
+              <label for="reset-confirm-password">Confirm New Password</label>
+              <div class="auth-form__password-input-row">
+                <input
+                  id="reset-confirm-password"
+                  class="auth-form__input auth-form__input--password"
+                  type="password"
+                />
+                <svg
+                  class="auth-form__password-visibility-icon"
+                  aria-hidden="true"
+                >
+                  <use href="#icon-password-visible-off"></use>
+                </svg>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--auth auth-form__btn">
+              Reset Password
+            </button>
+          </form>
+        </section>
+      </div>
+
       <div class="browse-page home:block movies:block tv-shows:block hidden">
         <section class="featured"></section>
         <div class="media-shelves-container"></div>
