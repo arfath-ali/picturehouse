@@ -3,6 +3,7 @@ export type AppState =
   | "sign-in"
   | "sign-up"
   | "forgot-password"
+  | "reset-password-email-sent"
   | "home"
   | "discover"
   | "movies"
