@@ -247,6 +247,83 @@
         </section>
       </div>
 
+      <div class="verify-email:auth hidden">
+        <section class="auth-card">
+          <header class="auth-header">
+            <img
+              class="h-auto w-[clamp(11.25rem,7.679rem+9.524vw,16.25rem)]"
+              src="/src/assets/images/brand.png"
+              alt="Picturehouse Logo"
+            />
+            <h2>Verify your email</h2>
+            <p class="auth-header__description">
+              We've sent a 6-digit verification code to
+              <span class="auth-header__email">arfath129028@gmail.com.</span>
+              Enter the code below to verify your email.
+            </p>
+          </header>
+          <form class="auth-form">
+            <div class="auth-form__field">
+              <div class="auth-form__otp">
+                <input
+                  class="auth-form__input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                  autocomplete="one-time-code"
+                />
+
+                <input
+                  class="auth-form__input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                />
+
+                <input
+                  class="auth-form__input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                />
+
+                <input
+                  class="auth-form__input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                />
+
+                <input
+                  class="auth-form__input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                />
+
+                <input
+                  class="auth-form__input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="1"
+                />
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--auth auth-form__btn">
+              Verify Email
+            </button>
+          </form>
+
+          <div class="auth-switch text-secondary">
+            <p>
+              <span>Didn't receive the code? Check your spam folder or</span>
+              <button class="auth-link">resend the code</button>
+            </p>
+          </div>
+        </section>
+      </div>
+
       <div class="forgot-password:auth hidden">
         <section class="auth-card">
           <header class="auth-header">
@@ -328,7 +405,7 @@
 
           <div class="auth-switch text-secondary">
             <p>Didn't receive the email?</p>
-            <a class="auth-link" href="#">Resend Link</a>
+            <button class="auth-link">Resend Link</button>
           </div>
         </section>
       </div>
