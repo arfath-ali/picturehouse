@@ -6,7 +6,6 @@ export async function getWatchlist(req: IncomingMessage, res: ServerResponse) {
   const sortResult = await pool.query(`
       SELECT watchlist_sort_preference
       FROM users
-      WHERE id = 1
       `);
 
   const watchlistSortPreference =

@@ -28,6 +28,7 @@ import { removeFromWatchlist } from './watchlist/remove.js';
 import { initializeUsersTable } from './database/users.js';
 import { updateWatchlistSortPreference } from './watchlist/update-sort-preference.js';
 import { asyncHandler } from './middlewares/asycn-handler.js';
+import { signUp } from './auth/sign-up.js';
 
 const PORT = process.env.PORT;
 
@@ -162,6 +163,10 @@ const server = http.createServer(
         res.end(JSON.stringify({ error: 'Route not found' }));
       } else if (req.method === 'POST') {
         parseRequestBody(req, res, () => {
+          if (req.url === '/api/sign-up') {
+            asyncHandler(signUp)(req, res);
+            return;
+          }
           if (req.url === '/api/watchlist') {
             asyncHandler(addToWatchlist)(req, res);
             return;

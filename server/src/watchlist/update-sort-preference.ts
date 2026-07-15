@@ -12,7 +12,6 @@ export async function updateWatchlistSortPreference(
     `
         UPDATE users
         SET watchlist_sort_preference = $1
-        WHERE id = 1
       `,
     [watchlistSortPreference],
   );

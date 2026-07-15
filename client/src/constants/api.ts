@@ -4,6 +4,8 @@ import type { shelfCategoryId } from "../types/shelf-category-id.js";
 export const API_ENDPOINTS = {
   REGION: "api/geo/location",
 
+  SIGNUP: "api/sign-up",
+
   FEATURED: (page: pageCategory) => `api/${page}/featured`,
 
   SHELF: (page: pageCategory, shelfCategory: shelfCategoryId) =>

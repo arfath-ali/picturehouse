@@ -634,6 +634,16 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     gap: 8px;
 }
 
+.auth-form__field-error {
+    display: none;
+    color: var(--color-error-500);
+    animation: content-reveal 0.6s forwards
+}
+
+.auth-form__field-error.is-visible {
+    display: block;
+}
+
 .auth-form__password-input-row {
     position: relative;
     width: 100%;
@@ -745,6 +755,13 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .auth-form__btn,
 .auth-card__btn {
     margin-top: clamp(1.25rem, 1.071rem + 0.893vw, 1.5rem);
+}
+
+.auth-form__btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: grayscale(0.5);
+    pointer-events: none;
 }
 
 .auth-divider {

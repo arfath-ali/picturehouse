@@ -7,6 +7,7 @@ import { initSearchInput } from "../init/search-input.js";
 import { initWatchlistSort } from "../watchlist/sort.js";
 import { getElement } from "../utils/dom.js";
 import { initWatchlist } from "../watchlist/init.js";
+import { initSignUp } from "../auth/sign-up.js";
 
 function restoreVerticalScroll(category: string) {
   const savedVerticalScroll = sessionStorage.getItem(
@@ -95,7 +96,9 @@ export function navigate() {
   if (validAppStates.includes(route)) {
     setAppState(route);
 
-    if (route === "home" || route === "movies" || route === "tv-shows") {
+    if (route === "sign-up") {
+      initSignUp();
+    } else if (route === "home" || route === "movies" || route === "tv-shows") {
       initFeatured();
       initShelves();
       restoreVerticalScroll(route);
