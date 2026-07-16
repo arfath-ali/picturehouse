@@ -103,7 +103,7 @@
 
             <div class="auth-form__field">
               <label for="signin-password">Password</label>
-              <div class="auth-form__password-input-row">
+              <div class="auth-form__input-row auth-form__input-row--password">
                 <input
                   id="signin-password"
                   class="auth-form__input auth-form__input--password"
@@ -193,15 +193,28 @@
           <form class="auth-form" novalidate>
             <div class="auth-form__field">
               <label for="signup-username">Username</label>
-              <input
-                id="signup-username"
-                class="auth-form__input"
-                name="user-name"
-                type="text"
-                autocomplete="off"
-                data-js="signup-username"
-                maxlength="30"
-              />
+              <div
+                class="auth-form__input-row auth-form__input-row--username"
+                data-js="signup-username-row"
+              >
+                <input
+                  id="signup-username"
+                  class="auth-form__input"
+                  name="user-name"
+                  type="text"
+                  autocomplete="off"
+                  data-js="signup-username"
+                  maxlength="30"
+                />
+                <div class="auth-form__username-input-status">
+                  <div class="auth-form__username-input-spinner"></div>
+                  <div class="auth-form__username-input-valid">
+                    <svg class="fill-neutral-50" aria-hidden="true">
+                      <use href="#icon-success"></use>
+                    </svg>
+                  </div>
+                </div>
+              </div>
               <span
                 class="auth-form__field-error text-secondary"
                 data-js="signup-username-error"
@@ -227,7 +240,7 @@
 
             <div class="auth-form__field">
               <label for="signup-password">Password</label>
-              <div class="auth-form__password-input-row">
+              <div class="auth-form__input-row auth-form__input-row--password">
                 <input
                   id="signup-password"
                   class="auth-form__input auth-form__input--password"
@@ -252,7 +265,7 @@
 
             <div class="auth-form__field">
               <label for="signup-confirm-password">Confirm Password</label>
-              <div class="auth-form__password-input-row">
+              <div class="auth-form__input-row auth-form__input-row--password">
                 <input
                   id="signup-confirm-password"
                   class="auth-form__input auth-form__input--password"
@@ -279,9 +292,11 @@
               class="btn btn--primary btn--auth auth-form__btn"
               type="submit"
               data-js="signup-btn"
+              data-loading="false"
               disabled
             >
-              Create Account
+              <span class="btn-text">Create Account</span>
+              <span class="btn-spinner"></span>
             </button>
           </form>
 
@@ -472,7 +487,7 @@
           <form class="auth-form">
             <div class="auth-form__field">
               <label for="reset-password">New Password</label>
-              <div class="auth-form__password-input-row">
+              <div class="auth-form__input-row auth-form__input-row--password">
                 <input
                   id="reset-password"
                   class="auth-form__input auth-form__input--password"
@@ -489,7 +504,7 @@
 
             <div class="auth-form__field">
               <label for="reset-confirm-password">Confirm New Password</label>
-              <div class="auth-form__password-input-row">
+              <div class="auth-form__input-row auth-form__input-row--password">
                 <input
                   id="reset-confirm-password"
                   class="auth-form__input auth-form__input--password"

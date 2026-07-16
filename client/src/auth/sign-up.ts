@@ -1,7 +1,12 @@
 import { signUp } from "../api/sign-up.js";
 import { setAppState } from "../state/app.js";
+import type { FormValidationResult } from "../types/form-validation-result.js";
+import {
+  checkUsernameAvailability,
+  clearUsernameDebounce,
+} from "../utils/check-username-availability.js";
 import { getElement } from "../utils/dom.js";
-import { setFieldError } from "../utils/form-ui.js";
+import { setFieldErrorStatus } from "../utils/form-ui.js";
 import {
   validateConfirmPassword,
   validateEmail,
@@ -13,71 +18,100 @@ export function initSignUp() {
   const usernameInput = getElement<HTMLInputElement>(
     "[data-js='signup-username']",
   );
-  const useranmeInputError = getElement<HTMLSpanElement>(
+  const usernameInputErrorElement = getElement<HTMLSpanElement>(
     "[data-js='signup-username-error']",
   );
+  let usernameValidation: FormValidationResult = {
+    message: "",
+    isValid: false,
+  };
+  let isUsernameValid: boolean = false;
 
   const emailInput = getElement<HTMLInputElement>("[data-js='signup-email'");
-  const emailInputError = getElement<HTMLSpanElement>(
+  const emailInputErrorElement = getElement<HTMLSpanElement>(
     "[data-js='signup-email-error']",
   );
+  let emailValidation: FormValidationResult = {
+    message: "",
+    isValid: false,
+  };
+  let isEmailValid: boolean = false;
 
   const passwordInput = getElement<HTMLInputElement>(
     "[data-js='signup-password'",
   );
-  const passwordInputError = getElement<HTMLSpanElement>(
+  const passwordInputErrorElement = getElement<HTMLSpanElement>(
     "[data-js='signup-password-error']",
   );
+  let passwordValidation: FormValidationResult = {
+    message: "",
+    isValid: false,
+  };
+  let isPasswordValid: boolean = false;
 
   const confirmPasswordInput = getElement<HTMLInputElement>(
     "[data-js='signup-confirm-password']",
   );
-  const confirmPasswordInputError = getElement<HTMLSpanElement>(
+  const confirmPasswordInputErrorElement = getElement<HTMLSpanElement>(
     "[data-js='signup-confirm-password-error']",
   );
 
+  let confirmPasswordValidation: FormValidationResult = {
+    message: "",
+    isValid: false,
+  };
+  let isConfirmPasswordValid: boolean = false;
+
   const submitBtn = getElement<HTMLButtonElement>("[data-js='signup-btn']");
 
-  function checkFormValidity() {
-    const isUsernameValid =
-      usernameInput.value.length > 0 && !validateUsername(usernameInput.value);
-    const isEmailValid =
-      emailInput.value.length > 0 && !validateEmail(emailInput.value);
-    const isPasswordValid =
-      passwordInput.value.length > 0 && !validatePassword(passwordInput.value);
-    const isConfirmValid =
-      confirmPasswordInput.value.length > 0 &&
-      !validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);
-
+  async function checkFormValidity() {
     submitBtn.disabled = !(
       isUsernameValid &&
       isEmailValid &&
       isPasswordValid &&
-      isConfirmValid
+      isConfirmPasswordValid
     );
   }
 
-  usernameInput.addEventListener("input", (e) => {
+  usernameInput.addEventListener("input", async (e) => {
+    clearUsernameDebounce();
     usernameInput.value = (e.target as HTMLInputElement).value
       .toLowerCase()
       .replace(/\s/g, "");
-    setFieldError(useranmeInputError);
+
+    setFieldErrorStatus(usernameInputErrorElement);
+
+    usernameValidation = validateUsername(usernameInput.value);
+    isUsernameValid = usernameValidation.isValid;
+
+    if (isUsernameValid) {
+      usernameValidation = await checkUsernameAvailability(usernameInput.value);
+      setFieldErrorStatus(
+        usernameInputErrorElement,
+        usernameValidation.message,
+      );
+
+      isUsernameValid = usernameValidation.isValid;
+    }
+
     checkFormValidity();
   });
 
-  usernameInput.addEventListener("blur", () => {
-    const errorMessage = validateUsername(usernameInput.value);
-    if (errorMessage) setFieldError(useranmeInputError, errorMessage);
+  usernameInput.addEventListener("blur", async () => {
+    setFieldErrorStatus(usernameInputErrorElement, usernameValidation.message);
   });
 
   emailInput.addEventListener("input", () => {
-    setFieldError(emailInputError);
+    setFieldErrorStatus(emailInputErrorElement);
+
+    emailValidation = validateEmail(emailInput.value);
+    isEmailValid = emailValidation.isValid;
+
     checkFormValidity();
   });
 
   emailInput.addEventListener("blur", () => {
-    const errorMessage = validateEmail(emailInput.value);
-    if (errorMessage) setFieldError(emailInputError, errorMessage);
+    setFieldErrorStatus(emailInputErrorElement, emailValidation.message);
   });
 
   passwordInput.addEventListener("input", (e) => {
@@ -85,13 +119,16 @@ export function initSignUp() {
       /\s/g,
       "",
     );
-    setFieldError(passwordInputError);
+    setFieldErrorStatus(passwordInputErrorElement);
+
+    passwordValidation = validatePassword(passwordInput.value);
+    isPasswordValid = passwordValidation.isValid;
+
     checkFormValidity();
   });
 
-  passwordInput.addEventListener("blur", () => {
-    const errorMessage = validatePassword(passwordInput.value);
-    if (errorMessage) setFieldError(passwordInputError, errorMessage);
+  passwordInput.addEventListener("blur", (e) => {
+    setFieldErrorStatus(passwordInputErrorElement, passwordValidation.message);
   });
 
   confirmPasswordInput.addEventListener("input", (e) => {
@@ -99,20 +136,29 @@ export function initSignUp() {
       /\s/g,
       "",
     );
-    setFieldError(confirmPasswordInputError);
-    checkFormValidity();
-  });
+    setFieldErrorStatus(confirmPasswordInputErrorElement);
 
-  confirmPasswordInput.addEventListener("blur", () => {
-    const errorMessage = validateConfirmPassword(
+    confirmPasswordValidation = validateConfirmPassword(
       passwordInput.value,
       confirmPasswordInput.value,
     );
-    if (errorMessage) setFieldError(confirmPasswordInputError, errorMessage);
+    isConfirmPasswordValid = confirmPasswordValidation.isValid;
+
+    checkFormValidity();
+  });
+
+  confirmPasswordInput.addEventListener("blur", (e) => {
+    setFieldErrorStatus(
+      confirmPasswordInputErrorElement,
+      confirmPasswordValidation.message,
+    );
   });
 
   submitBtn.addEventListener("click", async (e) => {
     e.preventDefault();
+
+    submitBtn.setAttribute("data-loading", "true");
+    submitBtn.disabled = true;
 
     const userData = {
       username: usernameInput.value,
@@ -123,8 +169,12 @@ export function initSignUp() {
     try {
       await signUp(userData);
     } catch (error: any) {
+      submitBtn.setAttribute("data-loading", "false");
+      submitBtn.disabled = false;
       if (error.status === 409) {
-        setFieldError(emailInputError, error.backendMessage);
+        setFieldErrorStatus(emailInputErrorElement, error.backendMessage);
+        isEmailValid = false;
+        checkFormValidity();
         emailInput.focus();
       } else if (error.status === 404) {
         setAppState("not-found");

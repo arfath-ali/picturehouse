@@ -6,6 +6,9 @@ export const API_ENDPOINTS = {
 
   SIGNUP: "api/sign-up",
 
+  USERNAME: (username: string) =>
+    `api/check-username?username=${encodeURIComponent(username)}`,
+
   FEATURED: (page: pageCategory) => `api/${page}/featured`,
 
   SHELF: (page: pageCategory, shelfCategory: shelfCategoryId) =>

@@ -6,7 +6,7 @@ export function togglePasswordVisibilty() {
   );
 
   passwordVisibiltyIcons.forEach((icon) => {
-    const passwordInputRow = icon.closest(".auth-form__password-input-row");
+    const passwordInputRow = icon.closest(".auth-form__input-row--password");
 
     const passwordInput = passwordInputRow?.querySelector<HTMLInputElement>(
       ".auth-form__input--password",
@@ -16,7 +16,7 @@ export function togglePasswordVisibilty() {
 
     if (!passwordInput || !useElement) return;
 
-    icon.addEventListener("click", () => {
+    icon.addEventListener("click", (e) => {
       const isPasswordVisible = passwordInput.type === "text";
 
       passwordInput.type = isPasswordVisible ? "password" : "text";

@@ -1,61 +1,70 @@
-export function validateUsername(username: string) {
-  let errorMessage = "";
+import type { FormValidationResult } from "../types/form-validation-result.js";
 
-  if (username.length === 0) return;
+export function validateUsername(username: string) {
+  const validation: FormValidationResult = { message: "", isValid: false };
+
+  if (username.length === 0) return validation;
   else if (username.length < 3) {
-    errorMessage = "Username must be at least 3 characters.";
+    validation.message = "Username must be at least 3 characters.";
   } else if (!/^[a-z0-9_][a-z0-9_.-]*[a-z0-9_]$/.test(username)) {
-    errorMessage =
+    validation.message =
       "Use letters, numbers, (_), (.), or (-). Cannot start/end with (.) or (-).";
   } else {
+    validation.isValid = true;
   }
 
-  return errorMessage;
+  return validation;
 }
 
 export function validateEmail(email: string) {
-  let errorMessage = "";
+  const validation: FormValidationResult = { message: "", isValid: false };
 
-  if (email.length === 0) return;
+  if (email.length === 0) return validation;
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errorMessage = "Please enter a valid email address.";
+    validation.message = "Please enter a valid email address.";
   } else {
+    validation.isValid = true;
   }
 
-  return errorMessage;
+  return validation;
 }
 
 export function validatePassword(password: string) {
-  let errorMessage = "";
+  const validation: FormValidationResult = { message: "", isValid: false };
 
-  if (password.length === 0) return;
+  if (password.length === 0) return validation;
   else if (password.length < 8) {
-    errorMessage = "Password must be at least 8 characters.";
+    validation.message = "Password must be at least 8 characters.";
   } else if (password.length < 8) {
-    errorMessage = "Password must contain at least 8 characters.";
+    validation.message = "Password must contain at least 8 characters.";
   } else if (!/[A-Z]/.test(password)) {
-    errorMessage = "Password must contain at least one uppercase letter.";
+    validation.message = "Password must contain at least one uppercase letter.";
   } else if (!/[a-z]/.test(password)) {
-    errorMessage = "Password must contain at least one lowercase letter.";
+    validation.message = "Password must contain at least one lowercase letter.";
   } else if (!/\d/.test(password)) {
-    errorMessage = "Password must contain at least one number.";
+    validation.message = "Password must contain at least one number.";
   } else if (!/[^A-Za-z0-9]/.test(password)) {
-    errorMessage = "Password must contain at least one special character.";
+    validation.message =
+      "Password must contain at least one special character.";
+  } else {
+    validation.isValid = true;
   }
 
-  return errorMessage;
+  return validation;
 }
 
 export function validateConfirmPassword(
   password: string,
   confirmPassword: string,
 ) {
-  let errorMessage = "";
+  const validation: FormValidationResult = { message: "", isValid: false };
 
-  if (confirmPassword.length === 0) return;
+  if (confirmPassword.length === 0) return validation;
   else if (confirmPassword !== password) {
-    errorMessage = "Passwords do not match.";
+    validation.message = "Passwords do not match.";
+  } else {
+    validation.isValid = true;
   }
 
-  return errorMessage;
+  return validation;
 }

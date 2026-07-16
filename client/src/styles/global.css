@@ -292,6 +292,8 @@
     justify-content: center;
     align-items: center;
 
+    position: relative;
+
     padding: 1rem;
     border: 1px solid transparent;
     border-radius: var(--rounded-md);
@@ -350,6 +352,18 @@
 .btn--primary.btn--auth:hover {
     background-color: var(--color-brand-500);
 }
+
+.btn-spinner {
+    display: none;
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 3px solid var(--color-neutral-600);
+    border-top-color: var(--color-brand-500);
+    border-radius: var(--rounded-circle);
+    animation: spin 1s linear infinite
+}
+
 
 .btn__icon {
     width: clamp(1rem, 0.93rem + 0.36vw, 1.25rem);
@@ -644,7 +658,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     display: block;
 }
 
-.auth-form__password-input-row {
+.auth-form__input-row {
     position: relative;
     width: 100%;
 }
@@ -655,6 +669,39 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     padding-inline: clamp(0.875rem, 0.821rem + 0.268vw, 1rem);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg)
+}
+
+.auth-form__username-input-status {
+    display: none;
+}
+
+.auth-form__username-input-spinner,
+.auth-form__username-input-valid {
+    display: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 3px solid var(--color-neutral-600);
+    border-radius: var(--rounded-circle);
+}
+
+.auth-form__input-row--username:is([data-status="loading"], [data-status="valid"]) .auth-form__username-input-status {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+}
+
+[data-status="loading"] .auth-form__username-input-spinner {
+    display: block;
+    border-top-color: var(--color-brand-500);
+    animation: spin 1s linear infinite;
+}
+
+[data-status="valid"] .auth-form__username-input-valid {
+    display: block;
+    border-color: var(--color-success-500);
+    background-color: var(--color-success-500);
 }
 
 .auth-form__input--password {
@@ -762,6 +809,14 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     cursor: not-allowed;
     filter: grayscale(0.5);
     pointer-events: none;
+}
+
+.auth-form__btn[data-loading=true] .btn-text {
+    visibility: hidden;
+}
+
+.auth-form__btn[data-loading=true] .btn-spinner {
+    display: block;
 }
 
 .auth-divider {

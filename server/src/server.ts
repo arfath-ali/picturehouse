@@ -29,6 +29,7 @@ import { initializeUsersTable } from './database/users.js';
 import { updateWatchlistSortPreference } from './watchlist/update-sort-preference.js';
 import { asyncHandler } from './middlewares/asycn-handler.js';
 import { signUp } from './auth/sign-up.js';
+import { checkUsername } from './auth/check-username.js';
 
 const PORT = process.env.PORT;
 
@@ -81,6 +82,14 @@ const server = http.createServer(
       if (req.method === 'GET') {
         if (req.url === '/api/geo/location') {
           asyncHandler(getGeoLocation)(req, res);
+          return;
+        }
+
+        if (req.url.startsWith('/api/check-username')) {
+          const url = new URL(req.url, `http://${req.headers.host}`);
+          const username = String(url.searchParams.get('username'));
+          req.params = { username };
+          asyncHandler(checkUsername)(req, res);
           return;
         }
 

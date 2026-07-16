@@ -7,6 +7,7 @@ declare module 'node:http' {
   interface IncomingMessage {
     body: unknown;
     params?: {
+      username?: string;
       page?: pageCategory;
       mediaShelf?: mediaShelfCategory;
       mediaType?: mediaTypes;
