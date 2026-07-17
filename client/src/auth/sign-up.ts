@@ -1,5 +1,6 @@
 import { mockApiResponse } from "../api/mock-api.js";
 import { signUp } from "../api/sign-up.js";
+import { navigate } from "../router/navigate.js";
 import { setAppState } from "../state/app.js";
 import type { FormValidationResult } from "../types/form-validation-result.js";
 import {
@@ -173,7 +174,8 @@ export function initSignUp() {
       const response = await signUp(userData);
 
       if (response.success) {
-        window.location.href = "/verify-email";
+        history.replaceState({}, "", "/verify-email");
+        navigate();
       }
     } catch (error: any) {
       submitBtn.setAttribute("data-loading", "false");
