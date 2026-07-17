@@ -1,4 +1,5 @@
 import { getElements } from "./dom.js";
+import { setFieldErrorStatus } from "./form-ui.js";
 
 export function togglePasswordVisibilty() {
   const passwordVisibiltyIcons = getElements<SVGElement>(
@@ -6,17 +7,24 @@ export function togglePasswordVisibilty() {
   );
 
   passwordVisibiltyIcons.forEach((icon) => {
-    const passwordInputRow = icon.closest(".auth-form__input-row--password");
+    const passwordField = icon.closest(".auth-form__field");
 
-    const passwordInput = passwordInputRow?.querySelector<HTMLInputElement>(
+    const passwordInput = passwordField?.querySelector<HTMLInputElement>(
       ".auth-form__input--password",
     );
 
+    const passwordInputErrorElement =
+      passwordField?.querySelector<HTMLSpanElement>(".auth-form__field-error");
+
     const useElement = icon.querySelector("use");
 
-    if (!passwordInput || !useElement) return;
+    if (!passwordInput || !passwordInputErrorElement || !useElement) return;
 
-    icon.addEventListener("click", (e) => {
+    icon.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+    });
+
+    icon.addEventListener("click", () => {
       const isPasswordVisible = passwordInput.type === "text";
 
       passwordInput.type = isPasswordVisible ? "password" : "text";
@@ -27,6 +35,18 @@ export function togglePasswordVisibilty() {
           ? "#icon-password-visible-off"
           : "#icon-password-visible",
       );
+
+      const hasErrorMessage =
+        passwordInputErrorElement.textContent?.trim() !== "";
+      if (!hasErrorMessage) {
+        setFieldErrorStatus(passwordInputErrorElement);
+      }
+
+      requestAnimationFrame(() => {
+        passwordInput.focus();
+        const length = passwordInput.value.length;
+        passwordInput.setSelectionRange(length, length);
+      });
     });
   });
 }

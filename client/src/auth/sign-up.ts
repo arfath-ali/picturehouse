@@ -1,3 +1,4 @@
+import { mockApiResponse } from "../api/mock-api.js";
 import { signUp } from "../api/sign-up.js";
 import { setAppState } from "../state/app.js";
 import type { FormValidationResult } from "../types/form-validation-result.js";
@@ -13,6 +14,7 @@ import {
   validatePassword,
   validateUsername,
 } from "../utils/form-validation.js";
+import { showPageError } from "../utils/show-page-error.js";
 
 export function initSignUp() {
   const usernameInput = getElement<HTMLInputElement>(
@@ -164,22 +166,40 @@ export function initSignUp() {
       username: usernameInput.value,
       email: emailInput.value,
       password: passwordInput.value,
+      confirmPassword: confirmPasswordInput.value,
     };
 
     try {
-      await signUp(userData);
+      const response = await signUp(userData);
+
+      if (response.success) {
+        window.location.href = "/verify-email";
+      }
     } catch (error: any) {
       submitBtn.setAttribute("data-loading", "false");
       submitBtn.disabled = false;
       if (error.status === 409) {
-        setFieldErrorStatus(emailInputErrorElement, error.backendMessage);
-        isEmailValid = false;
+        const fieldName = error.backendResponse.field;
+        const message = error.backendResponse.message;
+
+        const targetInput = getElement<HTMLInputElement>(
+          `[data-js=signup-${fieldName}]`,
+        );
+        const targetInputErrorElement = getElement<HTMLSpanElement>(
+          `[data-js=signup-${fieldName}-error]`,
+        );
+        setFieldErrorStatus(targetInputErrorElement, message);
+        if (fieldName === "username") isUsernameValid = false;
+        if (fieldName === "email") isEmailValid = false;
+        if (fieldName === "password") isPasswordValid = false;
+        if (fieldName === "confirm-password") isConfirmPasswordValid = false;
+
+        targetInput.focus();
         checkFormValidity();
-        emailInput.focus();
       } else if (error.status === 404) {
         setAppState("not-found");
       } else {
-        setAppState("not-found");
+        showPageError("signup-page");
       }
     }
   });

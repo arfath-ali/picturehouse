@@ -488,7 +488,6 @@
 }
 
 
-
 /* ---Header & Nav--- */
 
 .site-header {
@@ -851,6 +850,14 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     gap: 0.25rem;
     margin-top: 1.75rem;
     text-align: center;
+}
+
+.auth-error {
+    width: 100%;
+    max-width: 500px;
+    padding: clamp(1.25rem, 0.982rem + 1.339vw, 2rem);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
 }
 
 
@@ -2029,7 +2036,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    min-height: 100dvh;
     padding-block: clamp(1rem, 0.714rem + 1.429vw, 2rem);
     padding-inline: clamp(0.25rem, -0.25rem + 2.5vw, 2rem);
     text-align: center;

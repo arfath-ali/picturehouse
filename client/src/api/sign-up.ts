@@ -17,14 +17,14 @@ export async function signUp(userData: UserDataType) {
       const error: any = new Error(
         `${response.status} ${response.statusText}: ${data.error ?? "Unknown error"}`,
       );
-
       error.status = response.status;
-      error.backendMessage = data.error;
+      error.backendResponse = JSON.parse(data.error);
       error.statusText = response.statusText;
 
       throw error;
     }
-    return;
+
+    return data;
   } catch (error) {
     console.error(error);
     throw error;
