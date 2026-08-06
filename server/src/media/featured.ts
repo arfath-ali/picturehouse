@@ -8,9 +8,13 @@ import type { MediaReferanceItems } from '../types/media-reference-items.js';
 import { parseMediaFeatured } from '../services/tmdb-parser.js';
 import { inFlightIndexKeys, waitForFlightIn } from '../utils/in-flight.js';
 import { fileURLToPath } from 'node:url';
+import type { ApiErrorResponse } from '../types/errors.js';
+import { sendJsonResponse } from '../http/send-json-response.js';
+import { verifyAuth } from '../middlewares/verify-auth.js';
+import type { IncomingRequest } from '../types/http.js';
 
 export async function getMediaFeatured(
-  req: IncomingMessage,
+  req: IncomingRequest<unknown>,
   res: ServerResponse,
 ) {
   if (!req.params) return;
@@ -26,24 +30,21 @@ export async function getMediaFeatured(
     const jsonPath = path.join(__dirname, '..', 'data', 'featured.json');
     const data = fs.readFileSync(jsonPath, 'utf-8');
     featured = JSON.parse(data);
-  } catch (err: any) {
-    const error: any = new Error(
-      `[File Error]: ${err.message}. Internal Reason:`,
+  } catch (error: unknown) {
+    throw new Error(
+      `[File Error]: ${error instanceof Error ? error.message : 'Unknown error'}`,
       {
-        cause: err,
+        cause: error,
       },
     );
-    error.status = err.status || 500;
-    throw error;
   }
 
   const contentReferenceItems = (featured as any)[page];
 
   if (!contentReferenceItems) {
-    res.statusCode = 404;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ error: 'Category not found' }));
-    return;
+    throw new Error(
+      `Missing media shelf "${featured}" for page "${page}" in mediaShelves.json`,
+    );
   }
   const featuredIndexKey = `featured-${page}`;
   const cachedIndexData = await redisClient.get(featuredIndexKey);
@@ -97,7 +98,7 @@ export async function getMediaFeatured(
 
       if (typeof cachedResult !== 'string') {
         updatedMediaEntries.push(cachedEntry);
-        console.warn(`⚠️ Cache miss: [${cachedEntry}]. Skipping.`);
+        console.warn(`⚠️ Cache miss: [${cachedEntry}]. Skipping...`);
         continue;
       }
 
@@ -131,9 +132,7 @@ export async function getMediaFeatured(
       );
     }
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(featuredCollection));
+    sendJsonResponse(res, 200, { success: true, featuredCollection });
     return;
   } else {
     if (inFlightIndexKeys.has(featuredIndexKey)) {
@@ -158,9 +157,7 @@ export async function getMediaFeatured(
           )
           .filter(Boolean);
 
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(featuredCollection));
+        sendJsonResponse(res, 200, { success: true, featuredCollection });
         return;
       }
 
@@ -174,9 +171,8 @@ export async function getMediaFeatured(
         contentReferenceItems,
       ).finally(() => inFlightIndexKeys.delete(featuredIndexKey));
 
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(featuredCollection));
+      sendJsonResponse(res, 200, { success: true, featuredCollection });
+      return;
     }
   }
 }
@@ -191,9 +187,9 @@ async function fetchFeaturedItem(media: MediaReferanceItems) {
       JSON.stringify(mediaPayload),
     );
     return mediaPayload;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(
-      `❌ Failed to fetch content ID ${media.tmdbId}. Status: ${error.status ?? 'Unknown'} | Message: ${error.message}`,
+      `❌ Failed to fetch content ID ${media.tmdbId}. Status: ${(error as ApiErrorResponse).status ?? 'Unknown'} | Message: ${(error as ApiErrorResponse).message}`,
     );
   }
 }

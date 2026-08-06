@@ -1,13 +1,20 @@
 import type { ServerResponse } from 'node:http';
 import type { IncomingMessage } from 'node:http';
 import { pool } from '../database/pool.js';
+import { throwApiError } from '../http/api-error.js';
+import type { IncomingRequest } from '../types/http.js';
+import { sendJsonResponse } from '../http/send-json-response.js';
 
 export async function checkUsername(req: IncomingMessage, res: ServerResponse) {
-  if (!req.params) return;
+  const username = req.params?.username;
 
-  const { username } = req.params as any;
-
-  if (!username) return;
+  if (!username) {
+    throwApiError(400, {
+      code: 'INVALID_USERNAME',
+      message: 'Username is required.',
+      targetInput: 'username',
+    });
+  }
 
   const isUsernameExists = (
     await pool.query(
@@ -18,15 +25,13 @@ export async function checkUsername(req: IncomingMessage, res: ServerResponse) {
     )
   ).rows[0].exists;
 
-  console.log(username);
-
   if (isUsernameExists) {
-    const error: any = new Error('Username already taken');
-    error.status = 409;
-    throw error;
+    throwApiError(409, {
+      code: 'USERNAME_ALREADY_EXISTS',
+      message: 'Username is already taken.',
+      targetInput: 'username',
+    });
   }
 
-  res.statusCode = 201;
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify({ success: true }));
+  sendJsonResponse(res, 201, { success: true });
 }

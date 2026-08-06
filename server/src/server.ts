@@ -27,11 +27,39 @@ import { getWatchlist } from './watchlist/get.js';
 import { removeFromWatchlist } from './watchlist/remove.js';
 import { initializeUsersTable } from './database/users.js';
 import { updateWatchlistSortPreference } from './watchlist/update-sort-preference.js';
-import { asyncHandler } from './middlewares/asycn-handler.js';
+import { asyncHandler } from './http/asycn-handler.js';
 import { signUp } from './auth/sign-up.js';
 import { checkUsername } from './auth/check-username.js';
+import { verifyEmail } from './auth/verify-email.js';
+import { resendVerificationEmail } from './auth/resend-verification-email.js';
+import { registerJobs } from './jobs/register-jobs.js';
+import type { IncomingRequest } from './types/http.js';
+import type {
+  ForgotPasswordBody,
+  PasswordResetTokenValidationBody,
+  ResetPasswordBody,
+  SignInBody,
+  SignUpBody,
+  VerifyEmailBody,
+} from './types/auth.js';
+import type {
+  WatchlistBody,
+  watchlistSortPreferenceBody,
+} from './types/watchlist.js';
+import { sendJsonResponse } from './http/send-json-response.js';
+import { signIn } from './auth/sign-in.js';
+import { initializeUserSessionsTable } from './database/user_sessions.js';
+import { googleAuth } from './auth/google-auth.js';
+import { googleAuthCallback } from './auth/google-auth-callback.js';
+import { forgotPassword } from './auth/forgot-password.js';
+import { resendPasswordResetLink } from './auth/resend-password-reset-link.js';
+import { initializePasswordResetsTable } from './database/password_resets.js';
+import { resetPassword } from './auth/reset-password.js';
+import { validatePasswordResetToken } from './auth/verify-password-reset-token.js';
 
 const PORT = process.env.PORT;
+
+if (!PORT) throw new Error('PORT environment variable is not defined');
 
 const server = http.createServer(
   (req: IncomingMessage, res: ServerResponse) => {
@@ -54,14 +82,12 @@ const server = http.createServer(
     res.setHeader('Access-Control-Allow-Credentials', 'true');
 
     if (req.method === 'OPTIONS') {
-      res.statusCode = 204;
-      res.end();
+      sendJsonResponse(res, 204);
       return;
     }
 
     if (req.url?.includes('.well-known') || req.url?.includes('devtools')) {
-      res.statusCode = 404;
-      res.end();
+      sendJsonResponse(res, 404);
       return;
     }
 
@@ -72,16 +98,33 @@ const server = http.createServer(
       const extention = path.extname(req.url || '');
 
       if (extention) {
-        serveStaticFile(req, res, extention, __clientdir);
+        serveStaticFile(
+          req as IncomingRequest<unknown>,
+          res,
+          extention,
+          __clientdir,
+        );
         return;
       }
 
-      serveHTMLFile(req, res, __clientdir);
+      serveHTMLFile(req as IncomingRequest<unknown>, res, __clientdir);
       return;
     } else if (req.url?.startsWith('/api')) {
       if (req.method === 'GET') {
         if (req.url === '/api/geo/location') {
           asyncHandler(getGeoLocation)(req, res);
+          return;
+        }
+
+        const pathname = req.url?.split('?')[0];
+
+        if (pathname === '/api/auth/google') {
+          asyncHandler(googleAuth)(req, res);
+          return;
+        }
+
+        if (pathname === '/api/auth/google/callback') {
+          googleAuthCallback(req as IncomingRequest<unknown>, res);
           return;
         }
 
@@ -102,7 +145,7 @@ const server = http.createServer(
         ) {
           const page = featuredMatch[1] as pageCategory;
           req.params = { page };
-          asyncHandler(getMediaFeatured)(req, res);
+          asyncHandler(getMediaFeatured)(req as IncomingRequest<unknown>, res);
           return;
         }
 
@@ -120,7 +163,7 @@ const server = http.createServer(
           const mediaShelf = mediaShelfMatch[2] as mediaShelfCategory;
 
           req.params = { page, mediaShelf };
-          asyncHandler(getMediaShelf)(req, res);
+          asyncHandler(getMediaShelf)(req as IncomingRequest<unknown>, res);
           return;
         }
 
@@ -140,22 +183,20 @@ const server = http.createServer(
           return;
         }
 
-        const url = new URL(req.url || '', `http://${req.headers.host}`);
-
         if (req.url.startsWith('/api/search')) {
+          const url = new URL(req.url || '', `http://${req.headers.host}`);
+
           const query = url.searchParams.get('query');
           const searchPage = url.searchParams.get('searchPage');
 
           if (!query || !searchPage) {
-            res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(
-              JSON.stringify({
-                error: 'Missing query or searchPage parameter',
-              }),
-            );
+            sendJsonResponse(res, 400, {
+              code: 'MISSING_QUERY_PARAMETERS',
+              message: 'Missing query or searchPage parameter.',
+            });
+
             return;
           }
-
           req.params = { query, searchPage };
 
           asyncHandler(getMediaSearch)(req, res);
@@ -163,38 +204,103 @@ const server = http.createServer(
         }
 
         if (req.url === '/api/watchlist') {
-          asyncHandler(getWatchlist)(req, res);
+          asyncHandler(getWatchlist)(req as IncomingRequest<unknown>, res);
           return;
         }
 
-        res.statusCode = 404;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ error: 'Route not found' }));
-      } else if (req.method === 'POST') {
-        parseRequestBody(req, res, () => {
-          if (req.url === '/api/sign-up') {
-            asyncHandler(signUp)(req, res);
-            return;
-          }
-          if (req.url === '/api/watchlist') {
-            asyncHandler(addToWatchlist)(req, res);
-            return;
-          }
-          res.statusCode = 404;
-          res.setHeader('Content-Type', 'application/json');
-          res.end(JSON.stringify({ error: 'Route not found' }));
+        sendJsonResponse(res, 404, {
+          code: 'ROUTE_NOT_FOUND',
+          message: 'Route not found.',
         });
         return;
+      } else if (req.method === 'POST') {
+        parseRequestBody(
+          req as IncomingRequest<Record<string, unknown>>,
+          res,
+          () => {
+            if (req.url === '/api/sign-in') {
+              asyncHandler(signIn)(req as IncomingRequest<SignInBody>, res);
+              return;
+            }
+            if (req.url === '/api/forgot-password') {
+              asyncHandler(forgotPassword)(
+                req as IncomingRequest<ForgotPasswordBody>,
+                res,
+              );
+              return;
+            }
+            if (req.url === '/api/resend-password-reset-link') {
+              asyncHandler(resendPasswordResetLink)(
+                req as IncomingRequest<ForgotPasswordBody>,
+                res,
+              );
+              return;
+            }
+            if (req.url === '/api/reset-password/validate') {
+              asyncHandler(validatePasswordResetToken)(
+                req as IncomingRequest<PasswordResetTokenValidationBody>,
+                res,
+              );
+              return;
+            }
+            if (req.url === '/api/reset-password') {
+              asyncHandler(resetPassword)(
+                req as IncomingRequest<ResetPasswordBody>,
+                res,
+              );
+              return;
+            }
+            if (req.url === '/api/sign-up') {
+              asyncHandler(signUp)(req as IncomingRequest<SignUpBody>, res);
+              return;
+            }
+            if (req.url === '/api/verify-email') {
+              asyncHandler(verifyEmail)(
+                req as IncomingRequest<VerifyEmailBody>,
+                res,
+              );
+              return;
+            }
+            if (req.url === '/api/resend-verification-email') {
+              asyncHandler(resendVerificationEmail)(
+                req as IncomingRequest<SignUpBody>,
+                res,
+              );
+              return;
+            }
+
+            if (req.url === '/api/watchlist') {
+              asyncHandler(addToWatchlist)(
+                req as IncomingRequest<WatchlistBody>,
+                res,
+              );
+              return;
+            }
+            sendJsonResponse(res, 404, {
+              code: 'ROUTE_NOT_FOUND',
+              message: 'Route not found.',
+            });
+          },
+        );
+        return;
       } else if (req.method === 'PATCH') {
-        parseRequestBody(req, res, () => {
-          if (req.url === '/api/watchlist/sort-preference') {
-            asyncHandler(updateWatchlistSortPreference)(req, res);
-            return;
-          }
-          res.statusCode = 404;
-          res.setHeader('Content-Type', 'application/json');
-          res.end(JSON.stringify({ error: 'Route not found' }));
-        });
+        parseRequestBody(
+          req as IncomingRequest<Record<string, unknown>>,
+          res,
+          () => {
+            if (req.url === '/api/watchlist/sort-preference') {
+              asyncHandler(updateWatchlistSortPreference)(
+                req as IncomingRequest<watchlistSortPreferenceBody>,
+                res,
+              );
+              return;
+            }
+            sendJsonResponse(res, 404, {
+              code: 'ROUTE_NOT_FOUND',
+              message: 'Route not found.',
+            });
+          },
+        );
         return;
       } else if (req.method === 'DELETE') {
         if (req.url.startsWith('/api/watchlist')) {
@@ -203,32 +309,32 @@ const server = http.createServer(
           const [, , , mediaType, mediaId] = pathname.split('/');
 
           if (!mediaType || !mediaId) {
-            res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(
-              JSON.stringify({
-                error: `Incorrect URL: ${req.url}`,
-              }),
-            );
+            sendJsonResponse(res, 400, {
+              code: 'INVALID_URL',
+              message: 'Invalid URL.',
+            });
             return;
           }
 
           req.params = { mediaType: mediaType as mediaTypes, mediaId };
 
-          asyncHandler(removeFromWatchlist)(req, res);
+          asyncHandler(removeFromWatchlist)(
+            req as IncomingRequest<unknown>,
+            res,
+          );
           return;
         }
-        res.statusCode = 404;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ error: 'Route not found' }));
+        sendJsonResponse(res, 404, {
+          code: 'ROUTE_NOT_FOUND',
+          message: 'Route not found.',
+        });
       } else {
-        res.statusCode = 405;
         res.setHeader('Allow', 'GET, POST, PATCH, DELETE, OPTIONS');
-        res.setHeader('Content-Type', 'application/json');
-        res.end(
-          JSON.stringify({
-            error: 'Method Not Allowed',
-          }),
-        );
+        sendJsonResponse(res, 405, {
+          code: 'METHOD_NOT_ALLOWED',
+          message: 'Method not allowed.',
+        });
+        return;
       }
     }
   },
@@ -238,11 +344,14 @@ async function startServer() {
   try {
     await checkDatabaseConnection();
     await initializeUsersTable();
+    await initializeUserSessionsTable();
     await initializeWatchlistTable();
+    await initializePasswordResetsTable();
     await connectCache();
+    registerJobs();
 
     server.on('error', (error) => {
-      console.error('❌ Server failed to start:', error);
+      console.error('❌ Server error:', error);
       process.exit(1);
     });
 

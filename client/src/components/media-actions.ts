@@ -4,7 +4,11 @@ import type { MediaPreview } from "../types/media-preview.js";
 import type { TMDBContent } from "../types/tmdb-content.js";
 import { createIcon } from "../utils/icon.js";
 
-export function MediaActions(href: string | null, media: TMDBContent) {
+export function MediaActions(
+  href: string | null,
+  media: TMDBContent,
+  signal: AbortSignal,
+) {
   const isMediaWatchlisted = isInWatchlist(String(media.id), media.type);
 
   const fragment = document.createDocumentFragment();
@@ -26,14 +30,14 @@ export function MediaActions(href: string | null, media: TMDBContent) {
         window.removeEventListener("focus", handleWindowFocus);
       };
 
-      window.addEventListener("focus", handleWindowFocus);
+      window.addEventListener("focus", handleWindowFocus, { signal });
 
       primaryBtn.addEventListener(
         "mousemove",
         () => {
           primaryBtn.classList.remove("force-reset");
         },
-        { passive: true },
+        { signal, passive: true },
       );
     }
 
@@ -69,33 +73,37 @@ export function MediaActions(href: string | null, media: TMDBContent) {
     ? "Added to Watchlist"
     : "Add to Watchlist";
 
-  watchlistBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    e.preventDefault();
+  watchlistBtn.addEventListener(
+    "click",
+    (e) => {
+      e.stopPropagation();
+      e.preventDefault();
 
-    const mediaPayload: MediaPreview = {
-      id: media.id,
-      type: media.type,
-      title: media.title,
-      images: {
-        poster: media.images.poster
-          ? {
-              small: media.images.poster.small,
-              medium: media.images.poster.medium,
-            }
-          : null,
-      },
-    };
+      const mediaPayload: MediaPreview = {
+        id: media.id,
+        type: media.type,
+        title: media.title,
+        images: {
+          poster: media.images.poster
+            ? {
+                small: media.images.poster.small,
+                medium: media.images.poster.medium,
+              }
+            : null,
+        },
+      };
 
-    toggleWatchlist(
-      watchlistBtn,
-      mediaPayload,
-      watchlistIconAdd,
-      watchlistIconCheck,
-      null,
-      watchlistBtnText,
-    );
-  });
+      toggleWatchlist(
+        watchlistBtn,
+        mediaPayload,
+        watchlistIconAdd,
+        watchlistIconCheck,
+        null,
+        watchlistBtnText,
+      );
+    },
+    { signal },
+  );
 
   watchlistBtn.append(watchlistIconAdd, watchlistIconCheck, watchlistBtnText);
 

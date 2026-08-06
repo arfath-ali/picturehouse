@@ -5,7 +5,7 @@ import { initShelfScroll } from "../scroll/media-shelf.js";
 import type { pageCategory } from "../types/page-category.js";
 import { getElement } from "../utils/dom.js";
 
-export function initShelves() {
+export async function initShelves() {
   const currentPage = location.pathname.slice(1) as pageCategory;
 
   const validPages: pageCategory[] = ["home", "movies", "tv-shows"];
@@ -22,19 +22,6 @@ export function initShelves() {
     return;
   }
 
-  const renderShelvesAndInitScroll = () => {
-    categories.forEach(async (category) => {
-      await renderShelf(category.identifier);
-    });
-
-    initShelfScroll();
-    return;
-  };
-
-  if (shelvesContainer.children.length > 0) {
-    renderShelvesAndInitScroll();
-  }
-
   const fragment = document.createDocumentFragment();
 
   categories.forEach((category) => {
@@ -44,5 +31,9 @@ export function initShelves() {
 
   shelvesContainer.appendChild(fragment);
 
-  renderShelvesAndInitScroll();
+  await Promise.all(
+    categories.map((category) => renderShelf(category.identifier)),
+  );
+
+  initShelfScroll();
 }

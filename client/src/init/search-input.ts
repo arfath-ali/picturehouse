@@ -1,29 +1,42 @@
 import { renderSearch } from "../features/media-search.js";
-import { setAppState } from "../state/app.js";
 import { getElement } from "../utils/dom.js";
-import { showPageError } from "../utils/show-page-error.js";
-import { createSkeletonFragment } from "../utils/skeleton-structure.js";
+
+let searchEventController: AbortController | null = null;
+let searchFetchController: AbortController | null = null;
 
 export function initSearchInput() {
-  try {
-    const searchBar = getElement<HTMLFormElement>(".search__bar");
-    const searchInput = getElement<HTMLInputElement>(".search__input");
-    const searchActionBtn = getElement<HTMLButtonElement>(
-      ".search__action-btn",
-    );
-    const searchMarketingBlock = getElement(".search__marketing");
-    const emptyStateContainer = getElement<HTMLElement>(".search__empty-state");
-    const searchResultsContainer = getElement<HTMLElement>(".search__results");
+  const searchBar = getElement<HTMLFormElement>(".search__bar");
+  const searchInput = getElement<HTMLInputElement>(".search__input");
+  const searchActionBtn = getElement<HTMLButtonElement>(".search__action-btn");
+  const searchMarketingBlock = getElement(".search__marketing");
+  const emptyStateContainer = getElement<HTMLElement>(".search__empty-state");
+  const searchResultsContainer = getElement<HTMLElement>(".search__results");
 
-    let searchAbortController: AbortController | null = null;
+  let inputDebounce: ReturnType<typeof setTimeout> | undefined;
 
-    let inputDebounce: ReturnType<typeof setTimeout> | undefined;
+  searchEventController?.abort();
+  searchEventController = new AbortController();
+  const eventSignal = searchEventController.signal;
 
-    searchBar.addEventListener("click", () => {
+  searchBar.addEventListener(
+    "click",
+    () => {
       searchInput.focus();
-    });
+    },
+    { signal: eventSignal },
+  );
 
-    searchInput.addEventListener("input", () => {
+  searchInput.addEventListener(
+    "focus",
+    () => {
+      emptyStateContainer.classList.remove("is-visible");
+    },
+    { signal: eventSignal },
+  );
+
+  searchInput.addEventListener(
+    "input",
+    () => {
       clearTimeout(inputDebounce);
 
       const query = searchInput?.value.trim();
@@ -32,57 +45,41 @@ export function initSearchInput() {
       searchMarketingBlock.classList.toggle("is-hidden", query.length > 0);
       emptyStateContainer.classList.remove("is-visible");
 
+      searchResultsContainer.classList.remove("is-visible");
+      searchResultsContainer.innerHTML = "";
+
       if (query.length < 2) {
-        clearTimeout(inputDebounce);
-
-        if (searchAbortController) searchAbortController.abort();
-
+        searchFetchController?.abort();
+        searchFetchController = null;
         searchActionBtn.classList.remove("is-loading");
-        searchResultsContainer.classList.remove("is-visible");
-        searchResultsContainer.innerHTML = "";
+        return;
       }
 
-      if (query.length >= 2) {
-        inputDebounce = setTimeout(async () => {
-          if (searchAbortController) {
-            searchAbortController.abort();
-          }
+      searchActionBtn.classList.add("is-loading");
 
-          searchAbortController = new AbortController();
+      inputDebounce = setTimeout(async () => {
+        searchFetchController?.abort();
+        searchFetchController = new AbortController();
 
-          const { signal } = searchAbortController;
+        await renderSearch(
+          query,
+          searchActionBtn,
+          emptyStateContainer,
+          searchResultsContainer,
+          searchFetchController.signal,
+        );
+      }, 300);
+    },
+    { signal: eventSignal },
+  );
 
-          searchActionBtn.classList.add("is-loading");
-
-          searchResultsContainer.classList.add("is-visible");
-          searchResultsContainer.innerHTML = "";
-
-          const width = window.innerWidth;
-          let skeletonCount = 4;
-
-          if (width >= 1024 && width < 1440) {
-            skeletonCount = 5;
-          } else if (width >= 1440) {
-            skeletonCount = 7;
-          }
-
-          searchResultsContainer.append(
-            createSkeletonFragment(skeletonCount, "media-card__skeleton"),
-          );
-
-          await renderSearch(
-            query,
-            searchActionBtn,
-            emptyStateContainer,
-            searchResultsContainer,
-            signal,
-          );
-        }, 300);
-      }
-    });
-
-    searchActionBtn.addEventListener("click", () => {
+  searchActionBtn.addEventListener(
+    "click",
+    () => {
       if (searchActionBtn.classList.contains("is-loading")) return;
+
+      searchFetchController?.abort();
+      searchFetchController = null;
 
       searchInput.value = "";
       searchInput.focus();
@@ -92,9 +89,15 @@ export function initSearchInput() {
       emptyStateContainer.classList.remove("is-visible");
       searchResultsContainer.classList.remove("is-visible");
       searchResultsContainer.innerHTML = "";
-    });
-  } catch (error: any) {
-    console.error(error.message);
-    showPageError("search-page");
-  }
+    },
+    { signal: eventSignal },
+  );
+}
+
+export function cleanupSearchRequest() {
+  searchFetchController?.abort();
+  searchFetchController = null;
+
+  searchEventController?.abort();
+  searchEventController = null;
 }

@@ -8,8 +8,14 @@ import { redisClient } from '../cache/redis.js';
 import type { MediaReferanceItems } from '../types/media-reference-items.js';
 import { parseMediaShelf } from '../services/tmdb-parser.js';
 import { inFlightIndexKeys, waitForFlightIn } from '../utils/in-flight.js';
+import type { ApiErrorResponse } from '../types/errors.js';
+import { sendJsonResponse } from '../http/send-json-response.js';
+import type { IncomingRequest } from '../types/http.js';
 
-export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
+export async function getMediaShelf(
+  req: IncomingRequest<unknown>,
+  res: ServerResponse,
+) {
   if (!req.params) return;
 
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -24,15 +30,13 @@ export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
     const jsonPath = path.join(__dirname, '..', 'data', 'media-shelf.json');
     const data = fs.readFileSync(jsonPath, 'utf-8');
     mediaShelves = JSON.parse(data);
-  } catch (err: any) {
-    const error: any = new Error(
-      `[File Error]: ${err.message}. Internal Reason:`,
+  } catch (error: unknown) {
+    throw new Error(
+      `[File Error]: ${error instanceof Error ? error.message : 'Unknown error'}`,
       {
-        cause: err,
+        cause: error,
       },
     );
-    error.status = err.status || 500;
-    throw error;
   }
 
   const isTrending =
@@ -44,10 +48,9 @@ export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
     contentReferenceItems = (mediaShelves as any)[page][mediaShelf];
 
     if (!contentReferenceItems) {
-      res.statusCode = 404;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ error: 'Category not found' }));
-      return;
+      throw new Error(
+        `Missing media shelf "${mediaShelf}" for page "${page}" in mediaShelves.json`,
+      );
     }
   }
 
@@ -126,7 +129,7 @@ export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
 
         if (typeof cachedResult !== 'string') {
           updatedMediaEntries.push(cachedEntry);
-          console.warn(`⚠️ Cache miss: [${cachedEntry}]. Skipping.`);
+          console.warn(`⚠️ Cache miss: [${cachedEntry}]. Skipping...`);
           continue;
         }
 
@@ -151,9 +154,7 @@ export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
       }
     }
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(mediaShelfCollection));
+    sendJsonResponse(res, 200, { success: true, mediaShelfCollection });
     return;
   } else {
     if (inFlightIndexKeys.has(mediaShelfIndexKey)) {
@@ -178,9 +179,7 @@ export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
           )
           .filter(Boolean);
 
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(mediaShelfCollection));
+        sendJsonResponse(res, 200, { success: true, mediaShelfCollection });
         return;
       }
 
@@ -195,9 +194,7 @@ export async function getMediaShelf(req: IncomingMessage, res: ServerResponse) {
         contentReferenceItems,
       ).finally(() => inFlightIndexKeys.delete(mediaShelfIndexKey));
 
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(mediaShelfCollection));
+      sendJsonResponse(res, 200, { success: true, mediaShelfCollection });
       return;
     }
   }
@@ -261,9 +258,9 @@ async function fetchMediaShelfItem(
     await redisClient.set(cacheKey, JSON.stringify(mediaPayload));
 
     return mediaPayload;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(
-      `❌ Failed to fetch content ID ${media.tmdbId}. Status: ${error.status ?? 'Unknown'} | Message: ${error.message}`,
+      `❌ Failed to fetch content ID ${media.tmdbId}. Status: ${(error as ApiErrorResponse).status ?? 'Unknown'} | Message: ${(error as ApiErrorResponse).message}`,
     );
   }
 }
@@ -315,7 +312,7 @@ async function fetchFreshMediaData(
       );
     } catch (error) {
       console.error(
-        `❌ Failed fetching live trending content for ${mediaShelf}:`,
+        `❌ Failed fetching live trending content for ${mediaShelf}`,
         {
           cause: error,
         },

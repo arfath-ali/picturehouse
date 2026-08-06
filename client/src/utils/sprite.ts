@@ -1,11 +1,21 @@
 export async function injectSprite(): Promise<void> {
-  const response = await fetch("/src/assets/images/icons.svg");
+  try {
+    const response = await fetch("/src/assets/images/icons.svg");
 
-  const svgText = await response.text();
+    if (!response.ok) {
+      throw new Error(
+        `Failed to load SVG sprite: ${response.status} ${response.statusText}`,
+      );
+    }
 
-  const container = document.createElement("div");
-  container.innerHTML = svgText;
-  container.style.display = "none";
+    const svgText = await response.text();
 
-  document.body.prepend(container);
+    const container = document.createElement("div");
+    container.innerHTML = svgText;
+    container.style.display = "none";
+
+    document.body.prepend(container);
+  } catch (error) {
+    console.error("Error injecting SVG sprite:", error);
+  }
 }

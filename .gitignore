@@ -2,4 +2,5 @@ node_modules/
 client/dist/
 client/src/api/mock-api.ts
 server/dist/
+server/src/data/google-oauth.json
 server/.env

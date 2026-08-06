@@ -83,7 +83,7 @@ export async function extractPosterTheme(
       saturation: `${saturationPercentage}%`,
       lightness: `${lightnessPercentage}%`,
     };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('[Theme Extractor] Failed, using null fallbacks:', error);
     return { hue: null, saturation: null, lightness: null };
   }

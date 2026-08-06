@@ -10,9 +10,9 @@ export default async function fetchFromOMDB(imdbId: string) {
     const data = await response.json();
 
     return data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(
-      `[OMDB Fetch Failure] ID: ${imdbId} | Message: ${error.message}`,
+      `[OMDB Fetch Failure] ID: ${imdbId} | Message: ${error instanceof Error ? error.message : String(error)}`,
     );
     return null;
   }

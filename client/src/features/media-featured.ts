@@ -1,15 +1,20 @@
-import { getFeaturedContent } from "../api/media-featured.js";
-import { ErrorState } from "../components/error-state.js";
+import { apiRequest } from "../api/api-request.js";
+import { mockApiResponse } from "../api/mock-api.js";
 import { MediaActions } from "../components/media-actions.js";
+import { API_BASE_URL } from "../config/api.js";
 import { USER_REGION } from "../config/region.js";
+import { API_ENDPOINTS } from "../constants/api.js";
 import { setAppState } from "../state/app.js";
+import type { FeaturedCollectionResponse } from "../types/api-response.js";
 import type { pageCategory } from "../types/page-category.js";
 import type { TMDBContent } from "../types/tmdb-content.js";
 import { getElement } from "../utils/dom.js";
+import { isApiError } from "../utils/is-api-error.js";
 import { showPageError } from "../utils/show-page-error.js";
 import { createSkeletonFragment } from "../utils/skeleton-structure.js";
 import { createSlug } from "../utils/slugify.js";
 
+let featuredController: AbortController | null = null;
 let featuredCache: Record<string, TMDBContent[]> = {};
 
 export async function renderfeatured() {
@@ -19,17 +24,29 @@ export async function renderfeatured() {
 
   if (!validPages.includes(page)) return;
 
+  const featuredSlider = getElement(".featured__slider");
+
+  featuredSlider.append(createSkeletonFragment(1, "featured__item-skeleton"));
+
+  featuredController?.abort();
+  featuredController = new AbortController();
+
+  const signal = featuredController.signal;
+
   try {
-    const featuredSlider = getElement(".featured__slider");
-
-    featuredSlider.append(createSkeletonFragment(1, "featured__item-skeleton"));
-
     let featuredCollection: TMDBContent[] = [];
 
     if (featuredCache[page]) {
       featuredCollection = featuredCache[page];
     } else {
-      featuredCollection = await getFeaturedContent(page);
+      const response = await apiRequest<FeaturedCollectionResponse>(
+        `${API_BASE_URL}/${API_ENDPOINTS.FEATURED(page)}`,
+        {
+          method: "GET",
+          signal,
+        },
+      );
+      featuredCollection = response.featuredCollection;
       featuredCache[page] = featuredCollection;
     }
 
@@ -178,7 +195,7 @@ export async function renderfeatured() {
       const actionsEl = document.createElement("div");
       actionsEl.classList.add("featured__actions");
 
-      actionsEl.appendChild(MediaActions(detailsURL, media));
+      actionsEl.appendChild(MediaActions(detailsURL, media, signal));
 
       linkEl.append(headerEl, overviewEl, actionsEl);
       itemEl.appendChild(linkEl);
@@ -188,16 +205,21 @@ export async function renderfeatured() {
     featuredSlider.appendChild(fragment);
 
     await Promise.all(assetLoadPromises);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`Failed to load featured content for [${page}] page:`, error);
-    if (error.status >= 500) {
-      showPageError("browse-page");
-    } else if (error.status === 404) {
-      setAppState("not-found");
-    } else {
-      showPageError("browse-page");
-    }
-  }
 
-  return;
+    if (isApiError(error) && error.status === 404) {
+      setAppState("not-found");
+      return;
+    }
+
+    showPageError("browse-page");
+  } finally {
+    featuredController = null;
+  }
+}
+
+export function cleanupFeaturedRequest() {
+  featuredController?.abort();
+  featuredController = null;
 }

@@ -1,10 +1,19 @@
-import { addToWatchlist, removeFromWatchlist } from "../api/watchlist.api.js";
 import { initWatchlistState, isInWatchlist } from "./state.js";
 import type { MediaPreview } from "../types/media-preview.js";
 import type { pageCategory } from "../types/page-category.js";
 import { getElements } from "../utils/dom.js";
 import { setAppState } from "../state/app.js";
 import { showNotice } from "../components/show-notice.js";
+import { apiRequest } from "../api/api-request.js";
+import { API_ENDPOINTS } from "../constants/api.js";
+import { API_BASE_URL } from "../config/api.js";
+import type {
+  AddToWatchlistResponse,
+  RemoveFromWatchlistResponse,
+} from "../types/api-response.js";
+import { isApiError } from "../utils/is-api-error.js";
+import { handleSessionExpiration } from "../utils/session-expiration.js";
+import { mockApiResponse } from "../api/mock-api.js";
 
 export async function toggleWatchlist(
   watchlistBtn: HTMLElement,
@@ -14,6 +23,17 @@ export async function toggleWatchlist(
   watchlistMediaElement?: HTMLLIElement | null,
   watchlistBtnText?: HTMLElement | null,
 ) {
+  const isUserAuthenticated =
+    window.__AUTH_STATE__?.isUserAuthenticated ?? false;
+
+  if (!isUserAuthenticated) {
+    showNotice({
+      message: "Please sign in to add items to your watchlist.",
+      type: "error",
+    });
+    return;
+  }
+
   watchlistBtn.classList.add("is-loading");
 
   const isMediaWatchlisted = isInWatchlist(
@@ -57,7 +77,12 @@ export async function toggleWatchlist(
 
   if (isMediaWatchlisted) {
     try {
-      const response = await removeFromWatchlist(mediaPayload);
+      const response = await apiRequest<RemoveFromWatchlistResponse>(
+        `${API_BASE_URL}/${API_ENDPOINTS.WATCHLIST}/${mediaPayload.type}/${mediaPayload.id}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       watchlistBtn.classList.remove("is-loading");
 
@@ -67,41 +92,60 @@ export async function toggleWatchlist(
       }, 200);
 
       updateWatchlistButton(response.isWatchlisted);
-    } catch (error: any) {
+    } catch (error: unknown) {
       watchlistBtn.classList.remove("is-loading");
-      if ("status" in error) {
-        console.error("Search failed:", error);
-        if (error.status === 404) {
-          setAppState("not-found");
-          return;
-        } else {
-          showNotice({
-            message: "Couldn't remove from your watchlist. Please try again.",
-            type: "error",
-          });
-        }
+
+      if (isApiError(error) && error.status === 401) {
+        handleSessionExpiration();
+        return;
       }
+
+      console.error("Watchlist removal failed:", error);
+
+      if (isApiError(error) && error.status === 404) {
+        setAppState("not-found");
+        return;
+      }
+
+      showNotice({
+        message: "Couldn't remove from your watchlist. Please try again.",
+        type: "error",
+      });
     }
   } else {
     try {
-      const response = await addToWatchlist(mediaPayload);
+      const response = await apiRequest<AddToWatchlistResponse>(
+        `${API_BASE_URL}/${API_ENDPOINTS.WATCHLIST}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(mediaPayload),
+        },
+      );
       watchlistBtn.classList.remove("is-loading");
 
       updateWatchlistButton(response.isWatchlisted);
-    } catch (error: any) {
-      if ("status" in error) {
-        watchlistBtn.classList.remove("is-loading");
-        console.error("Search failed:", error);
-        if (error.status === 404) {
-          setAppState("not-found");
-          return;
-        } else {
-          showNotice({
-            message: "Couldn't add to your watchlist. Please try again.",
-            type: "error",
-          });
-        }
+    } catch (error: unknown) {
+      watchlistBtn.classList.remove("is-loading");
+
+      if (isApiError(error) && error.status === 401) {
+        handleSessionExpiration();
+        return;
       }
+
+      console.error("Search failed:", error);
+
+      if (isApiError(error) && error.status === 404) {
+        setAppState("not-found");
+        return;
+      }
+
+      showNotice({
+        message: "Couldn't add to your watchlist. Please try again.",
+        type: "error",
+      });
     }
   }
 

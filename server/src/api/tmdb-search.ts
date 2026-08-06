@@ -1,3 +1,5 @@
+import type { ApiErrorResponse } from '../types/errors.js';
+
 export async function searchTMDB(query: string, searchPage: string) {
   const url = `${process.env.TMDB_BASE_URL}/search/multi?api_key=${process.env.TMDB_API_KEY}&query=${query}&language=en-US&page=${searchPage}`;
 
@@ -17,29 +19,31 @@ export async function searchTMDB(query: string, searchPage: string) {
           data: errorData,
         });
 
-        const error: any = new Error('TMDB_FETCH_FAILED');
+        const error = new Error('TMDB_FETCH_FAILED') as ApiErrorResponse;
         error.status = response.status;
         throw error;
       }
 
       const data = await response.json();
       return data;
-    } catch (error: any) {
+    } catch (err: unknown) {
       clearTimeout(timeoutId);
 
+      const error = err as Error & { status?: number };
+
       if (error.name === 'AbortError') {
-        const timeoutError: any = new Error(
+        const timeoutError = new Error(
           'Request timed out after 5 seconds',
-        );
+        ) as ApiErrorResponse;
         timeoutError.status = 408;
         throw timeoutError;
       }
 
       if (error.status) throw error;
 
-      const networkError: any = new Error(
+      const networkError = new Error(
         `Connection failed: ${error.message}`,
-      );
+      ) as ApiErrorResponse;
       networkError.status = 0;
       throw networkError;
     }
@@ -51,8 +55,12 @@ export async function searchTMDB(query: string, searchPage: string) {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
       return await makeRequest();
-    } catch (error: any) {
+    } catch (err: unknown) {
       const permanentErrors = [401, 404, 422, 500, 502];
+
+      const error = err as Error & {
+        status?: number;
+      };
 
       const status = error.status !== undefined ? error.status : 0;
 
@@ -61,7 +69,7 @@ export async function searchTMDB(query: string, searchPage: string) {
           `❌ [${status}] Critical Error for ${query}: ${error.message}`,
         );
 
-        const permanentError: any = new Error();
+        const permanentError = new Error() as ApiErrorResponse;
 
         permanentError.status = status;
 
@@ -97,7 +105,7 @@ export async function searchTMDB(query: string, searchPage: string) {
             `❌ [Final Failure] All ${MAX_ATTEMPTS} attempts exhausted.`,
           );
 
-          const finalError: any = new Error(error.message);
+          const finalError = new Error(error.message) as ApiErrorResponse;
           finalError.status = status;
           throw finalError;
         }

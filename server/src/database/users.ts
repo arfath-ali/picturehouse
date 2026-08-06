@@ -6,13 +6,23 @@ export async function initializeUsersTable() {
 
     await pool.query(`CREATE TABLE IF NOT EXISTS users(
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            google_id VARCHAR(255) UNIQUE,
+
             full_name VARCHAR(256),
-            username VARCHAR(30) UNIQUE NOT NULL,
+            username VARCHAR(30) UNIQUE,
             email VARCHAR(256) UNIQUE NOT NULL,
-            password VARCHAR(256) NOT NULL,
-            watchlist_sort_preference TEXT DEFAULT 'recently-added'
+            password VARCHAR(256),
+
+            is_verified BOOLEAN DEFAULT FALSE,
+            otp VARCHAR(64),
+            otp_expires_at TIMESTAMPTZ,
+
+            watchlist_sort_preference TEXT DEFAULT 'recently-added',
+
+            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         )`);
-    console.log('✅ Users table ready');
+
+    console.log('✅ Users table verified');
   } catch (error) {
     throw new Error('Failed to set up users table', {
       cause: error,

@@ -5,7 +5,10 @@ import type { TMDBContent } from "../types/tmdb-content.js";
 import { createIcon } from "../utils/icon.js";
 import { createSlug } from "../utils/slugify.js";
 
-export function MediaCard(media: TMDBContent | MediaPreview): HTMLLIElement {
+export function MediaCard(
+  media: TMDBContent | MediaPreview,
+  signal: AbortSignal,
+): HTMLLIElement {
   const page = document.body.dataset.state;
 
   const isWatchlistPage =
@@ -90,36 +93,40 @@ export function MediaCard(media: TMDBContent | MediaPreview): HTMLLIElement {
     watchlistBtn.append(watchlistIconAdd, watchlistIconCheck);
   }
 
-  watchlistBtn.addEventListener("click", async (e) => {
-    e.stopPropagation();
-    e.preventDefault();
+  watchlistBtn.addEventListener(
+    "click",
+    async (e) => {
+      e.stopPropagation();
+      e.preventDefault();
 
-    const watchlistMediaElement = isWatchlistPage
-      ? (e.target as HTMLElement).closest("li")
-      : null;
+      const watchlistMediaElement = isWatchlistPage
+        ? (e.target as HTMLElement).closest("li")
+        : null;
 
-    const mediaPayload: MediaPreview = {
-      id: media.id,
-      type: media.type,
-      title: media.title,
-      images: {
-        poster: media.images.poster
-          ? {
-              small: media.images.poster.small,
-              medium: media.images.poster.medium,
-            }
-          : null,
-      },
-    };
+      const mediaPayload: MediaPreview = {
+        id: media.id,
+        type: media.type,
+        title: media.title,
+        images: {
+          poster: media.images.poster
+            ? {
+                small: media.images.poster.small,
+                medium: media.images.poster.medium,
+              }
+            : null,
+        },
+      };
 
-    toggleWatchlist(
-      watchlistBtn,
-      mediaPayload,
-      watchlistIconAdd,
-      watchlistIconCheck,
-      watchlistMediaElement,
-    );
-  });
+      toggleWatchlist(
+        watchlistBtn,
+        mediaPayload,
+        watchlistIconAdd,
+        watchlistIconCheck,
+        watchlistMediaElement,
+      );
+    },
+    { signal },
+  );
 
   cardPosterWrapper.append(watchlistBtn);
 

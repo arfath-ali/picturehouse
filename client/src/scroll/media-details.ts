@@ -1,5 +1,7 @@
 import { getElement } from "../utils/dom.js";
 
+let detailsScrollController: AbortController | null = null;
+
 export function initCastScroll() {
   const castList = getElement(".media-details__cast-list");
 
@@ -24,6 +26,10 @@ export function initCastScroll() {
 
   const gap = parseFloat(getComputedStyle(castList).gap);
 
+  detailsScrollController?.abort();
+  detailsScrollController = new AbortController();
+  const signal = detailsScrollController.signal;
+
   function syncButtons() {
     const scrollLeft = castList.scrollLeft;
     const maxScroll = castList.scrollWidth - castList.clientWidth;
@@ -44,43 +50,60 @@ export function initCastScroll() {
 
   observer.observe(castList, { childList: true });
 
-  scrollPrevBtn.addEventListener("click", () => {
-    const cards = [...castList.children] as HTMLElement[];
-
-    const cardWidth = cards[0].offsetWidth + gap;
-
-    const visibleCards = Math.floor(castList.clientWidth / cardWidth);
-
-    const currentIndex = cards.findIndex(
-      (card) => card.offsetLeft >= castList.scrollLeft,
-    );
-
-    if (currentIndex <= 0) return;
-
-    const targetIndex = Math.max(0, currentIndex - visibleCards);
-
-    castList.scrollTo({
-      left: cards[targetIndex].offsetLeft - cardWidth / 2,
-    });
+  signal.addEventListener("abort", () => {
+    observer.disconnect();
   });
 
-  scrollNextBtn.addEventListener("click", () => {
-    const cards = [...castList.children] as HTMLElement[];
+  scrollPrevBtn.addEventListener(
+    "click",
+    () => {
+      const cards = [...castList.children] as HTMLElement[];
 
-    const nextCard = cards.find(
-      (card) =>
-        card.offsetLeft >
-        castList.scrollLeft + castList.clientWidth - card.offsetWidth,
-    );
+      const cardWidth = cards[0].offsetWidth + gap;
 
-    if (!nextCard) return;
+      const visibleCards = Math.floor(castList.clientWidth / cardWidth);
 
-    castList.scrollTo({
-      left: nextCard.offsetLeft - (nextCard.offsetWidth + gap) / 2,
-    });
-  });
+      const currentIndex = cards.findIndex(
+        (card) => card.offsetLeft >= castList.scrollLeft,
+      );
 
-  castList.addEventListener("scroll", syncButtons);
+      if (currentIndex <= 0) return;
+
+      const targetIndex = Math.max(0, currentIndex - visibleCards);
+
+      castList.scrollTo({
+        left: cards[targetIndex].offsetLeft - cardWidth / 2,
+      });
+    },
+    { signal },
+  );
+
+  scrollNextBtn.addEventListener(
+    "click",
+    () => {
+      const cards = [...castList.children] as HTMLElement[];
+
+      const nextCard = cards.find(
+        (card) =>
+          card.offsetLeft >
+          castList.scrollLeft + castList.clientWidth - card.offsetWidth,
+      );
+
+      if (!nextCard) return;
+
+      castList.scrollTo({
+        left: nextCard.offsetLeft - (nextCard.offsetWidth + gap) / 2,
+      });
+    },
+    { signal },
+  );
+
+  castList.addEventListener("scroll", syncButtons, { signal });
 
   syncButtons();
+}
+
+export function cleanupDetailsScroll() {
+  detailsScrollController?.abort();
+  detailsScrollController = null;
 }

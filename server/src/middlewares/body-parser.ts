@@ -1,8 +1,9 @@
 import type { ServerResponse } from 'node:http';
-import type { IncomingMessage } from 'node:http';
+import type { IncomingRequest } from '../types/http.js';
+import { sendJsonResponse } from '../http/send-json-response.js';
 
 export function parseRequestBody(
-  req: IncomingMessage,
+  req: IncomingRequest<Record<string, unknown>>,
   res: ServerResponse,
   next: () => void,
 ) {
@@ -14,12 +15,13 @@ export function parseRequestBody(
 
   req.on('end', () => {
     try {
-      req.body = JSON.parse(body);
+      req.body = body ? JSON.parse(body) : {};
       next();
     } catch (error) {
-      res.statusCode = 400;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ error: 'Invalid JSON format' }));
+      sendJsonResponse(res, 400, {
+        code: 'INVALID_JSON',
+        message: 'Invalid JSON format.',
+      });
     }
   });
 }

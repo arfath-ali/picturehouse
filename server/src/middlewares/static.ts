@@ -2,6 +2,10 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import path from 'node:path';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import { sendJsonResponse } from '../http/send-json-response.js';
+import { sendFileResponse } from '../http/send-file-response.js';
+import { verifyAuth } from './verify-auth.js';
+import type { IncomingRequest } from '../types/http.js';
 
 const mimeTypes: Record<string, string> = {
   '.css': 'text/css',
@@ -15,7 +19,7 @@ const mimeTypes: Record<string, string> = {
 };
 
 export function serveStaticFile(
-  req: IncomingMessage,
+  req: IncomingRequest<unknown>,
   res: ServerResponse,
   extension: string,
   __clientdir: string,
@@ -37,79 +41,82 @@ export function serveStaticFile(
     if (error) {
       if (error.code === 'ENOENT') {
         console.error(`❌ File not found: ${staticFilePath}`);
+        sendJsonResponse(res, 404, {
+          code: 'FILE_NOT_FOUND',
+          message: 'File not found.',
+        });
       } else {
         console.error('❌ Failed to read static file:', error);
+        sendJsonResponse(res, 500, {
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Internal Server Error.',
+        });
       }
 
-      res.statusCode = error.code === 'ENOENT' ? 404 : 500;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(
-        JSON.stringify({
-          error:
-            error.code === 'ENOENT'
-              ? 'File not found'
-              : 'Internal Server Error',
-        }),
-      );
       return;
     }
 
     const etag = crypto.createHash('md5').update(staticFile).digest('hex');
 
     if (req.headers['if-none-match'] === etag) {
-      res.statusCode = 304;
-      res.end();
+      sendJsonResponse(res, 304);
       return;
     }
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', mimeType);
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('ETag', etag);
-    res.end(staticFile);
+    sendFileResponse(res, 200, staticFile, mimeType, {
+      'Cache-Control': 'no-cache',
+      ETag: etag,
+    });
   });
 }
 
-export function serveHTMLFile(
-  req: IncomingMessage,
+export async function serveHTMLFile(
+  req: IncomingRequest<unknown>,
   res: ServerResponse,
   __clientdir: string,
 ) {
   const htmlFilePath = path.join(__clientdir, 'index.html');
+  let isUserAuthenticated = false;
 
-  fs.readFile(htmlFilePath, (error, html) => {
+  try {
+    await verifyAuth(req, res);
+    isUserAuthenticated = true;
+  } catch {
+    isUserAuthenticated = false;
+  }
+
+  fs.readFile(htmlFilePath, 'utf-8', (error, html) => {
     if (error) {
       if (error.code === 'ENOENT') {
         console.error(`❌ HTML File not found: ${htmlFilePath}`);
+        sendJsonResponse(res, 404, {
+          code: 'FILE_NOT_FOUND',
+          message: 'File not found.',
+        });
       } else {
         console.error('❌ Failed to read HTML file:', error);
+        sendJsonResponse(res, 500, {
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Internal Server Error.',
+        });
       }
 
-      res.statusCode = error.code === 'ENOENT' ? 404 : 500;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(
-        JSON.stringify({
-          error:
-            error.code === 'ENOENT'
-              ? 'File not found'
-              : 'Internal Server Error',
-        }),
-      );
       return;
     }
 
-    const etag = crypto.createHash('md5').update(html).digest('hex');
+    const authScript = `<script>window.__AUTH_STATE__ = { isUserAuthenticated: ${isUserAuthenticated}, userId:"${req.userId}" };</script>`;
+    const modifiedHtml = html.replace('</head>', `${authScript}</head>`);
+
+    const etag = crypto.createHash('md5').update(modifiedHtml).digest('hex');
 
     if (req.headers['if-none-match'] === etag) {
-      res.statusCode = 304;
-      res.end();
+      sendJsonResponse(res, 304);
       return;
     }
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('ETag', etag);
-    res.end(html);
+    sendFileResponse(res, 200, modifiedHtml, 'text/html', {
+      'Cache-Control': 'no-cache',
+      ETag: etag,
+    });
   });
 }

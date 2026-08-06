@@ -1,5 +1,6 @@
 export type AppState =
   | ""
+  | "auth/google/callback"
   | "sign-in"
   | "sign-up"
   | "verify-email"

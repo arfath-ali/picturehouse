@@ -1,11 +1,15 @@
-import { mockApiResponse } from "../api/mock-api.js";
-import { signUp } from "../api/sign-up.js";
+import { apiRequest } from "../api/api-request.js";
+import { API_BASE_URL } from "../config/api.js";
+import { API_ENDPOINTS } from "../constants/api.js";
 import { navigate } from "../router/navigate.js";
 import { setAppState } from "../state/app.js";
+import { authStore } from "../state/auth-store.js";
+import type { SignUpResponse } from "../types/api-response.js";
 import type { FormValidationResult } from "../types/form-validation-result.js";
 import {
   checkUsernameAvailability,
   clearUsernameDebounce,
+  resetUsernameStatus,
 } from "../utils/check-username-availability.js";
 import { getElement } from "../utils/dom.js";
 import { setFieldErrorStatus } from "../utils/form-ui.js";
@@ -15,9 +19,15 @@ import {
   validatePassword,
   validateUsername,
 } from "../utils/form-validation.js";
+import { isApiError } from "../utils/is-api-error.js";
 import { showPageError } from "../utils/show-page-error.js";
+import { resetForm } from "./reset-form.js";
+
+let signUpController: AbortController | null = null;
 
 export function initSignUp() {
+  resetForm();
+
   const usernameInput = getElement<HTMLInputElement>(
     "[data-js='signup-username']",
   );
@@ -39,6 +49,7 @@ export function initSignUp() {
     isValid: false,
   };
   let isEmailValid: boolean = false;
+  let lastServerRejectedEmail = "";
 
   const passwordInput = getElement<HTMLInputElement>(
     "[data-js='signup-password'",
@@ -67,7 +78,11 @@ export function initSignUp() {
 
   const submitBtn = getElement<HTMLButtonElement>("[data-js='signup-btn']");
 
-  async function checkFormValidity() {
+  signUpController?.abort();
+  signUpController = new AbortController();
+  const signal = signUpController.signal;
+
+  function checkFormValidity() {
     submitBtn.disabled = !(
       isUsernameValid &&
       isEmailValid &&
@@ -76,133 +91,257 @@ export function initSignUp() {
     );
   }
 
-  usernameInput.addEventListener("input", async (e) => {
-    clearUsernameDebounce();
-    usernameInput.value = (e.target as HTMLInputElement).value
-      .toLowerCase()
-      .replace(/\s/g, "");
+  usernameInput.addEventListener(
+    "input",
+    async (e) => {
+      clearUsernameDebounce();
+      usernameInput.value = (e.target as HTMLInputElement).value
+        .toLowerCase()
+        .replace(/\s/g, "");
 
-    setFieldErrorStatus(usernameInputErrorElement);
+      setFieldErrorStatus(usernameInputErrorElement, "", usernameInput);
 
-    usernameValidation = validateUsername(usernameInput.value);
-    isUsernameValid = usernameValidation.isValid;
+      usernameValidation = validateUsername(usernameInput.value);
+      isUsernameValid = usernameValidation.isValid;
 
-    if (isUsernameValid) {
-      usernameValidation = await checkUsernameAvailability(usernameInput.value);
+      if (isUsernameValid) {
+        usernameValidation = await checkUsernameAvailability(
+          usernameInput.value,
+        );
+        setFieldErrorStatus(
+          usernameInputErrorElement,
+          usernameValidation.message,
+          usernameInput,
+        );
+
+        isUsernameValid = usernameValidation.isValid;
+      }
+
+      checkFormValidity();
+    },
+    { signal },
+  );
+
+  usernameInput.addEventListener(
+    "blur",
+    async () => {
       setFieldErrorStatus(
         usernameInputErrorElement,
         usernameValidation.message,
+        usernameInput,
+      );
+    },
+    { signal },
+  );
+
+  emailInput.addEventListener(
+    "input",
+    () => {
+      const currentEmail = emailInput.value.trim();
+
+      if (currentEmail && currentEmail === lastServerRejectedEmail) {
+        emailValidation = { message: "Email already exists.", isValid: false };
+        isEmailValid = false;
+        setFieldErrorStatus(
+          emailInputErrorElement,
+          emailValidation.message,
+          emailInput,
+        );
+      } else {
+        setFieldErrorStatus(emailInputErrorElement, "", emailInput);
+        emailValidation = validateEmail(currentEmail);
+        isEmailValid = emailValidation.isValid;
+      }
+
+      checkFormValidity();
+    },
+    { signal },
+  );
+
+  emailInput.addEventListener(
+    "blur",
+    () => {
+      setFieldErrorStatus(
+        emailInputErrorElement,
+        emailValidation.message,
+        emailInput,
+      );
+    },
+    { signal },
+  );
+
+  passwordInput.addEventListener(
+    "input",
+    (e) => {
+      passwordInput.value = (e.target as HTMLInputElement).value.replace(
+        /\s/g,
+        "",
+      );
+      setFieldErrorStatus(passwordInputErrorElement, "", passwordInput);
+
+      passwordValidation = validatePassword(passwordInput.value);
+      isPasswordValid = passwordValidation.isValid;
+
+      if (confirmPasswordInput.value.length > 0) {
+        if (passwordInput.value === confirmPasswordInput.value) {
+          setFieldErrorStatus(
+            confirmPasswordInputErrorElement,
+            "",
+            confirmPasswordInput,
+          );
+          confirmPasswordValidation = { message: "", isValid: true };
+          isConfirmPasswordValid = confirmPasswordValidation.isValid;
+        }
+      }
+
+      checkFormValidity();
+    },
+    { signal },
+  );
+
+  passwordInput.addEventListener(
+    "blur",
+    (e) => {
+      setFieldErrorStatus(
+        passwordInputErrorElement,
+        passwordValidation.message,
+        passwordInput,
+      );
+    },
+    { signal },
+  );
+
+  confirmPasswordInput.addEventListener(
+    "input",
+    (e) => {
+      confirmPasswordInput.value = (e.target as HTMLInputElement).value.replace(
+        /\s/g,
+        "",
+      );
+      setFieldErrorStatus(
+        confirmPasswordInputErrorElement,
+        "",
+        confirmPasswordInput,
       );
 
-      isUsernameValid = usernameValidation.isValid;
-    }
+      confirmPasswordValidation = validateConfirmPassword(
+        passwordInput.value,
+        confirmPasswordInput.value,
+      );
+      isConfirmPasswordValid = confirmPasswordValidation.isValid;
 
-    checkFormValidity();
-  });
+      checkFormValidity();
+    },
+    { signal },
+  );
 
-  usernameInput.addEventListener("blur", async () => {
-    setFieldErrorStatus(usernameInputErrorElement, usernameValidation.message);
-  });
+  confirmPasswordInput.addEventListener(
+    "blur",
+    (e) => {
+      setFieldErrorStatus(
+        confirmPasswordInputErrorElement,
+        confirmPasswordValidation.message,
+        confirmPasswordInput,
+      );
+    },
+    { signal },
+  );
 
-  emailInput.addEventListener("input", () => {
-    setFieldErrorStatus(emailInputErrorElement);
+  submitBtn.addEventListener(
+    "click",
+    async (e) => {
+      e.preventDefault();
 
-    emailValidation = validateEmail(emailInput.value);
-    isEmailValid = emailValidation.isValid;
+      submitBtn.setAttribute("data-loading", "true");
+      submitBtn.disabled = true;
 
-    checkFormValidity();
-  });
+      const userData = {
+        username: usernameInput.value,
+        email: emailInput.value,
+        password: passwordInput.value,
+        confirmPassword: confirmPasswordInput.value,
+      };
 
-  emailInput.addEventListener("blur", () => {
-    setFieldErrorStatus(emailInputErrorElement, emailValidation.message);
-  });
-
-  passwordInput.addEventListener("input", (e) => {
-    passwordInput.value = (e.target as HTMLInputElement).value.replace(
-      /\s/g,
-      "",
-    );
-    setFieldErrorStatus(passwordInputErrorElement);
-
-    passwordValidation = validatePassword(passwordInput.value);
-    isPasswordValid = passwordValidation.isValid;
-
-    checkFormValidity();
-  });
-
-  passwordInput.addEventListener("blur", (e) => {
-    setFieldErrorStatus(passwordInputErrorElement, passwordValidation.message);
-  });
-
-  confirmPasswordInput.addEventListener("input", (e) => {
-    confirmPasswordInput.value = (e.target as HTMLInputElement).value.replace(
-      /\s/g,
-      "",
-    );
-    setFieldErrorStatus(confirmPasswordInputErrorElement);
-
-    confirmPasswordValidation = validateConfirmPassword(
-      passwordInput.value,
-      confirmPasswordInput.value,
-    );
-    isConfirmPasswordValid = confirmPasswordValidation.isValid;
-
-    checkFormValidity();
-  });
-
-  confirmPasswordInput.addEventListener("blur", (e) => {
-    setFieldErrorStatus(
-      confirmPasswordInputErrorElement,
-      confirmPasswordValidation.message,
-    );
-  });
-
-  submitBtn.addEventListener("click", async (e) => {
-    e.preventDefault();
-
-    submitBtn.setAttribute("data-loading", "true");
-    submitBtn.disabled = true;
-
-    const userData = {
-      username: usernameInput.value,
-      email: emailInput.value,
-      password: passwordInput.value,
-      confirmPassword: confirmPasswordInput.value,
-    };
-
-    try {
-      const response = await signUp(userData);
-
-      if (response.success) {
-        history.replaceState({}, "", "/verify-email");
-        navigate();
-      }
-    } catch (error: any) {
-      submitBtn.setAttribute("data-loading", "false");
-      submitBtn.disabled = false;
-      if (error.status === 409) {
-        const fieldName = error.backendResponse.field;
-        const message = error.backendResponse.message;
-
-        const targetInput = getElement<HTMLInputElement>(
-          `[data-js=signup-${fieldName}]`,
+      try {
+        const response = await apiRequest<SignUpResponse>(
+          `${API_BASE_URL}/${API_ENDPOINTS.SIGNUP}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+          },
         );
-        const targetInputErrorElement = getElement<HTMLSpanElement>(
-          `[data-js=signup-${fieldName}-error]`,
-        );
-        setFieldErrorStatus(targetInputErrorElement, message);
-        if (fieldName === "username") isUsernameValid = false;
-        if (fieldName === "email") isEmailValid = false;
-        if (fieldName === "password") isPasswordValid = false;
-        if (fieldName === "confirm-password") isConfirmPasswordValid = false;
 
-        targetInput.focus();
-        checkFormValidity();
-      } else if (error.status === 404) {
-        setAppState("not-found");
-      } else {
-        showPageError("signup-page");
+        if (response.success) {
+          lastServerRejectedEmail = "";
+          authStore.setPendingVerificationEmail(userData.email);
+          history.replaceState({}, "", "/verify-email");
+          navigate();
+        }
+      } catch (error: unknown) {
+        console.error(error);
+
+        submitBtn.setAttribute("data-loading", "false");
+        submitBtn.disabled = false;
+
+        if (isApiError(error)) {
+          if (error.status === 400 || error.status === 409) {
+            const targetInputName = error.targetInput;
+            const message = error.message;
+
+            const targetInput = getElement<HTMLInputElement>(
+              `[data-js=signup-${targetInputName}]`,
+            );
+            const targetInputError = getElement<HTMLSpanElement>(
+              `[data-js=signup-${targetInputName}-error]`,
+            );
+
+            setFieldErrorStatus(targetInputError, message, targetInput);
+
+            switch (targetInputName) {
+              case "username":
+                isUsernameValid = false;
+                usernameValidation = { message, isValid: false };
+                resetUsernameStatus();
+                break;
+              case "email":
+                isEmailValid = false;
+                emailValidation = { message, isValid: false };
+                if (error.code === "EMAIL_ALREADY_EXISTS") {
+                  lastServerRejectedEmail = emailInput.value.trim();
+                } else {
+                  lastServerRejectedEmail = "";
+                }
+                break;
+              case "password":
+                isPasswordValid = false;
+                passwordValidation = { message, isValid: false };
+                break;
+              case "confirm-password":
+                isConfirmPasswordValid = false;
+                confirmPasswordValidation = { message, isValid: false };
+                break;
+            }
+
+            targetInput.focus();
+            checkFormValidity();
+          } else if (error.status === 404) {
+            setAppState("not-found");
+          } else {
+            showPageError("signup-page");
+          }
+        } else {
+          showPageError("signup-page");
+        }
       }
-    }
-  });
+    },
+    { signal },
+  );
+}
+
+export function cleanupSignUpController() {
+  signUpController?.abort();
+  signUpController = null;
 }

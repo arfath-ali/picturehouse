@@ -1,4 +1,4 @@
-export interface WatchlistItem {
+export interface WatchlistBody {
   id: string;
   type: string;
   title: string;
@@ -8,4 +8,8 @@ export interface WatchlistItem {
       medium: string;
     } | null;
   };
+}
+
+export interface watchlistSortPreferenceBody {
+  watchlistSortPreference: string;
 }

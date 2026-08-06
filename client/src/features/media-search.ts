@@ -1,12 +1,16 @@
-import { getMediaSearch } from "../api/media-search.js";
+import { apiRequest } from "../api/api-request.js";
+import { mockApiResponse } from "../api/mock-api.js";
 import { MediaCard } from "../components/media-card.js";
+import { API_BASE_URL } from "../config/api.js";
+import { API_ENDPOINTS } from "../constants/api.js";
 import { setAppState } from "../state/app.js";
+import type { SearchResultsResponse } from "../types/api-response.js";
 import type { MediaPreview } from "../types/media-preview.js";
 import { getElement } from "../utils/dom.js";
+import { isApiError } from "../utils/is-api-error.js";
 import { showSearchInlineError } from "../utils/search-inline-error.js";
 import { showPageError } from "../utils/show-page-error.js";
-
-let currentSearchPage = 1;
+import { createSkeletonFragment } from "../utils/skeleton-structure.js";
 
 export async function renderSearch(
   query: string,
@@ -15,20 +19,42 @@ export async function renderSearch(
   searchResultsContainer: HTMLElement,
   signal: AbortSignal,
 ) {
+  let currentSearchPage = 1;
+
+  emptyStateContainer.classList.remove("is-visible");
+  searchResultsContainer.classList.add("is-visible");
+  searchResultsContainer.innerHTML = "";
+
+  const width = window.innerWidth;
+  let skeletonCount = 4;
+
+  if (width >= 1024 && width < 1440) {
+    skeletonCount = 5;
+  } else if (width >= 1440) {
+    skeletonCount = 7;
+  }
+
+  searchResultsContainer.append(
+    createSkeletonFragment(skeletonCount, "media-card__skeleton"),
+  );
+
   try {
-    const { mediaPayload, totalPages, totalResults } = await getMediaSearch(
-      query,
-      currentSearchPage,
-      signal,
-    );
+    const { searchResults, totalPages, totalResults } =
+      await apiRequest<SearchResultsResponse>(
+        `${API_BASE_URL}/${API_ENDPOINTS.SEARCH(query, currentSearchPage)}`,
+        {
+          method: "GET",
+          signal,
+        },
+      );
+
     searchActionBtn.classList.remove("is-loading");
 
-    if (mediaPayload.length === 0) {
+    if (searchResults.length === 0) {
       searchResultsContainer.classList.remove("is-visible");
       searchResultsContainer.innerHTML = "";
 
       const emptyQuerySpan = getElement(".search__empty-query");
-
       emptyStateContainer.classList.add("is-visible");
       emptyQuerySpan.textContent = `"${query}"`;
     } else {
@@ -43,8 +69,8 @@ export async function renderSearch(
       searchResultsList.classList.add("search__results-list");
       searchResultsContainer.append(searchResultsHeading, searchResultsList);
 
-      mediaPayload.forEach((result: MediaPreview) => {
-        searchResultsList.appendChild(MediaCard(result));
+      searchResults.forEach((result: MediaPreview) => {
+        searchResultsList.appendChild(MediaCard(result, signal));
       });
 
       if (totalPages > 1) {
@@ -65,93 +91,104 @@ export async function renderSearch(
         resultsCounter.classList.add("search__results-counter");
         resultsCounter.textContent = `Viewing ${currentlyShownCount} of ${totalResults} results`;
 
-        loadMoreBtn.addEventListener("click", async () => {
-          const existingError = loadMoreContainer.querySelector(
-            ".search__results-load-error",
-          );
-          existingError?.remove();
-          loadMoreBtn.disabled = true;
-          loadMoreBtn.innerHTML = `LOADING...`;
-          loadMoreBtn.classList.add("is-loading");
-
-          try {
-            const nextPageData = await getMediaSearch(
-              query,
-              currentSearchPage,
-              signal,
+        loadMoreBtn.addEventListener(
+          "click",
+          async () => {
+            const existingError = loadMoreContainer.querySelector(
+              ".search__results-load-error",
             );
+            existingError?.remove();
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.innerHTML = `LOADING...`;
+            loadMoreBtn.classList.add("is-loading");
 
             currentSearchPage++;
 
-            if (nextPageData && Array.isArray(nextPageData.mediaPayload)) {
-              nextPageData.mediaPayload.forEach((result: MediaPreview) => {
-                searchResultsList.appendChild(MediaCard(result));
-              });
-            }
+            try {
+              const { searchResults } = await apiRequest<SearchResultsResponse>(
+                `${API_BASE_URL}/${API_ENDPOINTS.SEARCH(query, currentSearchPage)}`,
+                {
+                  method: "GET",
+                  signal,
+                },
+              );
 
-            const updatedShownCount = searchResultsList.children.length;
-            resultsCounter.textContent = `Viewing ${updatedShownCount} of ${totalResults} results`;
+              if (searchResults && Array.isArray(searchResults)) {
+                searchResults.forEach((result: MediaPreview) => {
+                  searchResultsList.appendChild(MediaCard(result, signal));
+                });
+              }
 
-            if (
-              currentSearchPage >= totalPages ||
-              updatedShownCount >= totalResults
-            ) {
-              loadMoreContainer.remove();
-            } else {
-              loadMoreBtn.disabled = false;
-              loadMoreBtn.classList.remove("is-loading");
-              loadMoreBtn.innerHTML = `LOAD MORE CONTENT ↓`;
-            }
-          } catch (error: any) {
-            if (error.name === "AbortError") return;
+              const updatedShownCount = searchResultsList.children.length;
+              resultsCounter.textContent = `Viewing ${updatedShownCount} of ${totalResults} results`;
 
-            if ("status" in error) {
+              if (
+                currentSearchPage >= totalPages ||
+                updatedShownCount >= totalResults
+              ) {
+                loadMoreContainer.remove();
+              } else {
+                loadMoreBtn.disabled = false;
+                loadMoreBtn.classList.remove("is-loading");
+                loadMoreBtn.innerHTML = `LOAD MORE CONTENT ↓`;
+              }
+            } catch (error: unknown) {
+              currentSearchPage--;
+
+              if (error instanceof Error && error.name === "AbortError") {
+                return;
+              }
+
               console.error("Failed to load more media content:", error);
 
-              if (error.status === 404) {
-                setAppState("not-found");
-                return;
-              } else {
+              loadMoreBtn.disabled = false;
+              loadMoreBtn.classList.remove("is-loading");
+              loadMoreBtn.innerHTML = "TRY AGAIN ↓";
+
+              if (isApiError(error)) {
+                if (error.status === 404) {
+                  setAppState("not-found");
+                  return;
+                }
+
                 const errorMessage = document.createElement("p");
                 errorMessage.classList.add("search__results-load-error");
                 errorMessage.textContent =
                   "Couldn't load more results. Please try again.";
+
                 loadMoreContainer.insertBefore(errorMessage, resultsCounter);
+                return;
               }
 
-              loadMoreBtn.disabled = false;
-              loadMoreBtn.classList.remove("is-loading");
-              loadMoreBtn.innerHTML = `TRY AGAIN ↓`;
-              return;
+              showPageError("search-page");
             }
-
-            console.error(error.message);
-            showPageError("search-page");
-          }
-        });
+          },
+          { signal },
+        );
 
         loadMoreContainer.append(loadMoreBtn, resultsCounter);
         searchResultsContainer.appendChild(loadMoreContainer);
       }
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     searchActionBtn.classList.remove("is-loading");
+
+    searchResultsContainer.classList.remove("is-visible");
     searchResultsContainer.innerHTML = "";
 
-    if (error.name === "AbortError") return;
+    if (error instanceof Error && error.name === "AbortError") return;
 
-    if ("status" in error) {
-      console.error("Search failed:", error);
+    console.error("Search failed:", error);
+
+    if (isApiError(error)) {
       if (error.status === 404) {
         setAppState("not-found");
         return;
-      } else {
-        showSearchInlineError();
       }
 
-      return;
+      showSearchInlineError();
+    } else {
+      showPageError("search-page");
     }
-
-    showPageError("search-page");
   }
 }

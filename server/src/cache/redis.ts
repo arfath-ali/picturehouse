@@ -17,7 +17,7 @@ export async function connectCache() {
     await redisClient.connect();
     console.log('✅ Redis Cache Connected to [picturehouse]');
   } catch (error) {
-    throw new Error('Failed to connect to Redis.', {
+    throw new Error('Failed to connect to Redis', {
       cause: error,
     });
   }

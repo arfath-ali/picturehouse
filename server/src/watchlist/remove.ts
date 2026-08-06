@@ -1,40 +1,27 @@
 import type { ServerResponse } from 'node:http';
 import type { IncomingMessage } from 'node:http';
 import { pool } from '../database/pool.js';
+import { sendJsonResponse } from '../http/send-json-response.js';
+import type { IncomingRequest } from '../types/http.js';
+import { verifyAuth } from '../middlewares/verify-auth.js';
 
 export async function removeFromWatchlist(
-  req: IncomingMessage,
+  req: IncomingRequest<unknown>,
   res: ServerResponse,
 ) {
+  await verifyAuth(req, res);
+
   if (!req.params) return;
 
   const { mediaType, mediaId } = req.params;
 
-  const result = await pool.query(
+  await pool.query(
     `
-  SELECT EXISTS(
-    SELECT 1
-    FROM watchlist
-    WHERE id = $1 AND type = $2
-  ) AS exists
-  `,
-    [mediaId, mediaType],
+            DELETE FROM watchlist
+            WHERE id = $1 AND user_id=$2 AND type = $3
+            `,
+    [mediaId, req.userId, mediaType],
   );
 
-  const isMediaExists = result.rows[0].exists;
-
-  if (isMediaExists) {
-    await pool.query(
-      `
-            DELETE FROM watchlist
-            WHERE id = $1 AND type = $2
-            `,
-      [mediaId, mediaType],
-    );
-
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ isWatchlisted: false }));
-    return;
-  }
+  sendJsonResponse(res, 200, { success: true, isWatchlisted: false });
 }

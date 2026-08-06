@@ -1,7 +1,13 @@
 import { getElements } from "../utils/dom.js";
 
+let shelfScrollController: AbortController | null = null;
+
 export function initShelfScroll() {
   const shelves = getElements(".media-shelf");
+
+  shelfScrollController?.abort();
+  shelfScrollController = new AbortController();
+  const signal = shelfScrollController.signal;
 
   shelves.forEach((shelf) => {
     const shelfList = shelf.querySelector(".media-shelf__list");
@@ -45,49 +51,66 @@ export function initShelfScroll() {
 
     observer.observe(shelfList, { childList: true });
 
-    scrollPrevBtn.addEventListener("click", () => {
-      const cards = [...shelfList.children] as HTMLElement[];
-
-      const gap = parseFloat(getComputedStyle(shelfList).gap);
-      const cardWidth = cards[0].offsetWidth + gap;
-
-      const visibleCards = Math.floor(shelfList.clientWidth / cardWidth);
-
-      const currentIndex = cards.findIndex(
-        (card) => card.offsetLeft >= shelfList.scrollLeft,
-      );
-
-      if (currentIndex <= 0) return;
-
-      const targetIndex = Math.max(0, currentIndex - visibleCards);
-
-      shelfList.scrollTo({
-        left: cards[targetIndex].offsetLeft - cardWidth / 2,
-        behavior: "smooth",
-      });
+    signal.addEventListener("abort", () => {
+      observer.disconnect();
     });
 
-    scrollNextBtn.addEventListener("click", () => {
-      const cards = [...shelfList.children] as HTMLElement[];
+    scrollPrevBtn.addEventListener(
+      "click",
+      () => {
+        const cards = [...shelfList.children] as HTMLElement[];
 
-      const gap = parseFloat(getComputedStyle(shelfList).gap);
+        const gap = parseFloat(getComputedStyle(shelfList).gap);
+        const cardWidth = cards[0].offsetWidth + gap;
 
-      const nextCard = cards.find(
-        (card) =>
-          card.offsetLeft >
-          shelfList.scrollLeft + shelfList.clientWidth - card.offsetWidth,
-      );
+        const visibleCards = Math.floor(shelfList.clientWidth / cardWidth);
 
-      if (!nextCard) return;
+        const currentIndex = cards.findIndex(
+          (card) => card.offsetLeft >= shelfList.scrollLeft,
+        );
 
-      shelfList.scrollTo({
-        left: nextCard.offsetLeft - (nextCard.offsetWidth + gap) / 2,
-        behavior: "smooth",
-      });
-    });
+        if (currentIndex <= 0) return;
 
-    shelfList.addEventListener("scroll", syncButtons);
+        const targetIndex = Math.max(0, currentIndex - visibleCards);
+
+        shelfList.scrollTo({
+          left: cards[targetIndex].offsetLeft - cardWidth / 2,
+          behavior: "smooth",
+        });
+      },
+      { signal },
+    );
+
+    scrollNextBtn.addEventListener(
+      "click",
+      () => {
+        const cards = [...shelfList.children] as HTMLElement[];
+
+        const gap = parseFloat(getComputedStyle(shelfList).gap);
+
+        const nextCard = cards.find(
+          (card) =>
+            card.offsetLeft >
+            shelfList.scrollLeft + shelfList.clientWidth - card.offsetWidth,
+        );
+
+        if (!nextCard) return;
+
+        shelfList.scrollTo({
+          left: nextCard.offsetLeft - (nextCard.offsetWidth + gap) / 2,
+          behavior: "smooth",
+        });
+      },
+      { signal },
+    );
+
+    shelfList.addEventListener("scroll", syncButtons, { signal });
 
     syncButtons();
   });
+}
+
+export function cleanupShelfScroll() {
+  shelfScrollController?.abort();
+  shelfScrollController = null;
 }

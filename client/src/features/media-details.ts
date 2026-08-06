@@ -1,15 +1,20 @@
-import { getMediaDetails } from "../api/media-details.js";
 import { MediaActions } from "../components/media-actions.js";
 import { USER_REGION } from "../config/region.js";
 import { initCastScroll } from "../scroll/media-details.js";
 import { setAppState } from "../state/app.js";
-import type { TMDBContent } from "../types/tmdb-content.js";
 import { getElement } from "../utils/dom.js";
 import { createIcon } from "../utils/icon.js";
 import { updatePageTitle } from "../utils/title.js";
 import { createSkeletonFragment } from "../utils/skeleton-structure.js";
 import { createSlug } from "../utils/slugify.js";
 import { showPageError } from "../utils/show-page-error.js";
+import { apiRequest } from "../api/api-request.js";
+import type { MediaDetailsReponse } from "../types/api-response.js";
+import { API_ENDPOINTS } from "../constants/api.js";
+import { API_BASE_URL } from "../config/api.js";
+import { isApiError } from "../utils/is-api-error.js";
+
+let detailsController: AbortController | null = null;
 
 export async function renderDetails(
   mediaType: string,
@@ -18,29 +23,39 @@ export async function renderDetails(
 ) {
   const width = window.innerWidth;
 
+  const mediaDetailsSection = getElement<HTMLElement>(".media-details");
+
+  const loadingSpinner = document.createElement("div");
+  setTimeout(() => {
+    loadingSpinner.classList.add("spinner");
+  }, 300);
+
+  mediaDetailsSection.innerHTML = "";
+  mediaDetailsSection.classList.remove("has-backdrop");
+  mediaDetailsSection.classList.remove("has-poster-backdrop");
+  mediaDetailsSection.style.removeProperty("--bg-backdrop");
+  mediaDetailsSection.style.removeProperty("--bg-color");
+  mediaDetailsSection.appendChild(loadingSpinner);
+
+  const criticalImagePromises: Promise<void>[] = [];
+
+  detailsController?.abort();
+  detailsController = new AbortController();
+  const signal = detailsController.signal;
+
   try {
-    const mediaDetailsSection = getElement<HTMLElement>(".media-details");
-
-    const loadingSpinner = document.createElement("div");
-    setTimeout(() => {
-      loadingSpinner.classList.add("spinner");
-    }, 300);
-
-    mediaDetailsSection.innerHTML = "";
-    mediaDetailsSection.classList.remove("has-backdrop");
-    mediaDetailsSection.classList.remove("has-poster-backdrop");
-    mediaDetailsSection.style.removeProperty("--bg-backdrop");
-    mediaDetailsSection.style.removeProperty("--bg-color");
-    mediaDetailsSection.appendChild(loadingSpinner);
-
-    const criticalImagePromises: Promise<void>[] = [];
-
-    const media: TMDBContent = await getMediaDetails(mediaType, tmdbId);
+    const { mediaDetails } = await apiRequest<MediaDetailsReponse>(
+      `${API_BASE_URL}/${API_ENDPOINTS.DETAILS(mediaType, tmdbId)}`,
+      {
+        method: "GET",
+        signal,
+      },
+    );
 
     loadingSpinner.remove();
 
-    const correctTitleSlug = createSlug(media.title);
-    const correctUrl = `/${media.type}/${correctTitleSlug}-${tmdbId}`;
+    const correctTitleSlug = createSlug(mediaDetails.title);
+    const correctUrl = `/${mediaDetails.type}/${correctTitleSlug}-${tmdbId}`;
 
     if (currentTitleSlug !== correctTitleSlug) {
       window.location.replace(correctUrl);
@@ -49,12 +64,12 @@ export async function renderDetails(
     const mediaDetailsContent = document.createElement("div");
     mediaDetailsContent.classList.add("media-details__content");
 
-    const backdropURL = media.images.backdrop;
-    const posterURL = media.images.poster;
+    const backdropURL = mediaDetails.images.backdrop;
+    const posterURL = mediaDetails.images.poster;
 
-    const hue = media.theme.hue;
-    const saturation = media.theme.saturation;
-    const lightness = media.theme.lightness;
+    const hue = mediaDetails.theme.hue;
+    const saturation = mediaDetails.theme.saturation;
+    const lightness = mediaDetails.theme.lightness;
 
     const themeGradient = `hsl(${hue} ${saturation} ${lightness})`;
 
@@ -128,15 +143,15 @@ export async function renderDetails(
 
     const titleText = document.createElement("h1");
     titleText.classList.add("media-details__title-text");
-    titleText.textContent = media.title;
+    titleText.textContent = mediaDetails.title;
 
     titleContainer.classList.add("is-waiting");
     titleContainer.appendChild(titleText);
 
-    if (media.images.logo) {
+    if (mediaDetails.images.logo) {
       const titleImg = document.createElement("img");
       titleImg.classList.add("media-details__title-img");
-      titleImg.alt = media.title;
+      titleImg.alt = mediaDetails.title;
 
       let isDelayed = false;
 
@@ -172,17 +187,17 @@ export async function renderDetails(
       });
 
       criticalImagePromises.push(titleImgPromise);
-      titleImg.src = media.images.logo;
+      titleImg.src = mediaDetails.images.logo;
       titleContainer.appendChild(titleImg);
     } else {
       titleContainer.classList.remove("is-waiting");
     }
     headerEl.append(titleContainer);
 
-    if (media.tagline) {
+    if (mediaDetails.tagline) {
       const tagline = document.createElement("p");
       tagline.classList.add("text-secondary", "media-details__tagline");
-      tagline.textContent = `"${media.tagline}"`;
+      tagline.textContent = `"${mediaDetails.tagline}"`;
 
       headerEl.append(tagline);
     }
@@ -197,16 +212,16 @@ export async function renderDetails(
     );
 
     const metaData = [
-      media.releaseYear,
-      media.duration,
-      media.certification?.[USER_REGION],
+      mediaDetails.releaseYear,
+      mediaDetails.duration,
+      mediaDetails.certification?.[USER_REGION],
     ].filter((text) => text !== null && text !== undefined && text !== "");
 
     metaData.forEach((text, index) => {
       if (text) {
         const spanEl = document.createElement("span");
 
-        if (text === media.certification?.[USER_REGION]) {
+        if (text === mediaDetails.certification?.[USER_REGION]) {
           spanEl.classList.add("meta-certification");
         }
 
@@ -223,11 +238,11 @@ export async function renderDetails(
 
     headerEl.appendChild(metaContainer);
 
-    if (media.genres) {
+    if (mediaDetails.genres) {
       const genreCarousalContainer = document.createElement("div");
       genreCarousalContainer.classList.add("media-details__genres");
 
-      media.genres.forEach((genre: string) => {
+      mediaDetails.genres.forEach((genre: string) => {
         const genreType = document.createElement("span");
         genreType.classList.add("media-details__genre-tag");
         genreType.textContent = genre;
@@ -241,15 +256,17 @@ export async function renderDetails(
     const actionsEl = document.createElement("div");
     actionsEl.classList.add("media-details__actions");
 
-    actionsEl.appendChild(MediaActions(media.youtubeTrailerURL, media));
+    actionsEl.appendChild(
+      MediaActions(mediaDetails.youtubeTrailerURL, mediaDetails, signal),
+    );
     mediaDetailsContent.appendChild(actionsEl);
 
     const overviewEl = document.createElement("p");
-    overviewEl.textContent = media.overview;
+    overviewEl.textContent = mediaDetails.overview;
 
     mediaDetailsContent.appendChild(overviewEl);
 
-    if (media.crew.creator) {
+    if (mediaDetails.crew.creator) {
       const crewSection = document.createElement("div");
       crewSection.classList.add("media-details__crew-section");
 
@@ -263,29 +280,31 @@ export async function renderDetails(
       const creatorList = document.createElement("div");
       creatorList.classList.add("media-details__crew-list");
 
-      const creatorsArray = media.crew.creator;
+      const creatorsArray = mediaDetails.crew.creator;
 
-      media.crew.creator.forEach((creatorName: string, index: number) => {
-        const creatorNameEl = document.createElement("span");
-        creatorNameEl.textContent = creatorName;
-        creatorList.appendChild(creatorNameEl);
+      mediaDetails.crew.creator.forEach(
+        (creatorName: string, index: number) => {
+          const creatorNameEl = document.createElement("span");
+          creatorNameEl.textContent = creatorName;
+          creatorList.appendChild(creatorNameEl);
 
-        if (index < creatorsArray.length - 1) {
-          creatorList.appendChild(document.createTextNode(", "));
-        }
-      });
+          if (index < creatorsArray.length - 1) {
+            creatorList.appendChild(document.createTextNode(", "));
+          }
+        },
+      );
 
       creatorSection.append(createdByLabel, creatorList);
       crewSection.appendChild(creatorSection);
       mediaDetailsContent.appendChild(crewSection);
     }
 
-    if (media.crew.director || media.crew.writer) {
+    if (mediaDetails.crew.director || mediaDetails.crew.writer) {
       const crewSection = document.createElement("div");
       crewSection.classList.add("media-details__crew-section");
 
-      const directorsArray = media.crew.director ?? null;
-      const writersArray = media.crew.writer ?? null;
+      const directorsArray = mediaDetails.crew.director ?? null;
+      const writersArray = mediaDetails.crew.writer ?? null;
 
       const isSameCrew =
         directorsArray?.length === writersArray?.length &&
@@ -388,7 +407,7 @@ export async function renderDetails(
       mediaDetailsContent.appendChild(crewSection);
     }
 
-    if (media.ratings.imdb || media.ratings.rottenTomatoes) {
+    if (mediaDetails.ratings.imdb || mediaDetails.ratings.rottenTomatoes) {
       const ratingsSection = document.createElement("div");
       ratingsSection.classList.add("media-details__ratings-section");
 
@@ -399,7 +418,7 @@ export async function renderDetails(
       const ratingsContainer = document.createElement("div");
       ratingsContainer.classList.add("media-details__ratings-container");
 
-      if (media.ratings.imdb) {
+      if (mediaDetails.ratings.imdb) {
         const imdbContainer = document.createElement("div");
         imdbContainer.classList.add("media-details__rating");
 
@@ -413,19 +432,19 @@ export async function renderDetails(
 
         const imdbRatingEl = document.createElement("span");
         imdbRatingEl.classList.add("media-details__rating-score");
-        imdbRatingEl.textContent = media.ratings.imdb;
+        imdbRatingEl.textContent = mediaDetails.ratings.imdb;
 
         imdbContainer.append(imdbLogoEl, imdbLabelEl, imdbRatingEl);
         ratingsContainer.appendChild(imdbContainer);
       }
 
-      if (media.ratings.imdb && media.ratings.rottenTomatoes) {
+      if (mediaDetails.ratings.imdb && mediaDetails.ratings.rottenTomatoes) {
         const ratingsDivider = document.createElement("div");
         ratingsDivider.classList.add("media-details__ratings-divider");
         ratingsContainer.appendChild(ratingsDivider);
       }
 
-      if (media.ratings.rottenTomatoes) {
+      if (mediaDetails.ratings.rottenTomatoes) {
         const rottenTomatoesContainer = document.createElement("div");
         rottenTomatoesContainer.classList.add("media-details__rating");
 
@@ -438,7 +457,8 @@ export async function renderDetails(
 
         const rottenTomatoesRatingEl = document.createElement("span");
         rottenTomatoesRatingEl.classList.add("media-details__rating-score");
-        rottenTomatoesRatingEl.textContent = media.ratings.rottenTomatoes;
+        rottenTomatoesRatingEl.textContent =
+          mediaDetails.ratings.rottenTomatoes;
 
         rottenTomatoesContainer.append(
           rottenTomatoesLogoEl,
@@ -454,8 +474,9 @@ export async function renderDetails(
       mediaDetailsContent.appendChild(ratingsSection);
     }
 
-    if (media?.streamingPlatforms?.[USER_REGION]) {
-      const regionalPlatforms = media.streamingPlatforms[USER_REGION] || [];
+    if (mediaDetails?.streamingPlatforms?.[USER_REGION]) {
+      const regionalPlatforms =
+        mediaDetails.streamingPlatforms[USER_REGION] || [];
 
       const streamingSection = document.createElement("div");
 
@@ -517,7 +538,7 @@ export async function renderDetails(
       mediaDetailsContent.appendChild(streamingSection);
     }
 
-    if (media.cast) {
+    if (mediaDetails.cast) {
       const castSection = document.createElement("div");
       castSection.classList.add("media-details__cast-section");
 
@@ -569,12 +590,12 @@ export async function renderDetails(
 
       castList.appendChild(
         createSkeletonFragment(
-          media.cast.length,
+          mediaDetails.cast.length,
           "media-details__cast-skeleton",
         ),
       );
 
-      media.cast.forEach(
+      mediaDetails.cast.forEach(
         (
           actor: {
             name: string;
@@ -652,20 +673,26 @@ export async function renderDetails(
       await Promise.all(criticalImagePromises);
     }
 
-    updatePageTitle("details", media.title, false);
+    updatePageTitle("details", mediaDetails.title, false);
 
-    if (media.cast) {
+    if (mediaDetails.cast) {
       initCastScroll();
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`Failed to load media details for [${tmdbId}]:`, error);
 
-    if (error.status >= 500) {
-      showPageError("details-page");
-    } else if (error.status === 404) {
+    if (isApiError(error) && error.status === 404) {
       setAppState("not-found");
-    } else {
-      showPageError("details-page");
+      return;
     }
+
+    showPageError("details-page");
+  } finally {
+    detailsController = null;
   }
+}
+
+export function cleanupDetailsRequest() {
+  detailsController?.abort();
+  detailsController = null;
 }

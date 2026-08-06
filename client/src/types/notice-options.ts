@@ -1,4 +1,4 @@
 export type NoticeOptions = {
   message: string;
-  type: "success" | "error";
+  type: "success" | "info" | "error";
 };

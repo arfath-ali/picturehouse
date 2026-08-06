@@ -1,13 +1,19 @@
-import { getMediaShelf } from "../api/media-shelf.js";
+import { apiRequest } from "../api/api-request.js";
 import { MediaCard } from "../components/media-card.js";
+import { API_BASE_URL } from "../config/api.js";
+import { API_ENDPOINTS } from "../constants/api.js";
+import { navigate } from "../router/navigate.js";
 import { setAppState } from "../state/app.js";
+import type { MediaShelfCollectionResponse } from "../types/api-response.js";
 import type { pageCategory } from "../types/page-category.js";
 import type { shelfCategoryId } from "../types/shelf-category-id.js";
 import type { TMDBContent } from "../types/tmdb-content.js";
 import { getElement } from "../utils/dom.js";
+import { isApiError } from "../utils/is-api-error.js";
 import { showPageError } from "../utils/show-page-error.js";
 import { createSkeletonFragment } from "../utils/skeleton-structure.js";
 
+const shelfControllers = new Map<shelfCategoryId, AbortController>();
 let shelfCache: Record<string, Record<string, TMDBContent[]>> = {};
 
 export async function renderShelf(identifier: shelfCategoryId) {
@@ -22,6 +28,11 @@ export async function renderShelf(identifier: shelfCategoryId) {
 
   shelfList.append(createSkeletonFragment(20, "media-card__skeleton"));
 
+  shelfControllers.get(identifier)?.abort();
+
+  const controller = new AbortController();
+  shelfControllers.set(identifier, controller);
+
   try {
     let shelfCollection: TMDBContent[] = [];
 
@@ -32,7 +43,14 @@ export async function renderShelf(identifier: shelfCategoryId) {
     if (shelfCache[page][identifier]) {
       shelfCollection = shelfCache[page][identifier];
     } else {
-      shelfCollection = await getMediaShelf(page, identifier);
+      const response = await apiRequest<MediaShelfCollectionResponse>(
+        `${API_BASE_URL}/${API_ENDPOINTS.SHELF(page, identifier)}`,
+        {
+          method: "GET",
+          signal: controller.signal,
+        },
+      );
+      shelfCollection = response.mediaShelfCollection;
       shelfCache[page][identifier] = shelfCollection;
     }
 
@@ -48,17 +66,21 @@ export async function renderShelf(identifier: shelfCategoryId) {
     const fragment = document.createDocumentFragment();
 
     shelfCollection.forEach((item: TMDBContent) => {
-      fragment.appendChild(MediaCard(item));
+      fragment.appendChild(MediaCard(item, controller.signal));
     });
 
     shelfList.appendChild(fragment);
 
-    shelfList.addEventListener("scroll", () => {
-      sessionStorage.setItem(
-        `scroll-shelf-${page}-${identifier}`,
-        shelfList.scrollLeft.toString(),
-      );
-    });
+    shelfList.addEventListener(
+      "scroll",
+      () => {
+        sessionStorage.setItem(
+          `scroll-shelf-${page}-${identifier}`,
+          shelfList.scrollLeft.toString(),
+        );
+      },
+      { signal: controller.signal },
+    );
 
     const savedHorizontalScroll = sessionStorage.getItem(
       `scroll-shelf-${page}-${identifier}`,
@@ -67,15 +89,24 @@ export async function renderShelf(identifier: shelfCategoryId) {
     if (savedHorizontalScroll) {
       shelfList.scrollLeft = parseInt(savedHorizontalScroll, 10);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`Failed to load shelf content for [${identifier}]:`, error);
-    if (error.status >= 500) {
-      showPageError("browse-page");
-    } else if (error.status === 404) {
+
+    if (isApiError(error) && error.status === 404) {
       setAppState("not-found");
-    } else {
-      showPageError("browse-page");
+      return;
+    }
+    showPageError("browse-page");
+  } finally {
+    if (shelfControllers.get(identifier) === controller) {
+      shelfControllers.delete(identifier);
     }
   }
-  return;
+}
+
+export function cleanupShelfRequest() {
+  for (const controller of shelfControllers.values()) {
+    controller.abort();
+  }
+  shelfControllers.clear();
 }

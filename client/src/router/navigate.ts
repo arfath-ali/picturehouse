@@ -4,10 +4,25 @@ import type { AppState } from "../types/app-state.js";
 import { initFeatured } from "../init/media-featured.js";
 import { initShelves } from "../init/media-shelf.js";
 import { initSearchInput } from "../init/search-input.js";
-import { initWatchlistSort } from "../watchlist/sort.js";
 import { getElement } from "../utils/dom.js";
 import { initWatchlist } from "../watchlist/init.js";
 import { initSignUp } from "../auth/sign-up.js";
+import { authStore } from "../state/auth-store.js";
+import { initEmailVerification } from "../auth/verify-email.js";
+import { cleanupAllRequests } from "../utils/cleanup.js";
+import { togglePasswordVisibilty } from "../utils/password-visibility.js";
+import { initSignIn } from "../auth/sign-in.js";
+import {
+  cleanupWindowScrollManager,
+  clearAllScrollStorage,
+  initWindowScrollManager,
+} from "../scroll/window.js";
+import { googleAuth } from "../auth/google-auth.js";
+import { googleAuthCallback } from "../auth/google-auth-callback.js";
+import { initHeaderScroll } from "../scroll/header.js";
+import { initForgotPassword } from "../auth/forgot-password.js";
+import { initResetPasswordEmailSent } from "../auth/reset-password-email-sent.js";
+import { initResetPassword } from "../auth/reset-password.js";
 
 function restoreVerticalScroll(category: string) {
   const savedVerticalScroll = sessionStorage.getItem(
@@ -37,22 +52,70 @@ function restoreVerticalScroll(category: string) {
       }
     }
   }
-
   window.scrollTo({
     top: targetScrollY,
     left: 0,
     behavior: scrollBehavior,
   });
 }
-export function navigate() {
+
+export async function navigate() {
+  cleanupAllRequests();
+
   let route = location.pathname.slice(1) as AppState;
 
-  if (location.search) {
+  const isAuthRoute = [
+    "sign-in",
+    "sign-up",
+    "verify-email",
+    "forgot-password",
+    "reset-password-email-sent",
+    "reset-password",
+    "reset-password-success",
+  ].includes(route);
+
+  if (isAuthRoute) {
+    clearAllScrollStorage();
+    cleanupWindowScrollManager();
+  }
+
+  const isGoogleCallback = route === "auth/google/callback";
+
+  if (isGoogleCallback) {
+    googleAuthCallback();
+    return;
+  }
+
+  if (location.search && route !== "reset-password") {
     setAppState("not-found");
     return;
   }
 
   if (route === "") {
+    history.replaceState({}, "", "/home");
+    route = "home";
+  }
+
+  if (
+    route === "verify-email" &&
+    authStore.getPendingVerificationEmail() === "<your-email@example.com>"
+  ) {
+    history.replaceState({}, "", "/sign-up");
+    route = "sign-up";
+  }
+
+  if (
+    route === "reset-password-email-sent" &&
+    authStore.getPendingPasswordResetEmail() === "<your-email@example.com>"
+  ) {
+    history.replaceState({}, "", "/sign-in");
+    route = "sign-in";
+  }
+
+  if (
+    route === "reset-password-success" &&
+    authStore.getIsPasswordResetSuccessful() === false
+  ) {
     history.replaceState({}, "", "/sign-in");
     route = "sign-in";
   }
@@ -70,7 +133,9 @@ export function navigate() {
     const tmdbId = isMediaDetailsPage[3];
     route = "details";
     setAppState("details");
-    renderDetails(mediaType, currentTitleSlug, tmdbId);
+
+    await renderDetails(mediaType, currentTitleSlug, tmdbId);
+
     return;
   }
 
@@ -94,25 +159,62 @@ export function navigate() {
   ];
 
   if (validAppStates.includes(route)) {
+    if (route === "reset-password") {
+      const searchParams = new URLSearchParams(location.search);
+      const token = searchParams.get("token");
+      const email = searchParams.get("email");
+
+      if (!token || !email) {
+        history.replaceState({}, "", "/sign-in");
+        route = "sign-in";
+      }
+    }
+
     setAppState(route);
 
-    if (route === "sign-up") {
+    if (route === "sign-in") {
+      initSignIn();
+      googleAuth();
+      togglePasswordVisibilty();
+    } else if (route === "sign-up") {
       initSignUp();
+      googleAuth();
+      togglePasswordVisibilty();
+    } else if (route === "verify-email") {
+      initEmailVerification(authStore.getPendingVerificationEmail() ?? "");
+    } else if (route === "forgot-password") {
+      initForgotPassword();
+    } else if (route === "reset-password-email-sent") {
+      initResetPasswordEmailSent(
+        authStore.getPendingPasswordResetEmail() ?? "",
+      );
+    } else if (route === "reset-password") {
+      const searchParams = new URLSearchParams(location.search);
+      const token = searchParams.get("token")!;
+      const email = searchParams.get("email")!;
+
+      initResetPassword(token, email);
+      togglePasswordVisibilty();
     } else if (route === "home" || route === "movies" || route === "tv-shows") {
+      initWindowScrollManager();
       initFeatured();
       initShelves();
       restoreVerticalScroll(route);
+      initHeaderScroll();
     } else if (route === "search") {
+      initWindowScrollManager();
       initSearchInput();
       restoreVerticalScroll(route);
+      initHeaderScroll();
     } else if (
       route === "watchlist" ||
       route === "watchlist-movies" ||
       route === "watchlist-tv-shows"
     ) {
+      initWindowScrollManager();
       initWatchlist();
-      initWatchlistSort();
       restoreVerticalScroll(route);
+      initHeaderScroll();
     }
   } else setAppState("not-found");
 }

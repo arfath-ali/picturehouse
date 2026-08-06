@@ -1,16 +1,29 @@
 import { getElement } from "../utils/dom.js";
 
+let headerScrollController: AbortController | null = null;
+
 export function initHeaderScroll() {
   const header = getElement<HTMLElement>(".site-header");
+
+  header.classList.remove("is-hidden", "is-scrolled", "is-stuck");
+
   let lastScrollY = window.scrollY;
   let isUserInteracting = false;
+
+  if (lastScrollY > 50) {
+    header.classList.add("is-scrolled");
+  }
+
+  headerScrollController?.abort();
+  headerScrollController = new AbortController();
+  const signal = headerScrollController.signal;
 
   window.addEventListener(
     "touchstart",
     () => {
       isUserInteracting = true;
     },
-    { passive: true },
+    { signal, passive: true },
   );
 
   window.addEventListener(
@@ -18,7 +31,7 @@ export function initHeaderScroll() {
     () => {
       isUserInteracting = true;
     },
-    { passive: true },
+    { signal, passive: true },
   );
 
   window.addEventListener(
@@ -26,7 +39,7 @@ export function initHeaderScroll() {
     () => {
       isUserInteracting = true;
     },
-    { passive: true },
+    { signal, passive: true },
   );
 
   window.addEventListener(
@@ -34,7 +47,7 @@ export function initHeaderScroll() {
     () => {
       isUserInteracting = false;
     },
-    { passive: true },
+    { signal, passive: true },
   );
 
   window.addEventListener(
@@ -42,7 +55,7 @@ export function initHeaderScroll() {
     () => {
       isUserInteracting = false;
     },
-    { passive: true },
+    { signal, passive: true },
   );
 
   window.addEventListener(
@@ -91,6 +104,11 @@ export function initHeaderScroll() {
 
       lastScrollY = currentScrollY;
     },
-    { passive: true },
+    { signal, passive: true },
   );
+}
+
+export function cleanupHeaderScroll() {
+  headerScrollController?.abort();
+  headerScrollController = null;
 }

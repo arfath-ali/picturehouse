@@ -60,14 +60,28 @@
             </a>
           </nav>
         </div>
-        <a href="/profile" aria-label="Profile">
-          <svg
-            class="h-auto w-[clamp(2rem,1.857rem+0.714vw,2.5rem)]"
-            aria-hidden="true"
+        <div>
+          <a
+            class="btn btn--secondary site-header__signin-btn"
+            data-js="site-header-signin-btn"
+            href="/sign-in"
           >
-            <use href="#icon-profile"></use>
-          </svg>
-        </a>
+            Sign In
+          </a>
+          <a
+            class="site-header__profile-link"
+            data-js="site-header-profile-link"
+            aria-label="Profile"
+            href="/profile"
+          >
+            <svg
+              class="h-auto w-[clamp(2rem,1.857rem+0.714vw,2.5rem)]"
+              aria-hidden="true"
+            >
+              <use href="#icon-profile"></use>
+            </svg>
+          </a>
+        </div>
       </div>
 
       <div class="filter-tabs-container mt-3 flex gap-4 lg:hidden">
@@ -82,7 +96,7 @@
     </header>
 
     <main>
-      <div class="sign-in:auth hidden">
+      <div class="sign-in:auth signin-page hidden">
         <section class="auth-card">
           <header class="auth-header">
             <img
@@ -95,10 +109,28 @@
               Sign in to continue discovering movies and TV shows.
             </p>
           </header>
-          <form class="auth-form">
+
+          <form class="auth-form" data-role="auth-form">
+            <div
+              class="auth-form__error text-secondary"
+              data-js="signin-form-error"
+              data-role="form-error"
+            ></div>
+
             <div class="auth-form__field">
-              <label for="signin-email">Email</label>
-              <input id="signin-email" class="auth-form__input" type="email" />
+              <label for="signin-email">Email or Username</label>
+              <input
+                id="signin-email"
+                class="auth-form__input"
+                type="text"
+                data-js="signin-identifier"
+                data-role="form-input"
+              />
+              <span
+                class="auth-form__field-error text-secondary"
+                data-js="signin-identifier-error"
+                data-role="form-error"
+              ></span>
             </div>
 
             <div class="auth-form__field">
@@ -108,6 +140,8 @@
                   id="signin-password"
                   class="auth-form__input auth-form__input--password"
                   type="password"
+                  data-js="signin-password"
+                  data-role="form-input"
                 />
                 <svg
                   class="auth-form__password-visibility-icon"
@@ -116,6 +150,11 @@
                   <use href="#icon-password-visible-off"></use>
                 </svg>
               </div>
+              <span
+                class="auth-form__field-error text-secondary"
+                data-js="signin-password-error"
+                data-role="form-error"
+              ></span>
             </div>
 
             <div class="auth-form__checkbox-row">
@@ -142,8 +181,16 @@
               >
             </div>
 
-            <button class="btn btn--primary btn--auth auth-form__btn">
-              Sign In
+            <button
+              class="btn btn--primary btn--auth auth-form__btn"
+              type="submit"
+              data-js="signin-btn"
+              data-role="form-btn"
+              data-loading="false"
+              disabled
+            >
+              <span class="btn-text">Sign In</span>
+              <span class="btn-spinner"></span>
             </button>
           </form>
 
@@ -151,14 +198,18 @@
             <span>OR</span>
           </div>
 
-          <button class="btn btn--secondary btn--auth auth-google">
+          <button
+            class="btn btn--secondary btn--auth auth-google"
+            data-js="google-auth-btn"
+            data-mode="signin"
+          >
             <svg class="btn__icon" aria-hidden="true">
               <use href="#icon-google"></use>
             </svg>
             <span>Continue with Google</span>
           </button>
 
-          <div class="auth-switch text-secondary">
+          <div class="auth-footer text-secondary">
             <p>Don't have an account?</p>
             <a class="auth-link" href="/sign-up">Sign Up</a>
           </div>
@@ -179,7 +230,11 @@
             </p>
           </header>
 
-          <button class="btn btn--secondary btn--auth auth-google">
+          <button
+            class="btn btn--secondary btn--auth auth-google"
+            data-js="google-auth-btn"
+            data-mode="signin"
+          >
             <svg class="btn__icon" aria-hidden="true">
               <use href="#icon-google"></use>
             </svg>
@@ -190,12 +245,13 @@
             <span>OR</span>
           </div>
 
-          <form class="auth-form" novalidate>
+          <form class="auth-form" data-role="auth-form" novalidate>
             <div class="auth-form__field">
               <label for="signup-username">Username</label>
               <div
                 class="auth-form__input-row auth-form__input-row--username"
                 data-js="signup-username-row"
+                data-status="idle"
               >
                 <input
                   id="signup-username"
@@ -204,6 +260,7 @@
                   type="text"
                   autocomplete="off"
                   data-js="signup-username"
+                  data-role="form-input"
                   maxlength="30"
                 />
                 <div class="auth-form__username-input-status">
@@ -218,6 +275,7 @@
               <span
                 class="auth-form__field-error text-secondary"
                 data-js="signup-username-error"
+                data-role="form-error"
               ></span>
             </div>
 
@@ -230,11 +288,13 @@
                 type="email"
                 autocomplete="off"
                 data-js="signup-email"
+                data-role="form-input"
                 maxlength="254"
               />
               <span
                 class="auth-form__field-error text-secondary"
                 data-js="signup-email-error"
+                data-role="form-error"
               ></span>
             </div>
 
@@ -248,6 +308,7 @@
                   type="password"
                   autocomplete="off"
                   data-js="signup-password"
+                  data-role="form-input"
                   maxlength="128"
                 />
                 <svg
@@ -260,6 +321,7 @@
               <span
                 class="auth-form__field-error text-secondary"
                 data-js="signup-password-error"
+                data-role="form-error"
               ></span>
             </div>
 
@@ -273,6 +335,7 @@
                   type="password"
                   autocomplete="off"
                   data-js="signup-confirm-password"
+                  data-role="form-input"
                   maxlength="128"
                 />
                 <svg
@@ -285,6 +348,7 @@
               <span
                 class="auth-form__field-error text-secondary"
                 data-js="signup-confirm-password-error"
+                data-role="form-error"
               ></span>
             </div>
 
@@ -292,6 +356,7 @@
               class="btn btn--primary btn--auth auth-form__btn"
               type="submit"
               data-js="signup-btn"
+              data-role="form-btn"
               data-loading="false"
               disabled
             >
@@ -300,14 +365,14 @@
             </button>
           </form>
 
-          <div class="auth-switch text-secondary">
+          <div class="auth-footer text-secondary">
             <p>Already have an account?</p>
             <a class="auth-link" href="/sign-in">Sign In</a>
           </div>
         </section>
       </div>
 
-      <div class="verify-email:auth hidden">
+      <div class="verify-email:auth verify-email-page hidden">
         <section class="auth-card">
           <header class="auth-header">
             <img
@@ -317,74 +382,110 @@
             />
             <h2>Verify your email</h2>
             <p class="auth-header__description">
-              We've sent a 6-digit verification code to
-              <span class="auth-header__email">arfath129028@gmail.com.</span>
+              <span data-js="verification-message"
+                >We've sent a 6-digit verification code to</span
+              >
+              <span
+                class="auth-header__email auth-header__email--placeholder"
+                data-js="verification-email"
+              ></span>
               Enter the code below to verify your email.
             </p>
           </header>
-          <form class="auth-form">
+
+          <form class="auth-form" data-role="auth-form">
             <div class="auth-form__field">
-              <div class="auth-form__otp">
+              <div class="auth-form__otp" data-js="verification-otp-container">
                 <input
                   class="auth-form__input"
                   type="text"
                   inputmode="numeric"
                   maxlength="1"
                   autocomplete="one-time-code"
+                  data-js="verification-otp-input"
+                  data-role="form-input"
                 />
-
                 <input
                   class="auth-form__input"
                   type="text"
                   inputmode="numeric"
                   maxlength="1"
+                  data-js="verification-otp-input"
+                  data-role="form-input"
                 />
-
                 <input
                   class="auth-form__input"
                   type="text"
                   inputmode="numeric"
                   maxlength="1"
+                  data-js="verification-otp-input"
+                  data-role="form-input"
                 />
-
                 <input
                   class="auth-form__input"
                   type="text"
                   inputmode="numeric"
                   maxlength="1"
+                  data-js="verification-otp-input"
+                  data-role="form-input"
                 />
-
                 <input
                   class="auth-form__input"
                   type="text"
                   inputmode="numeric"
                   maxlength="1"
+                  data-js="verification-otp-input"
+                  data-role="form-input"
                 />
-
                 <input
                   class="auth-form__input"
                   type="text"
                   inputmode="numeric"
                   maxlength="1"
+                  data-js="verification-otp-input"
+                  data-role="form-input"
                 />
               </div>
+              <span
+                class="auth-form__field-error text-secondary"
+                data-js="verification-otp-error"
+                data-role="form-error"
+              ></span>
             </div>
 
-            <button class="btn btn--primary btn--auth auth-form__btn">
-              Verify Email
+            <button
+              class="btn btn--primary btn--auth auth-form__btn"
+              data-js="verification-submit-btn"
+              data-role="form-btn"
+              data-loading="false"
+              disabled
+            >
+              <span class="btn-text">Verify Email</span>
+              <span class="btn-spinner"></span>
             </button>
           </form>
 
-          <div class="auth-switch text-secondary">
+          <div class="auth-footer text-secondary">
             <p>
-              <span>Didn't receive the code? Check your spam folder or</span>
-              <button class="auth-link">resend the code</button>
+              <span class="block"
+                >Didn't receive the code? Check your spam folder or</span
+              >
+
+              <button
+                class="auth-footer__verification-resend-btn"
+                data-js="verification-resend-btn"
+                disabled
+              >
+                Resend code
+              </button>
+
+              <span data-js="verification-timer"></span>
             </p>
           </div>
         </section>
       </div>
 
-      <div class="forgot-password:auth hidden">
+      <div class="forgot-password:auth forgot-password-page hidden">
         <section class="auth-card">
           <header class="auth-header">
             <img
@@ -398,29 +499,45 @@
               reset your password
             </p>
           </header>
-          <form class="auth-form">
+          <form class="auth-form" data-role="auth-form">
             <div class="auth-form__field">
               <label for="forgot-password-email">Email</label>
               <input
                 id="forgot-password-email"
                 class="auth-form__input"
                 type="email"
+                data-js="forgot-password-email"
+                data-role="form-input"
               />
+              <span
+                class="auth-form__field-error text-secondary"
+                data-js="forgot-password-email-error"
+                data-role="form-error"
+              ></span>
             </div>
 
-            <button class="btn btn--primary btn--auth auth-form__btn">
-              Send Reset Link
+            <button
+              class="btn btn--primary btn--auth auth-form__btn"
+              data-js="reset-link-btn"
+              data-role="form-btn"
+              data-loading="false"
+              disabled
+            >
+              <span class="btn-text">Send Reset Link</span>
+              <span class="btn-spinner"></span>
             </button>
           </form>
 
-          <div class="auth-switch text-secondary">
+          <div class="auth-footer text-secondary">
             <p>Remember your password?</p>
             <a class="auth-link" href="/sign-in">Sign In</a>
           </div>
         </section>
       </div>
 
-      <div class="reset-password-email-sent:auth hidden">
+      <div
+        class="reset-password-email-sent:auth reset-password-email-sent-page hidden"
+      >
         <section class="auth-card">
           <header class="auth-header">
             <img
@@ -435,8 +552,13 @@
             </div>
             <h2>Reset link sent!</h2>
             <p class="auth-header__description">
-              We've sent a password reset link to
-              <span class="auth-header__email">arfath129028@gmail.com.</span>
+              <span data-js="password-reset-message"
+                >We've sent a password reset link to</span
+              >
+              <span
+                class="auth-header__email auth-header__email--placeholder"
+                data-js="password-reset-email"
+              ></span>
               Please check your inbox and follow the instructions.
             </p>
           </header>
@@ -463,14 +585,24 @@
             </a>
           </div>
 
-          <div class="auth-switch text-secondary">
+          <div class="auth-footer text-secondary">
             <p>Didn't receive the email?</p>
-            <button class="auth-link">Resend Link</button>
+            <button
+              class="auth-footer__verification-resend-btn"
+              data-js="password-reset-resend-btn"
+              disabled
+            >
+              Resend Link
+            </button>
+
+            <span data-js="password-reset-timer"></span>
           </div>
         </section>
       </div>
 
-      <div class="reset-password:auth hidden">
+      <div
+        class="reset-password:auth reset-password-page reset-password-page-expired hidden"
+      >
         <section class="auth-card">
           <header class="auth-header">
             <img
@@ -484,7 +616,7 @@
             </p>
           </header>
 
-          <form class="auth-form">
+          <form class="auth-form" data-role="auth-form">
             <div class="auth-form__field">
               <label for="reset-password">New Password</label>
               <div class="auth-form__input-row auth-form__input-row--password">
@@ -492,6 +624,8 @@
                   id="reset-password"
                   class="auth-form__input auth-form__input--password"
                   type="password"
+                  data-js="reset-password"
+                  data-role="form-input"
                 />
                 <svg
                   class="auth-form__password-visibility-icon"
@@ -500,6 +634,11 @@
                   <use href="#icon-password-visible-off"></use>
                 </svg>
               </div>
+              <span
+                class="auth-form__field-error text-secondary"
+                data-js="reset-password-error"
+                data-role="form-error"
+              ></span>
             </div>
 
             <div class="auth-form__field">
@@ -509,6 +648,8 @@
                   id="reset-confirm-password"
                   class="auth-form__input auth-form__input--password"
                   type="password"
+                  data-js="reset-confirm-password"
+                  data-role="form-input"
                 />
                 <svg
                   class="auth-form__password-visibility-icon"
@@ -517,10 +658,23 @@
                   <use href="#icon-password-visible-off"></use>
                 </svg>
               </div>
+              <span
+                class="auth-form__field-error text-secondary"
+                data-js="reset-confirm-password-error"
+                data-role="form-error"
+              ></span>
             </div>
 
-            <button class="btn btn--primary btn--auth auth-form__btn">
-              Reset Password
+            <button
+              class="btn btn--primary btn--auth auth-form__btn"
+              type="submit"
+              data-js="reset-password-btn"
+              data-role="form-btn"
+              data-loading="false"
+              disabled
+            >
+              <span class="btn-text">Reset Password</span>
+              <span class="btn-spinner"></span>
             </button>
           </form>
         </section>

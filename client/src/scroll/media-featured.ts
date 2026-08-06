@@ -4,16 +4,16 @@ import { getElement } from "../utils/dom.js";
 let featuredScrollController: AbortController | null = null;
 
 export function initFeaturedScroll() {
+  featuredScrollController?.abort();
+  featuredScrollController = new AbortController();
+
+  const { signal } = featuredScrollController;
+
   const page = location.pathname.slice(1) as pageCategory;
 
   const validPages: pageCategory[] = ["home", "movies", "tv-shows"];
 
   if (!validPages.includes(page)) return;
-
-  featuredScrollController?.abort();
-  featuredScrollController = new AbortController();
-
-  const { signal } = featuredScrollController;
 
   const featuredSliderContainer = getElement<HTMLElement>(`.featured`);
   const featuredSlider = getElement<HTMLElement>(`.featured__slider`);
@@ -98,18 +98,21 @@ function initInfiniteScroll(
 }
 
 function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
-  let autoplayInterval: number;
+  let autoplayInterval: number | null = null;
 
   const startAutoplay = () => {
     if (autoplayInterval) clearInterval(autoplayInterval);
 
-    autoplayInterval = setInterval(() => {
+    autoplayInterval = window.setInterval(() => {
       featuredSlider.scrollBy({ left: featuredSlider.clientWidth });
     }, 5000);
   };
 
   const stopAutoplay = () => {
-    clearInterval(autoplayInterval);
+    if (autoplayInterval !== null) {
+      clearInterval(autoplayInterval);
+      autoplayInterval = null;
+    }
   };
 
   const handleVisibilityChange = () => {
@@ -124,10 +127,14 @@ function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
     signal,
   });
 
-  signal.addEventListener("abort", () => {
-    stopAutoplay();
-    document.removeEventListener("visibilitychange", handleVisibilityChange);
-  });
+  signal.addEventListener(
+    "abort",
+    () => {
+      stopAutoplay();
+      featuredScrollController = null;
+    },
+    { once: true },
+  );
 
   startAutoplay();
 
@@ -170,11 +177,7 @@ function initWheelNavigation(featuredSlider: HTMLElement, signal: AbortSignal) {
         isScrolling = false;
       }, 400);
     },
-
-    {
-      signal,
-      passive: false,
-    },
+    { signal },
   );
 }
 
@@ -215,4 +218,9 @@ function initNavButtons(
     },
     { signal },
   );
+}
+
+export function cleanupFeaturedScroll() {
+  featuredScrollController?.abort();
+  featuredScrollController = null;
 }

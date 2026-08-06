@@ -41,7 +41,6 @@ export function updatePageTitle(
     } else if (contentTitle) {
       document.title = `${contentTitle} | Picturehouse`;
     } else {
-      console.log("hiii");
       document.title = TITLES[page] ?? "Picturehouse";
     }
   } else {

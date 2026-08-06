@@ -7,6 +7,7 @@ import { parseMediaDetails } from '../services/tmdb-parser.js';
 import { enrichMediaWithRatings } from '../services/media-rating.js';
 import { inFlightIndexKeys, waitForFlightIn } from '../utils/in-flight.js';
 import type { TMDBMediaDetails } from '../types/tmdb-content.js';
+import { sendJsonResponse } from '../http/send-json-response.js';
 
 export async function getMediaDetails(
   req: IncomingMessage,
@@ -17,8 +18,6 @@ export async function getMediaDetails(
   const { mediaType, tmdbId } = req.params;
 
   if (!mediaType || !tmdbId) return;
-
-  res.setHeader('Content-Type', 'application/json');
 
   const mediaDetailsIndexKey = `media:${mediaType}:${tmdbId}`;
   const cachedMediaDetails = await redisClient.get(mediaDetailsIndexKey);
@@ -54,8 +53,7 @@ export async function getMediaDetails(
           }
         })();
       }
-      res.statusCode = 200;
-      res.end(JSON.stringify(mediaPayload));
+      sendJsonResponse(res, 200, { success: true, mediaDetails: mediaPayload });
       return;
     } else if (!inFlightIndexKeys.has(mediaDetailsIndexKey)) {
       inFlightIndexKeys.add(mediaDetailsIndexKey);
@@ -63,18 +61,20 @@ export async function getMediaDetails(
       await enrichMediaWithRatings(mediaPayload).finally(() =>
         inFlightIndexKeys.delete(mediaDetailsIndexKey),
       );
-      res.statusCode = 200;
-      res.end(JSON.stringify(mediaPayload));
+      sendJsonResponse(res, 200, { success: true, mediaDetails: mediaPayload });
       return;
     }
   } else {
     if (inFlightIndexKeys.has(mediaDetailsIndexKey)) {
       await waitForFlightIn(mediaDetailsIndexKey);
-      const retryCache = await redisClient.get(mediaDetailsIndexKey);
+      const retryMediaPayloadCache =
+        await redisClient.get(mediaDetailsIndexKey);
 
-      if (retryCache) {
-        res.statusCode = 200;
-        res.end(retryCache);
+      if (retryMediaPayloadCache) {
+        sendJsonResponse(res, 200, {
+          success: true,
+          mediaDetails: retryMediaPayloadCache,
+        });
         return;
       }
       throw new Error(`Failed to retrieve ${mediaDetailsIndexKey}`);
@@ -88,8 +88,10 @@ export async function getMediaDetails(
 
         await enrichMediaWithRatings(mediaPayload);
 
-        res.statusCode = 200;
-        res.end(JSON.stringify(mediaPayload));
+        sendJsonResponse(res, 200, {
+          success: true,
+          mediaDetails: mediaPayload,
+        });
         return;
       } finally {
         inFlightIndexKeys.delete(mediaDetailsIndexKey);

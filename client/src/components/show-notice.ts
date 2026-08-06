@@ -1,6 +1,7 @@
 import type { NoticeOptions } from "../types/notice-options.js";
 import { createIcon } from "../utils/icon.js";
 
+let showNoticeController: AbortController | null = null;
 let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
 export function showNotice({ message, type }: NoticeOptions) {
@@ -18,10 +19,18 @@ export function showNotice({ message, type }: NoticeOptions) {
     `notice__icon--${type}`,
   ]);
 
-  removeIcon.addEventListener("click", () => {
-    const existingNotice = document.body.querySelector(".notice");
-    existingNotice?.remove();
-  });
+  showNoticeController?.abort();
+  showNoticeController = new AbortController();
+  const signal = showNoticeController.signal;
+
+  removeIcon.addEventListener(
+    "click",
+    () => {
+      const existingNotice = document.body.querySelector(".notice");
+      existingNotice?.remove();
+    },
+    { signal },
+  );
 
   noticeContainer.append(notice, removeIcon);
 
@@ -44,4 +53,9 @@ export function showNotice({ message, type }: NoticeOptions) {
       { once: true },
     );
   }, 3000);
+}
+
+export function cleanupShowNotice() {
+  showNoticeController?.abort();
+  showNoticeController = null;
 }

@@ -4,6 +4,8 @@ import type { watchlistCategory } from "../types/watchlist-category.js";
 import { getElement } from "../utils/dom.js";
 import { filterByWatchlistCategory } from "./filter.js";
 
+let watchlistController: AbortController | null = null;
+
 export function renderWatchlist(
   watchlist: MediaPreview[],
   isSearchResult?: boolean,
@@ -34,6 +36,10 @@ export function renderWatchlist(
     watchlistCategory,
   );
 
+  watchlistController?.abort();
+  watchlistController = new AbortController();
+  const signal = watchlistController.signal;
+
   if (filteredWatchlist.length === 0) {
     watchlistMedia.classList.add("has-no-results");
 
@@ -63,8 +69,13 @@ export function renderWatchlist(
   watchlistMedia.classList.remove("has-no-results");
 
   filteredWatchlist.forEach((media) => {
-    fragment.append(MediaCard(media));
+    fragment.append(MediaCard(media, signal));
   });
   watchlistMediaList.append(fragment);
   watchlistMediaList.classList.remove("is-changing");
+}
+
+export function cleanupWatchlistRequest() {
+  watchlistController?.abort();
+  watchlistController = null;
 }

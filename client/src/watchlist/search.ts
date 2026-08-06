@@ -5,23 +5,32 @@ import { getElement } from "../utils/dom.js";
 import { filterByWatchlistCategory } from "./filter.js";
 import { initWatchlistUI } from "./ui.js";
 
+let watchlistSearchController: AbortController | null = null;
+
 export function initWatchlistSearch() {
-  try {
-    const searchBar = getElement<HTMLFormElement>(".watchlist__search-bar");
-    const searchInput = getElement<HTMLInputElement>(
-      ".watchlist__search-input",
-    );
-    const searchActionBtn = getElement<HTMLButtonElement>(
-      ".watchlist__search-action-btn",
-    );
+  const searchBar = getElement<HTMLFormElement>(".watchlist__search-bar");
+  const searchInput = getElement<HTMLInputElement>(".watchlist__search-input");
+  const searchActionBtn = getElement<HTMLButtonElement>(
+    ".watchlist__search-action-btn",
+  );
 
-    searchInput.value = "";
+  watchlistSearchController?.abort();
+  watchlistSearchController = new AbortController();
+  const signal = watchlistSearchController.signal;
 
-    searchBar.addEventListener("click", () => {
+  searchInput.value = "";
+
+  searchBar.addEventListener(
+    "click",
+    () => {
       searchInput.focus();
-    });
+    },
+    { signal },
+  );
 
-    searchInput.addEventListener("input", () => {
+  searchInput.addEventListener(
+    "input",
+    () => {
       const watchlist = getWatchlistState();
 
       const query = searchInput?.value.trim().toLowerCase();
@@ -45,9 +54,13 @@ export function initWatchlistSearch() {
       renderWatchlist(filteredWatchlist, true);
 
       searchActionBtn.classList.toggle("is-visible", query.length > 0);
-    });
+    },
+    { signal },
+  );
 
-    searchActionBtn.addEventListener("click", () => {
+  searchActionBtn.addEventListener(
+    "click",
+    () => {
       if (searchActionBtn.classList.contains("is-loading")) return;
 
       searchInput.value = "";
@@ -55,8 +68,12 @@ export function initWatchlistSearch() {
 
       initWatchlistUI();
       searchActionBtn.classList.remove("is-visible");
-    });
-  } catch (error) {
-    throw error;
-  }
+    },
+    { signal },
+  );
+}
+
+export function cleanupWatchlistSearch() {
+  watchlistSearchController?.abort();
+  watchlistSearchController = null;
 }
