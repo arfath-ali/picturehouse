@@ -4,6 +4,7 @@ let headerScrollController: AbortController | null = null;
 
 export function initHeaderScroll() {
   const header = getElement<HTMLElement>(".site-header");
+  const profielMenu = getElement("[data-js='site-header-profile-menu']");
 
   header.classList.remove("is-hidden", "is-scrolled", "is-stuck");
 
@@ -97,6 +98,7 @@ export function initHeaderScroll() {
       if (isUserInteracting) {
         if (currentScrollY > lastScrollY && currentScrollY > 100) {
           header.classList.add("is-hidden");
+          profielMenu.classList.remove("is-visible");
         } else {
           header.classList.remove("is-hidden");
         }

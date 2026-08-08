@@ -3,6 +3,7 @@ import { decodeJwt, generateToken } from './jwt.js';
 import type { ServerResponse } from 'node:http';
 import type { IncomingRequest } from '../../types/http.js';
 import { throwApiError } from '../../http/api-error.js';
+import { verifyAuth } from '../../middlewares/verify-auth.js';
 
 export async function createUserSession(
   req: IncomingRequest<unknown>,
@@ -34,11 +35,11 @@ export async function createUserSession(
   try {
     const token = generateToken(userId, session.id);
 
+    const isProd = process.env.NODE_ENV === 'production';
+
     res.setHeader(
       'Set-Cookie',
-      `token=${token}; HttpOnly; SameSite=Lax; Max-Age=${sevenDaysInSeconds}; Path=/${
-        process.env.NODE_ENV === 'production' ? '; Secure' : ''
-      }`,
+      `token=${token}; HttpOnly; SameSite=Lax; Max-Age=${sevenDaysInSeconds}; Path=/;${isProd ? ' Secure;' : ''}`,
     );
   } catch (tokenError) {
     await pool.query(`DELETE FROM user_sessions WHERE id = $1`, [session.id]);
@@ -95,4 +96,18 @@ export async function refreshUserSession(token: string, res: ServerResponse) {
       message: 'Invalid authentication token.',
     });
   }
+}
+
+export async function destroyUserSession(
+  req: IncomingRequest<unknown>,
+  res: ServerResponse,
+) {
+  await pool.query(`DELETE FROM user_sessions WHERE id = $1`, [req.sessionId]);
+
+  const isProd = process.env.NODE_ENV === 'production';
+
+  res.setHeader(
+    'Set-Cookie',
+    `token=; HttpOnly; SameSite=Lax; Max-Age=0; Path=/;${isProd ? ' Secure;' : ''}`,
+  );
 }

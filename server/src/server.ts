@@ -56,6 +56,7 @@ import { resendPasswordResetLink } from './auth/resend-password-reset-link.js';
 import { initializePasswordResetsTable } from './database/password_resets.js';
 import { resetPassword } from './auth/reset-password.js';
 import { validatePasswordResetToken } from './auth/verify-password-reset-token.js';
+import { signOut } from './auth/sign-out.js';
 
 const PORT = process.env.PORT;
 
@@ -220,6 +221,10 @@ const server = http.createServer(
           () => {
             if (req.url === '/api/sign-in') {
               asyncHandler(signIn)(req as IncomingRequest<SignInBody>, res);
+              return;
+            }
+            if (req.url === '/api/sign-out') {
+              asyncHandler(signOut)(req as IncomingRequest<unknown>, res);
               return;
             }
             if (req.url === '/api/forgot-password') {

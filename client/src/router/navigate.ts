@@ -23,6 +23,8 @@ import { initHeaderScroll } from "../scroll/header.js";
 import { initForgotPassword } from "../auth/forgot-password.js";
 import { initResetPasswordEmailSent } from "../auth/reset-password-email-sent.js";
 import { initResetPassword } from "../auth/reset-password.js";
+import { profileDropdown } from "../components/profile-dropdown.js";
+import { initSignOut } from "../auth/sign-out.js";
 
 function restoreVerticalScroll(category: string) {
   const savedVerticalScroll = sessionStorage.getItem(
@@ -201,11 +203,15 @@ export async function navigate() {
       initShelves();
       restoreVerticalScroll(route);
       initHeaderScroll();
+      profileDropdown();
+      initSignOut();
     } else if (route === "search") {
       initWindowScrollManager();
       initSearchInput();
       restoreVerticalScroll(route);
       initHeaderScroll();
+      profileDropdown();
+      initSignOut();
     } else if (
       route === "watchlist" ||
       route === "watchlist-movies" ||
@@ -215,6 +221,8 @@ export async function navigate() {
       initWatchlist();
       restoreVerticalScroll(route);
       initHeaderScroll();
+      profileDropdown();
+      initSignOut();
     }
   } else setAppState("not-found");
 }

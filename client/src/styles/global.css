@@ -488,12 +488,18 @@
 }
 
 
+/* ---Body--- */
+body.is-signing-out {
+    pointer-events: none;
+    cursor: wait;
+}
+
 /* ---Header & Nav--- */
 
 .site-header {
     position: fixed;
     top: 0;
-    z-index: 50;
+    z-index: 10000;
     width: 100%;
     min-height: var(--site-header-height);
     padding-top: clamp(1rem, 0.857rem + 0.714vw, 1.5rem);
@@ -577,14 +583,92 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     display: none;
 }
 
-.site-header__profile-link {
+.site-header__profile-container {
+    position: relative;
+}
+
+.site-header__profile-btn {
     display: none;
 }
 
-.site-header__profile-link.is-visible {
+.site-header__profile-btn.is-visible {
     display: block;
 }
 
+.site-header__profile-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: -1rem;
+    width: max-content;
+    min-width: 130px;
+    margin-top: 0.5rem;
+    border: 1px solid var(--color-neutral-800);
+    border-radius: var(--rounded-lg);
+    background-color: color-mix(in srgb, var(--color-neutral-900) 80%, transparent);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    animation: content-reveal 0.2s forwards;
+}
+
+.site-header__profile-menu.is-visible {
+    display: flex;
+}
+
+.site-header__profile-menu> :nth-child(n)>* {
+    display: block;
+    width: 100%;
+    padding-inline: 1rem;
+    text-align: left;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.site-header__profile-menu> :first-child>* {
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+
+    &:hover {
+        color: var(--color-brand-400);
+    }
+}
+
+.site-header__profile-menu> :last-child>* {
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+.site-header__profile-menu .site-header__signout-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.site-header__profile-menu .site-header__signout-btn:hover {
+    color: var(--color-error-500);
+}
+
+.site-header__signout-btn[data-loading=true] {
+    color: var(--color-error-500)
+}
+
+.site-header__signout-btn[data-loading=true] .site-header__signout-icon {
+    visibility: hidden;
+}
+
+.site-header__signout-btn[data-loading=true] .btn-spinner {
+    display: block;
+    border-top-color: var(--color-error-500);
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.site-header__signout-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: currentColor;
+}
 
 /* ---AUTH--- */
 
@@ -2149,7 +2233,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     -webkit-backdrop-filter: blur(16px) brightness(0.7);
     backdrop-filter: blur(16px) brightness(0.7);
     box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4);
-    z-index: 1000;
+    z-index: 9999;
     opacity: 0;
     pointer-events: none;
 
@@ -2160,7 +2244,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 }
 
 .site-header:not(.is-hidden)~.notice {
-    top: clamp(64px, 4vw + 48px, 80px)
+    top: clamp(64px, 4vw + 48px, 80px);
 }
 
 .notice.is-visible {

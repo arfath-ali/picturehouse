@@ -12,7 +12,6 @@ import { sendEmailVerification } from '../services/mailer.js';
 import { throwApiError } from '../http/api-error.js';
 import type { IncomingRequest } from '../types/http.js';
 import type { SignUpBody } from '../types/auth.js';
-import type { ApiErrorResponse } from '../types/errors.js';
 import { sendJsonResponse } from '../http/send-json-response.js';
 import type { DatabaseError } from 'pg';
 

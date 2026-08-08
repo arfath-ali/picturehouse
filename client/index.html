@@ -68,19 +68,47 @@
           >
             Sign In
           </a>
-          <a
-            class="site-header__profile-link"
-            data-js="site-header-profile-link"
-            aria-label="Profile"
-            href="/profile"
-          >
-            <svg
-              class="h-auto w-[clamp(2rem,1.857rem+0.714vw,2.5rem)]"
-              aria-hidden="true"
+
+          <div class="site-header__profile-container">
+            <button
+              class="site-header__profile-btn"
+              data-js="site-header-profile-btn"
             >
-              <use href="#icon-profile"></use>
-            </svg>
-          </a>
+              <svg
+                class="h-auto w-[clamp(2rem,1.857rem+0.714vw,2.5rem)]"
+                aria-hidden="true"
+              >
+                <use href="#icon-profile"></use>
+              </svg>
+            </button>
+            <ul
+              class="site-header__profile-menu"
+              data-js="site-header-profile-menu"
+            >
+              <li>
+                <a href="/profile">Profile</a>
+              </li>
+              <li>
+                <button
+                  class="site-header__signout-btn"
+                  data-js="signout-btn"
+                  data-loading="false"
+                >
+                  <span class="btn-text">Sign Out</span>
+                  <div>
+                    <span class="btn-spinner"></span>
+                    <svg
+                      class="site-header__signout-icon"
+                      data-js="signout-icon"
+                      aria-hidden="true"
+                    >
+                      <use href="#icon-signout"></use>
+                    </svg>
+                  </div>
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -908,7 +936,14 @@
         </section>
       </div>
 
-      <section class="profile:block hidden"></section>
+      <div class="profile:block hidden">
+        <section>
+          <header>
+            <h2>My Profile</h2>
+            <p>View and manage your account details</p>
+          </header>
+        </section>
+      </div>
 
       <section
         class="not-found:flex hidden min-h-screen flex-col px-[clamp(0.25rem,-0.25rem+2.5vw,2rem)] py-[clamp(1rem,0.714rem+1.429vw,2rem)]"

@@ -9,6 +9,10 @@ export type SignInResponse = {
   email: string;
 };
 
+export type SignOutResponse = {
+  success: boolean;
+};
+
 export type ForgotPasswordResponse = {
   success: boolean;
 };
