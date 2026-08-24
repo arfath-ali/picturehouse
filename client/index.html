@@ -73,9 +73,16 @@
             <button
               class="site-header__profile-btn"
               data-js="site-header-profile-btn"
+              data-has-avatar="false"
             >
+              <img
+                class="site-header__profile-avatar-img"
+                data-js="site-header-profile-avatar-img"
+                alt="Profile picture"
+                referrerpolicy="no-referrer"
+              />
               <svg
-                class="h-auto w-[clamp(2rem,1.857rem+0.714vw,2.5rem)]"
+                class="site-header__profile-avatar-fallback"
                 aria-hidden="true"
               >
                 <use href="#icon-profile"></use>
@@ -92,6 +99,7 @@
                 <button
                   class="site-header__signout-btn"
                   data-js="signout-btn"
+                  data-signout-type="current"
                   data-loading="false"
                 >
                   <span class="btn-text">Sign Out</span>
@@ -138,7 +146,13 @@
             </p>
           </header>
 
-          <form class="auth-form" data-role="auth-form">
+          <form
+            class="auth-form"
+            data-role="auth-form"
+            method="POST"
+            action="#"
+            autocomplete="on"
+          >
             <div
               class="auth-form__error text-secondary"
               data-js="signin-form-error"
@@ -171,12 +185,15 @@
                   data-js="signin-password"
                   data-role="form-input"
                 />
-                <svg
+                <button
                   class="auth-form__password-visibility-icon"
-                  aria-hidden="true"
+                  data-js="password-visibility-icon"
+                  type="button"
                 >
-                  <use href="#icon-password-visible-off"></use>
-                </svg>
+                  <svg aria-hidden="true">
+                    <use href="#icon-password-visible-off"></use>
+                  </svg>
+                </button>
               </div>
               <span
                 class="auth-form__field-error text-secondary"
@@ -204,7 +221,7 @@
               </div>
               <a
                 class="auth-link auth-link--forgot-password text-secondary"
-                href="/forgot-password"
+                href="/forgot-password?source=signin"
                 >Forgot Password?</a
               >
             </div>
@@ -273,7 +290,13 @@
             <span>OR</span>
           </div>
 
-          <form class="auth-form" data-role="auth-form" novalidate>
+          <form
+            class="auth-form"
+            data-role="auth-form"
+            method="POST"
+            action="#"
+            autocomplete="on"
+          >
             <div class="auth-form__field">
               <label for="signup-username">Username</label>
               <div
@@ -339,12 +362,15 @@
                   data-role="form-input"
                   maxlength="128"
                 />
-                <svg
+                <button
                   class="auth-form__password-visibility-icon"
-                  aria-hidden="true"
+                  data-js="password-visibility-icon"
+                  type="button"
                 >
-                  <use href="#icon-password-visible-off"></use>
-                </svg>
+                  <svg aria-hidden="true">
+                    <use href="#icon-password-visible-off"></use>
+                  </svg>
+                </button>
               </div>
               <span
                 class="auth-form__field-error text-secondary"
@@ -366,12 +392,15 @@
                   data-role="form-input"
                   maxlength="128"
                 />
-                <svg
+                <button
                   class="auth-form__password-visibility-icon"
-                  aria-hidden="true"
+                  data-js="password-visibility-icon"
+                  type="button"
                 >
-                  <use href="#icon-password-visible-off"></use>
-                </svg>
+                  <svg aria-hidden="true">
+                    <use href="#icon-password-visible-off"></use>
+                  </svg>
+                </button>
               </div>
               <span
                 class="auth-form__field-error text-secondary"
@@ -421,7 +450,13 @@
             </p>
           </header>
 
-          <form class="auth-form" data-role="auth-form">
+          <form
+            class="auth-form"
+            data-role="auth-form"
+            method="POST"
+            action="#"
+            autocomplete="on"
+          >
             <div class="auth-form__field">
               <div class="auth-form__otp" data-js="verification-otp-container">
                 <input
@@ -527,7 +562,13 @@
               reset your password
             </p>
           </header>
-          <form class="auth-form" data-role="auth-form">
+          <form
+            class="auth-form"
+            data-role="auth-form"
+            method="POST"
+            action="#"
+            autocomplete="on"
+          >
             <div class="auth-form__field">
               <label for="forgot-password-email">Email</label>
               <input
@@ -644,7 +685,13 @@
             </p>
           </header>
 
-          <form class="auth-form" data-role="auth-form">
+          <form
+            class="auth-form"
+            data-role="auth-form"
+            method="POST"
+            action="#"
+            autocomplete="on"
+          >
             <div class="auth-form__field">
               <label for="reset-password">New Password</label>
               <div class="auth-form__input-row auth-form__input-row--password">
@@ -655,12 +702,15 @@
                   data-js="reset-password"
                   data-role="form-input"
                 />
-                <svg
+                <button
                   class="auth-form__password-visibility-icon"
-                  aria-hidden="true"
+                  data-js="password-visibility-icon"
+                  type="button"
                 >
-                  <use href="#icon-password-visible-off"></use>
-                </svg>
+                  <svg aria-hidden="true">
+                    <use href="#icon-password-visible-off"></use>
+                  </svg>
+                </button>
               </div>
               <span
                 class="auth-form__field-error text-secondary"
@@ -679,12 +729,15 @@
                   data-js="reset-confirm-password"
                   data-role="form-input"
                 />
-                <svg
+                <button
                   class="auth-form__password-visibility-icon"
-                  aria-hidden="true"
+                  data-js="password-visibility-icon"
+                  type="button"
                 >
-                  <use href="#icon-password-visible-off"></use>
-                </svg>
+                  <svg aria-hidden="true">
+                    <use href="#icon-password-visible-off"></use>
+                  </svg>
+                </button>
               </div>
               <span
                 class="auth-form__field-error text-secondary"
@@ -817,6 +870,27 @@
           <header class="watchlist__header">
             <h2 class="watchlist__heading">My Watchlist</h2>
             <div class="watchlist__nav">
+              <div class="watchlist__tabs-container">
+                <a
+                  class="watchlist__tab watchlist:watchlist__tab--active"
+                  href="/watchlist"
+                  >All</a
+                >
+                <a
+                  class="watchlist__tab watchlist-movies:watchlist__tab--active"
+                  href="/watchlist-movies"
+                >
+                  Movies
+                </a>
+
+                <a
+                  class="watchlist__tab watchlist-tv-shows:watchlist__tab--active"
+                  href="/watchlist-tv-shows"
+                >
+                  TV Shows
+                </a>
+              </div>
+
               <div class="watchlist__search-bar-container">
                 <form class="watchlist__search-bar">
                   <label class="shrink-0 cursor-text" for="watchlist-search">
@@ -850,31 +924,12 @@
                 </form>
               </div>
 
-              <div class="watchlist__tabs-container">
-                <a
-                  class="watchlist__tab watchlist:watchlist__tab--active"
-                  href="/watchlist"
-                  >All</a
-                >
-                <a
-                  class="watchlist__tab watchlist-movies:watchlist__tab--active"
-                  href="/watchlist-movies"
-                >
-                  Movies
-                </a>
-
-                <a
-                  class="watchlist__tab watchlist-tv-shows:watchlist__tab--active"
-                  href="/watchlist-tv-shows"
-                >
-                  TV Shows
-                </a>
-              </div>
-
               <div class="watchlist__sort">
                 <button
                   class="watchlist__sort-btn btn btn--secondary"
                   data-value="recently-added"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
                 >
                   <span>
                     <span>Sort by: </span>
@@ -888,28 +943,36 @@
                   </svg>
                 </button>
 
-                <ul class="watchlist__sort-select">
+                <ul class="watchlist__sort-select" role="listbox">
                   <li
                     class="watchlist__sort-select-option"
                     data-value="recently-added"
+                    tabindex="0"
+                    role="option"
                   >
                     Recently Added
                   </li>
                   <li
                     class="watchlist__sort-select-option"
                     data-value="oldest-added"
+                    tabindex="0"
+                    role="option"
                   >
                     Oldest Added
                   </li>
                   <li
                     class="watchlist__sort-select-option"
                     data-value="title-asc"
+                    tabindex="0"
+                    role="option"
                   >
                     Title: A–Z
                   </li>
                   <li
                     class="watchlist__sort-select-option"
                     data-value="title-desc"
+                    tabindex="0"
+                    role="option"
                   >
                     Title: Z–A
                   </li>
@@ -937,11 +1000,496 @@
       </div>
 
       <div class="profile:block hidden">
-        <section>
-          <header>
-            <h2>My Profile</h2>
-            <p>View and manage your account details</p>
+        <section class="profile">
+          <nav>
+            <a href="/home" class="profile__back-link">
+              <svg class="fill-brand-400 h-4 w-4" aria-hidden="true">
+                <use href="#icon-arrow-back"></use>
+              </svg>
+              <span>Back to Home</span>
+            </a>
+          </nav>
+
+          <header class="profile__header">
+            <h1>My Profile</h1>
+            <p class="text-secondary">View and manage your account details</p>
           </header>
+
+          <div
+            class="profile__cards-wrapper"
+            data-loading="false"
+            data-js="profile-cards-wrapper"
+          >
+            <div class="spinner profile__cards-wrapper-spinner"></div>
+
+            <div class="profile__cards-wrapper-details">
+              <div
+                class="profile__card profile__card--banner"
+                data-js="profile-card-banner"
+                data-is-editing="false"
+              >
+                <div
+                  class="profile__avatar"
+                  data-js="profile-avatar"
+                  data-is-updating="false"
+                  data-has-avatar="false"
+                >
+                  <div class="profile__avatar-spinner-overlay">
+                    <div class="spinner"></div>
+                  </div>
+
+                  <img
+                    class="profile__avatar-img"
+                    data-js="profile-avatar-img"
+                    alt="Profile picture"
+                    referrerpolicy="no-referrer"
+                  />
+                  <svg
+                    class="profile__avatar-fallback"
+                    data-js="profile-avatar-fallback"
+                    aria-hidden="true"
+                  >
+                    <use href="#icon-profile"></use>
+                  </svg>
+
+                  <button
+                    class="profile__avatar-edit-btn"
+                    data-js="profile-avatar-edit-btn"
+                    type="button"
+                  >
+                    <svg
+                      class="h-4 w-4 shrink-0 fill-current"
+                      aria-hidden="true"
+                    >
+                      <use href="#icon-edit"></use>
+                    </svg>
+                  </button>
+
+                  <input
+                    class="sr-only"
+                    type="file"
+                    accept="image/*"
+                    data-js="profile-avatar-input"
+                  />
+                </div>
+
+                <div class="profile__user-meta">
+                  <h3 class="profile__fullname" data-js="profile-fullname"></h3>
+
+                  <p
+                    class="profile__username text-secondary"
+                    data-js="profile-username"
+                  ></p>
+                </div>
+
+                <button
+                  class="btn btn--secondary btn--profile profile__edit-identity-btn"
+                  type="button"
+                  data-js="profile-edit-identity-btn"
+                >
+                  <svg
+                    class="btn__icon profile__edit-identity-icon"
+                    aria-hidden="true"
+                  >
+                    <use href="#icon-edit"></use>
+                  </svg>
+                  <span class="btn-text">Edit Profile</span>
+                </button>
+
+                <button
+                  class="btn btn--secondary btn--profile profile__avatar-remove-btn"
+                  type="button"
+                  data-js="profile-avatar-remove-btn"
+                >
+                  Remove Picture
+                </button>
+              </div>
+
+              <div class="profile__card">
+                <div class="profile__card-header">
+                  <h2 class="profile__card-title">Personal Information</h2>
+                  <p class="profile__card-description">
+                    Manage your display name, username, and identity details.
+                  </p>
+                </div>
+
+                <form
+                  class="profile__form"
+                  method="POST"
+                  action="#"
+                  autocomplete="on"
+                  data-js="profile-identity-form"
+                  data-is-editing="false"
+                >
+                  <div class="profile__field">
+                    <label for="profile-fullname">Full Name</label>
+                    <input
+                      id="profile-fullname"
+                      class="profile__input"
+                      name="full-name"
+                      type="text"
+                      autocomplete="off"
+                      data-js="profile-fullname"
+                      maxlength="256"
+                      placeholder="e.g. Arfath Ali"
+                      disabled
+                    />
+                  </div>
+
+                  <div class="profile__field">
+                    <label for="profile-username">Username</label>
+                    <div
+                      class="profile__input-row profile__input-row--username"
+                      data-js="profile-username-row"
+                      data-status="idle"
+                    >
+                      <input
+                        id="profile-username"
+                        class="profile__input"
+                        name="username"
+                        type="text"
+                        autocomplete="off"
+                        data-js="profile-username"
+                        maxlength="30"
+                        disabled
+                      />
+                      <div class="profile__username-status">
+                        <div class="profile__username-spinner"></div>
+                        <div class="profile__username-valid">
+                          <svg
+                            class="hidden fill-neutral-50"
+                            aria-hidden="true"
+                          >
+                            <use href="#icon-success"></use>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <span
+                      class="profile__field-error text-secondary"
+                      data-js="profile-username-error"
+                    ></span>
+                  </div>
+
+                  <div class="profile__form-actions">
+                    <button
+                      class="btn btn--secondary btn--profile profile__form-btn-secondary"
+                      type="button"
+                      data-js="identity-edit-cancel-btn"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      class="btn btn--primary btn--profile profile__form-btn-primary"
+                      type="submit"
+                      data-js="identity-edit-save-btn"
+                      data-loading="false"
+                      disabled
+                    >
+                      <span class="btn-text">Save Changes</span>
+                      <span class="btn-spinner"></span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="profile__card">
+                <div class="profile__card-header">
+                  <h2 class="profile__card-title">Account & Credentials</h2>
+                  <p class="profile__card-description">
+                    Manage your email address, password, and authentication
+                    methods.
+                  </p>
+                </div>
+
+                <div class="profile__card-credentials">
+                  <form class="profile__form profile__form--credentials">
+                    <div class="profile__field">
+                      <label for="profile-email">Email</label>
+                      <div
+                        class="profile__input-row profile__input-row--credentials"
+                      >
+                        <input
+                          id="profile-email"
+                          class="profile__input"
+                          name="email"
+                          type="email"
+                          autocomplete="off"
+                          data-js="profile-email"
+                          maxlength="256"
+                          disabled
+                        />
+                        <button
+                          class="btn btn--secondary btn--profile profile__form-btn-secondary"
+                          type="button"
+                          data-js="email-edit-btn"
+                        >
+                          <span class="btn-text">Change email</span>
+                        </button>
+                      </div>
+
+                      <span
+                        class="profile__field-error text-secondary"
+                        data-js="profile-email-error"
+                      ></span>
+                    </div>
+                  </form>
+
+                  <div>
+                    <form
+                      class="profile__form profile__form--credentials"
+                      data-js="profile-password-form"
+                    >
+                      <div class="profile__field">
+                        <label for="profile-password">Password</label>
+                        <div
+                          class="profile__input-row profile__input-row--credentials"
+                        >
+                          <input
+                            id="profile-password"
+                            class="profile__input"
+                            type="password"
+                            value="••••••••••••"
+                            disabled
+                            data-js="profile-password"
+                          />
+                          <button
+                            class="btn btn--secondary btn--profile profile__form-btn-secondary"
+                            type="button"
+                            data-js="edit-password-btn"
+                          >
+                            <span class="btn-text">Change Password</span>
+                          </button>
+                        </div>
+
+                        <span
+                          class="profile__field-error text-secondary"
+                          data-js="profile-password-error"
+                        ></span>
+                      </div>
+                    </form>
+
+                    <form
+                      class="profile__form profile__form--password-edit"
+                      data-js="profile-new-password-form"
+                      data-role="profile-form"
+                      data-is-editing="false"
+                    >
+                      <div
+                        class="profile__field profile__field--current-password"
+                        data-js="password-edit-current-field"
+                      >
+                        <div
+                          class="flex flex-col justify-between gap-1 min-[375px]:flex-row min-[375px]:items-center min-[375px]:gap-0"
+                        >
+                          <label for="profile-current-password"
+                            >Current Password</label
+                          >
+                          <a
+                            class="auth-link auth-link--forgot-password text-secondary self-end min-[375px]:self-auto"
+                            href="/forgot-password?source=profile"
+                          >
+                            Forgot Password?
+                          </a>
+                        </div>
+                        <div class="profile__input-row">
+                          <input
+                            id="profile-current-password"
+                            class="profile__input profile__input--password"
+                            type="password"
+                            name="current-password"
+                            data-js="profile-current-password"
+                            data-role="form-input"
+                            maxlength="128"
+                          />
+                          <button
+                            class="profile__password-visibility-icon"
+                            data-js="password-visibility-icon"
+                            type="button"
+                          >
+                            <svg aria-hidden="true">
+                              <use href="#icon-password-visible-off"></use>
+                            </svg>
+                          </button>
+                        </div>
+                        <span
+                          class="profile__field-error text-secondary"
+                          data-js="profile-current-password-error"
+                          data-role="form-error"
+                        ></span>
+                      </div>
+
+                      <div class="profile__field">
+                        <label for="profile-new-password">New Password</label>
+                        <div class="profile__input-row">
+                          <input
+                            id="profile-new-password"
+                            class="profile__input profile__input--password"
+                            type="password"
+                            name="new-password"
+                            data-js="profile-new-password"
+                            data-role="form-input"
+                            maxlength="128"
+                          />
+                          <button
+                            class="profile__password-visibility-icon"
+                            data-js="password-visibility-icon"
+                            type="button"
+                          >
+                            <svg aria-hidden="true">
+                              <use href="#icon-password-visible-off"></use>
+                            </svg>
+                          </button>
+                        </div>
+                        <span
+                          class="profile__field-error text-secondary"
+                          data-js="profile-new-password-error"
+                          data-role="form-error"
+                        ></span>
+                      </div>
+
+                      <div class="profile__field">
+                        <label for="profile-confirm-password"
+                          >Confirm Password</label
+                        >
+                        <div class="profile__input-row">
+                          <input
+                            id="profile-confirm-password"
+                            class="profile__input profile__input--password"
+                            type="password"
+                            name="confirm-password"
+                            data-js="profile-confirm-password"
+                            data-role="form-input"
+                            maxlength="128"
+                          />
+                          <button
+                            class="profile__password-visibility-icon"
+                            data-js="password-visibility-icon"
+                            type="button"
+                          >
+                            <svg aria-hidden="true">
+                              <use href="#icon-password-visible-off"></use>
+                            </svg>
+                          </button>
+                        </div>
+                        <span
+                          class="profile__field-error text-secondary"
+                          data-js="profile-confirm-password-error"
+                          data-role="form-error"
+                        ></span>
+                      </div>
+
+                      <div class="profile__form-actions">
+                        <button
+                          class="btn btn--secondary btn--profile profile__form-btn-secondary"
+                          type="button"
+                          data-js="edit-password-cancel-btn"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          class="btn btn--primary btn--profile profile__form-btn-primary"
+                          type="submit"
+                          data-js="edit-password-save-btn"
+                          data-loading="false"
+                          data-role="form-btn"
+                          disabled
+                        >
+                          <span class="btn-text">Update Password</span>
+                          <span class="btn-spinner"></span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div class="profile__card">
+                <div class="profile__card-header">
+                  <h2 class="profile__card-title">Connected Accounts</h2>
+                  <p class="profile__card-description">
+                    Manage your connected Google account for seamless single
+                    sign-on access.
+                  </p>
+                </div>
+                <button
+                  class="btn btn--secondary btn--profile profile__google-auth-btn profile__google-auth-btn--connect"
+                  data-js="google-auth-btn-connect"
+                  data-mode="link-account"
+                >
+                  <svg class="btn__icon" aria-hidden="true">
+                    <use href="#icon-google"></use>
+                  </svg>
+                  <span class="btn-text">Link Google Account</span>
+                </button>
+              </div>
+
+              <div class="profile__card">
+                <div class="profile__card-header">
+                  <h2 class="profile__card-title">Account & Sessions</h2>
+                  <p class="profile__card-description">
+                    Manage your active sessions and account security.
+                  </p>
+                </div>
+
+                <div class="profile__session-actions">
+                  <button
+                    class="btn btn--secondary btn--profile profile__signout-btn"
+                    data-js="signout-btn"
+                    data-signout-type="all"
+                  >
+                    <span class="btn-text">Sign Out From All Devices</span>
+                    <div>
+                      <span class="btn-spinner"></span>
+                      <svg
+                        class="btn__icon profile__signout-icon"
+                        data-js="signout-icon"
+                        aria-hidden="true"
+                      >
+                        <use href="#icon-signout"></use>
+                      </svg>
+                    </div>
+                  </button>
+                  <button
+                    class="btn btn--secondary btn--profile profile__signout-btn"
+                    data-js="signout-btn"
+                    data-signout-type="current"
+                  >
+                    <span class="btn-text">Sign Out</span>
+                    <div>
+                      <span class="btn-spinner"></span>
+                      <svg
+                        class="btn__icon profile__signout-icon"
+                        data-js="signout-icon"
+                        aria-hidden="true"
+                      >
+                        <use href="#icon-signout"></use>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="profile__card">
+                <div class="profile__card-header">
+                  <h2 class="profile__card-title">Delete Account</h2>
+                  <p class="profile__card-description">
+                    Permanently delete your account and all associated data.
+                    This action cannot be undone.
+                  </p>
+                </div>
+
+                <div class="profile__session-actions">
+                  <button
+                    class="btn btn--secondary btn--profile profile__delete-btn"
+                    data-js="delete-account-btn"
+                  >
+                    Delete Account
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
 
@@ -980,6 +1528,208 @@
         </div>
       </section>
     </main>
+
+    <div class="profile__email-edit-overlay" data-js="profile-email-edit">
+      <div
+        class="profile__email-edit-backdrop"
+        data-js="email-edit-backdrop"
+      ></div>
+
+      <div class="profile__card">
+        <div class="profile__email-edit-step" data-js="email-edit-content">
+          <div class="profile__email-edit-header">
+            <h2>Change Email Address</h2>
+            <p>
+              Enter your new email address. We will send a verification code to
+              verify your new inbox.
+            </p>
+          </div>
+
+          <form
+            class="profile__form profile__form--credentials"
+            method="POST"
+            action="#"
+            autocomplete="off"
+            data-js="profile-new-email-form"
+          >
+            <div class="profile__field">
+              <label for="new-email">New Email</label>
+
+              <input
+                id="new-email"
+                class="profile__input"
+                type="email"
+                name="newEmail"
+                autocomplete="email"
+                data-js="email-edit-input"
+                maxlength="256"
+              />
+
+              <span
+                class="profile__field-error text-secondary"
+                data-js="email-edit-error"
+              ></span>
+            </div>
+
+            <div
+              class="profile__form-actions profile__form-actions--email-edit"
+            >
+              <button
+                type="button"
+                class="btn btn--secondary btn--profile profile__form-btn-secondary"
+                data-js="email-edit-close"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn btn--primary btn--profile profile__form-btn-primary"
+                data-js="email-edit-submit-btn"
+                data-loading="false"
+                disabled
+              >
+                <span class="btn-text">Send Verification Code</span>
+                <span class="btn-spinner"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile__delete-overlay" data-js="profile-delete">
+      <div class="profile__delete-backdrop"></div>
+
+      <div class="profile__card">
+        <div class="profile__delete-step" data-js="delete-modal-1">
+          <div class="profile__delete-header">
+            <h2>Are you absolutely sure?</h2>
+            <p class="profile__delete-description">
+              This action is permanent and cannot be undone. The following data
+              will be permanently deleted:
+            </p>
+            <ul class="profile__delete-description-list">
+              <li>All active sessions & login access</li>
+              <li>Your account profile & personal details</li>
+              <li>Your saved watchlist & media history</li>
+            </ul>
+          </div>
+
+          <div class="profile__modal-actions">
+            <button
+              type="button"
+              class="btn btn--secondary btn--profile profile__modal-btn-secondary"
+              data-js="delete-modal-close"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn--primary btn--profile profile__delete-btn"
+              data-js="delete-modal-proceed"
+            >
+              Proceed to Delete
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="profile__delete-step"
+          data-js="delete-modal-2"
+          data-is-google-user="false"
+        >
+          <div class="profile__delete-header">
+            <h2>Verify Your Identity</h2>
+            <p>
+              Please enter your current password to confirm account deletion.
+            </p>
+          </div>
+
+          <form
+            class="profile__form profile__form--delete"
+            data-role="profile-form"
+            method="POST"
+            action="#"
+            autocomplete="on"
+          >
+            <div class="profile__field">
+              <div class="flex items-center justify-between">
+                <label for="delete-password">Current Password</label>
+                <a
+                  class="auth-link auth-link--forgot-password text-secondary"
+                  href="/forgot-password?source=delete_form"
+                  >Forgot Password?</a
+                >
+              </div>
+
+              <div class="profile__input-row">
+                <input
+                  id="delete-password"
+                  class="profile__input profile__input--password"
+                  type="password"
+                  name="password"
+                  autocomplete="current-password"
+                  data-js="delete-password-input"
+                  data-role="form-input"
+                  maxlength="128"
+                />
+                <button
+                  class="profile__password-visibility-icon"
+                  data-js="password-visibility-icon"
+                  type="button"
+                >
+                  <svg aria-hidden="true">
+                    <use href="#icon-password-visible-off"></use>
+                  </svg>
+                </button>
+              </div>
+              <span
+                class="profile__field-error text-secondary"
+                data-js="delete-password-error"
+                data-role="form-error"
+              ></span>
+            </div>
+
+            <div class="profile__form-actions profile__form-actions--delete">
+              <button
+                type="button"
+                class="btn btn--secondary btn--profile profile__form-btn-secondary"
+                data-js="delete-modal-close"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn btn--primary btn--profile profile__delete-btn"
+                data-js="confirm-delete-btn"
+                data-role="form-btn"
+                data-loading="false"
+                disabled
+              >
+                <span class="btn-text">Confirm Deletion</span>
+                <span class="btn-spinner"></span>
+              </button>
+            </div>
+          </form>
+
+          <div class="profile__divider">
+            <span>OR</span>
+          </div>
+
+          <button
+            class="btn btn--secondary btn--profile profile__google-auth-btn profile__google-auth-btn--delete"
+            data-js="google-auth-btn"
+            data-mode="delete"
+          >
+            <svg class="btn__icon" aria-hidden="true">
+              <use href="#icon-google"></use>
+            </svg>
+            <span>Verify with Google</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <nav class="site-mobile-navigation" aria-label="Mobile Global Navigation">
       <a class="nav-item home:nav-item--active" href="/home"> Home </a>
       <a

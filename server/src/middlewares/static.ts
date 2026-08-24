@@ -6,6 +6,7 @@ import { sendJsonResponse } from '../http/send-json-response.js';
 import { sendFileResponse } from '../http/send-file-response.js';
 import { verifyAuth } from './verify-auth.js';
 import type { IncomingRequest } from '../types/http.js';
+import { pool } from '../database/pool.js';
 
 const mimeTypes: Record<string, string> = {
   '.css': 'text/css',
@@ -77,10 +78,23 @@ export async function serveHTMLFile(
 ) {
   const htmlFilePath = path.join(__clientdir, 'index.html');
   let isUserAuthenticated = false;
+  let avatarURL: string | null = null;
+  let isGoogleUser: boolean = false;
+  let hasPassword: boolean = false;
 
   try {
     await verifyAuth(req, res);
     isUserAuthenticated = true;
+    const {
+      rows: [user],
+    } = await pool.query(
+      'SELECT google_id, avatar_url, password FROM users WHERE id = $1',
+      [req.userId],
+    );
+
+    avatarURL = user?.avatar_url ?? null;
+    isGoogleUser = Boolean(user?.google_id);
+    hasPassword = Boolean(user?.password);
   } catch {
     isUserAuthenticated = false;
   }
@@ -104,7 +118,15 @@ export async function serveHTMLFile(
       return;
     }
 
-    const authScript = `<script>window.__AUTH_STATE__ = { isUserAuthenticated: ${isUserAuthenticated}, userId:"${req.userId}" };</script>`;
+    const authState = {
+      isUserAuthenticated,
+      isGoogleUser,
+      hasPassword,
+      userId: req.userId || null,
+      avatarURL,
+    };
+
+    const authScript = `<script>window.__AUTH_STATE__ = ${JSON.stringify(authState)};</script>`;
     const modifiedHtml = html.replace('</head>', `${authScript}</head>`);
 
     const etag = crypto.createHash('md5').update(modifiedHtml).digest('hex');

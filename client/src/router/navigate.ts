@@ -25,6 +25,14 @@ import { initResetPasswordEmailSent } from "../auth/reset-password-email-sent.js
 import { initResetPassword } from "../auth/reset-password.js";
 import { profileDropdown } from "../components/profile-dropdown.js";
 import { initSignOut } from "../auth/sign-out.js";
+import { initProfile } from "../profile/init.js";
+import { initDeleteAccount } from "../auth/delete-account.js";
+import { initEditIdentity } from "../profile/edit-identity.js";
+import { initPasswordCard } from "../profile/password-card.js";
+import { initEditPassword } from "../profile/edit-password.js";
+import { initEditEmail } from "../profile/edit-email.js";
+import { initEditAvatar } from "../profile/edit-avatar.js";
+import { initWatchlistState } from "../watchlist/state.js";
 
 function restoreVerticalScroll(category: string) {
   const savedVerticalScroll = sessionStorage.getItem(
@@ -88,9 +96,33 @@ export async function navigate() {
     return;
   }
 
-  if (location.search && route !== "reset-password") {
-    setAppState("not-found");
-    return;
+  if (location.search) {
+    const isAllowedResetPassword = route === "reset-password";
+
+    const searchParams = new URLSearchParams(location.search);
+    const sourceParam = searchParams.get("source");
+
+    const validVerifySources = ["signup", "signin", "profile"];
+    const validForgotSources = ["signin", "profile", "delete_form"];
+
+    const isAllowedVerifyEmail =
+      route === "verify-email" &&
+      sourceParam !== null &&
+      validVerifySources.includes(sourceParam);
+
+    const isAllowedForgotPassword =
+      route === "forgot-password" &&
+      sourceParam !== null &&
+      validForgotSources.includes(sourceParam);
+
+    if (
+      !isAllowedResetPassword &&
+      !isAllowedForgotPassword &&
+      !isAllowedVerifyEmail
+    ) {
+      setAppState("not-found");
+      return;
+    }
   }
 
   if (route === "") {
@@ -98,12 +130,18 @@ export async function navigate() {
     route = "home";
   }
 
-  if (
-    route === "verify-email" &&
-    authStore.getPendingVerificationEmail() === "<your-email@example.com>"
-  ) {
-    history.replaceState({}, "", "/sign-up");
-    route = "sign-up";
+  if (route === "verify-email") {
+    const pendingEmail = authStore.getPendingVerificationEmail();
+
+    if (pendingEmail === "<your-email@example.com>") {
+      const searchParams = new URLSearchParams(location.search);
+      const sourceParam = searchParams.get("source");
+
+      const fallbackRoute = sourceParam === "profile" ? "profile" : "sign-up";
+
+      history.replaceState({}, "", `/${fallbackRoute}`);
+      route = fallbackRoute;
+    }
   }
 
   if (
@@ -125,6 +163,14 @@ export async function navigate() {
   if (route === "discover") {
     history.replaceState({}, "", "/movies");
     route = "movies";
+  }
+
+  if (
+    route === "profile" &&
+    window.__AUTH_STATE__.isUserAuthenticated === false
+  ) {
+    history.replaceState({}, "", "/home");
+    route = "home";
   }
 
   const isMediaDetailsPage = route.match(/(tv|movie)\/(.+-)?([0-9]+)$/i);
@@ -183,7 +229,7 @@ export async function navigate() {
       googleAuth();
       togglePasswordVisibilty();
     } else if (route === "verify-email") {
-      initEmailVerification(authStore.getPendingVerificationEmail() ?? "");
+      initEmailVerification(authStore.getPendingVerificationEmail());
     } else if (route === "forgot-password") {
       initForgotPassword();
     } else if (route === "reset-password-email-sent") {
@@ -223,6 +269,15 @@ export async function navigate() {
       initHeaderScroll();
       profileDropdown();
       initSignOut();
+    } else if (route === "profile") {
+      initProfile();
+      initEditAvatar();
+      initEditIdentity();
+      initEditEmail();
+      initPasswordCard();
+      googleAuth();
+      initSignOut();
+      initDeleteAccount();
     }
   } else setAppState("not-found");
 }

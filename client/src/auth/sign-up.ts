@@ -28,6 +28,9 @@ let signUpController: AbortController | null = null;
 export function initSignUp() {
   resetForm();
 
+  const usernameInputRow = getElement<HTMLElement>(
+    "[data-js='signup-username-row']",
+  );
   const usernameInput = getElement<HTMLInputElement>(
     "[data-js='signup-username']",
   );
@@ -94,7 +97,9 @@ export function initSignUp() {
   usernameInput.addEventListener(
     "input",
     async (e) => {
-      clearUsernameDebounce();
+      submitBtn.disabled = true;
+
+      clearUsernameDebounce(usernameInputRow);
       usernameInput.value = (e.target as HTMLInputElement).value
         .toLowerCase()
         .replace(/\s/g, "");
@@ -106,6 +111,7 @@ export function initSignUp() {
 
       if (isUsernameValid) {
         usernameValidation = await checkUsernameAvailability(
+          usernameInputRow,
           usernameInput.value,
         );
         setFieldErrorStatus(
@@ -277,14 +283,12 @@ export function initSignUp() {
         if (response.success) {
           lastServerRejectedEmail = "";
           authStore.setPendingVerificationEmail(userData.email);
-          history.replaceState({}, "", "/verify-email");
+          history.replaceState({}, "", "/verify-email?source=signup");
+          submitBtn.disabled = true;
           navigate();
         }
       } catch (error: unknown) {
         console.error(error);
-
-        submitBtn.setAttribute("data-loading", "false");
-        submitBtn.disabled = false;
 
         if (isApiError(error)) {
           if (error.status === 400 || error.status === 409) {
@@ -304,7 +308,7 @@ export function initSignUp() {
               case "username":
                 isUsernameValid = false;
                 usernameValidation = { message, isValid: false };
-                resetUsernameStatus();
+                resetUsernameStatus(usernameInputRow);
                 break;
               case "email":
                 isEmailValid = false;
@@ -335,6 +339,8 @@ export function initSignUp() {
         } else {
           showPageError("signup-page");
         }
+      } finally {
+        submitBtn.setAttribute("data-loading", "false");
       }
     },
     { signal },

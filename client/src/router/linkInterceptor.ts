@@ -21,7 +21,7 @@ export function initLinkInterceptor() {
     }
 
     e.preventDefault();
-    history.pushState({}, "", `${anchorLink.href}`);
+    history.pushState({}, "", `${anchorLink.pathname}`);
 
     navigate();
   });

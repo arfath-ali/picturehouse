@@ -35,10 +35,15 @@ import { resendVerificationEmail } from './auth/resend-verification-email.js';
 import { registerJobs } from './jobs/register-jobs.js';
 import type { IncomingRequest } from './types/http.js';
 import type {
+  DeleteAccountBody,
   ForgotPasswordBody,
   PasswordResetTokenValidationBody,
+  ProfileEmailEditBody,
+  ProfileIdentityEditBody,
+  ProfilePasswordEditBody,
   ResetPasswordBody,
   SignInBody,
+  SignoutBody,
   SignUpBody,
   VerifyEmailBody,
 } from './types/auth.js';
@@ -49,14 +54,21 @@ import type {
 import { sendJsonResponse } from './http/send-json-response.js';
 import { signIn } from './auth/sign-in.js';
 import { initializeUserSessionsTable } from './database/user_sessions.js';
-import { googleAuth } from './auth/google-auth.js';
-import { googleAuthCallback } from './auth/google-auth-callback.js';
+import { googleAuth } from './google-auth/google-auth.js';
+import { googleAuthCallback } from './google-auth/google-auth-callback.js';
 import { forgotPassword } from './auth/forgot-password.js';
 import { resendPasswordResetLink } from './auth/resend-password-reset-link.js';
 import { initializePasswordResetsTable } from './database/password_resets.js';
 import { resetPassword } from './auth/reset-password.js';
 import { validatePasswordResetToken } from './auth/verify-password-reset-token.js';
 import { signOut } from './auth/sign-out.js';
+import { getProfile } from './profile/get.js';
+import { deleteAccount } from './auth/delete-account.js';
+import { editIdentity } from './profile/edit-identity.js';
+import { editPassword } from './profile/edit-password.js';
+import { editEmail } from './profile/edit-email.js';
+import { editAvatar } from './profile/edit-avatar.js';
+import { deleteAvatar } from './profile/delete-avatar.js';
 
 const PORT = process.env.PORT;
 
@@ -134,6 +146,11 @@ const server = http.createServer(
           const username = String(url.searchParams.get('username'));
           req.params = { username };
           asyncHandler(checkUsername)(req, res);
+          return;
+        }
+
+        if (req.url === '/api/profile') {
+          asyncHandler(getProfile)(req as IncomingRequest<unknown>, res);
           return;
         }
 
@@ -224,7 +241,7 @@ const server = http.createServer(
               return;
             }
             if (req.url === '/api/sign-out') {
-              asyncHandler(signOut)(req as IncomingRequest<unknown>, res);
+              asyncHandler(signOut)(req as IncomingRequest<SignoutBody>, res);
               return;
             }
             if (req.url === '/api/forgot-password') {
@@ -273,6 +290,28 @@ const server = http.createServer(
               );
               return;
             }
+            if (req.url === '/api/profile/identity') {
+              asyncHandler(editIdentity)(
+                req as IncomingRequest<ProfileIdentityEditBody>,
+                res,
+              );
+              return;
+            }
+
+            if (req.url === '/api/profile/email') {
+              asyncHandler(editEmail)(
+                req as IncomingRequest<ProfileEmailEditBody>,
+                res,
+              );
+              return;
+            }
+            if (req.url === '/api/profile/password') {
+              asyncHandler(editPassword)(
+                req as IncomingRequest<ProfilePasswordEditBody>,
+                res,
+              );
+              return;
+            }
 
             if (req.url === '/api/watchlist') {
               asyncHandler(addToWatchlist)(
@@ -281,6 +320,15 @@ const server = http.createServer(
               );
               return;
             }
+
+            if (req.url === '/api/delete') {
+              asyncHandler(deleteAccount)(
+                req as IncomingRequest<DeleteAccountBody>,
+                res,
+              );
+              return;
+            }
+
             sendJsonResponse(res, 404, {
               code: 'ROUTE_NOT_FOUND',
               message: 'Route not found.',
@@ -298,6 +346,10 @@ const server = http.createServer(
                 req as IncomingRequest<watchlistSortPreferenceBody>,
                 res,
               );
+              return;
+            }
+            if (req.url === '/api/profile/avatar') {
+              asyncHandler(editAvatar)(req as IncomingRequest<unknown>, res);
               return;
             }
             sendJsonResponse(res, 404, {
@@ -327,6 +379,11 @@ const server = http.createServer(
             req as IncomingRequest<unknown>,
             res,
           );
+          return;
+        }
+
+        if (req.url === '/api/profile/avatar/delete') {
+          asyncHandler(deleteAvatar)(req as IncomingRequest<unknown>, res);
           return;
         }
         sendJsonResponse(res, 404, {

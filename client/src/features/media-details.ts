@@ -588,6 +588,8 @@ export async function renderDetails(
       const castList = document.createElement("div");
       castList.classList.add("media-details__cast-list");
 
+      castList.setAttribute("tabindex", "-1");
+
       castList.appendChild(
         createSkeletonFragment(
           mediaDetails.cast.length,

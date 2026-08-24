@@ -3,6 +3,7 @@ import { MediaCard } from "../components/media-card.js";
 import { API_BASE_URL } from "../config/api.js";
 import { API_ENDPOINTS } from "../constants/api.js";
 import { navigate } from "../router/navigate.js";
+import { updateShelfCardsFocus } from "../scroll/media-shelf.js";
 import { setAppState } from "../state/app.js";
 import type { MediaShelfCollectionResponse } from "../types/api-response.js";
 import type { pageCategory } from "../types/page-category.js";
@@ -23,7 +24,9 @@ export async function renderShelf(identifier: shelfCategoryId) {
 
   if (!validPages.includes(page)) return;
 
-  const shelfList = getElement(`.media-shelf__list--${identifier}`);
+  const shelfList = getElement<HTMLElement>(
+    `.media-shelf__list--${identifier}`,
+  );
   shelfList.innerHTML = "";
 
   shelfList.append(createSkeletonFragment(20, "media-card__skeleton"));
@@ -70,6 +73,8 @@ export async function renderShelf(identifier: shelfCategoryId) {
     });
 
     shelfList.appendChild(fragment);
+
+    updateShelfCardsFocus(shelfList);
 
     shelfList.addEventListener(
       "scroll",

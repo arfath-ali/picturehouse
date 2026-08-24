@@ -12,7 +12,7 @@ export async function forgotPassword(
   req: IncomingRequest<ForgotPasswordBody>,
   res: ServerResponse,
 ) {
-  const { email } = req.body;
+  const { email, source } = req.body;
 
   const emailValidation = validateEmail(email);
 
@@ -42,11 +42,13 @@ export async function forgotPassword(
         VALUES ($1, $2, $3)
         ON CONFLICT (user_id) 
         DO UPDATE SET 
-     reset_password_token = EXCLUDED.reset_password_token,
-     reset_password_link_expires_at = EXCLUDED.reset_password_link_expires_at`,
+      reset_password_token = EXCLUDED.reset_password_token,
+      reset_password_link_expires_at = EXCLUDED.reset_password_link_expires_at`,
       [user.id, hashedToken, expiresAt],
     );
-    const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password?token=${rawToken}&email=${encodeURIComponent(email)}`;
+
+    const sourceQuery = source ? `&source=${encodeURIComponent(source)}` : '';
+    const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password?token=${rawToken}&email=${encodeURIComponent(email)}${sourceQuery}`;
 
     try {
       await sendResetPasswordLink(email, resetPasswordLink);

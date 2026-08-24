@@ -26,6 +26,14 @@ export function initSearchInput() {
     { signal: eventSignal },
   );
 
+  searchBar.addEventListener(
+    "submit",
+    (e) => {
+      e.preventDefault();
+    },
+    { signal: eventSignal },
+  );
+
   searchInput.addEventListener(
     "focus",
     () => {
@@ -52,10 +60,13 @@ export function initSearchInput() {
         searchFetchController?.abort();
         searchFetchController = null;
         searchActionBtn.classList.remove("is-loading");
+        searchActionBtn.disabled = false;
+
         return;
       }
 
       searchActionBtn.classList.add("is-loading");
+      searchActionBtn.disabled = true;
 
       inputDebounce = setTimeout(async () => {
         searchFetchController?.abort();

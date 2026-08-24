@@ -1,7 +1,6 @@
 import type { NoticeOptions } from "../types/notice-options.js";
 import { createIcon } from "../utils/icon.js";
 
-let showNoticeController: AbortController | null = null;
 let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
 export function showNotice({ message, type }: NoticeOptions) {
@@ -19,21 +18,12 @@ export function showNotice({ message, type }: NoticeOptions) {
     `notice__icon--${type}`,
   ]);
 
-  showNoticeController?.abort();
-  showNoticeController = new AbortController();
-  const signal = showNoticeController.signal;
-
-  removeIcon.addEventListener(
-    "click",
-    () => {
-      const existingNotice = document.body.querySelector(".notice");
-      existingNotice?.remove();
-    },
-    { signal },
-  );
+  removeIcon.addEventListener("click", () => {
+    if (timeoutId) clearTimeout(timeoutId);
+    noticeContainer.remove();
+  });
 
   noticeContainer.append(notice, removeIcon);
-
   document.body.appendChild(noticeContainer);
 
   requestAnimationFrame(() => {
@@ -48,14 +38,15 @@ export function showNotice({ message, type }: NoticeOptions) {
     noticeContainer.addEventListener(
       "transitionend",
       () => {
-        notice.remove();
+        noticeContainer.remove();
       },
       { once: true },
     );
-  }, 3000);
+  }, 5000);
 }
 
 export function cleanupShowNotice() {
-  showNoticeController?.abort();
-  showNoticeController = null;
+  if (timeoutId) clearTimeout(timeoutId);
+  const existingNotice = document.body.querySelector(".notice");
+  existingNotice?.remove();
 }

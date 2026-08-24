@@ -21,11 +21,17 @@ import { isApiError } from "../utils/is-api-error.js";
 import { initHeaderAuthUI } from "./header-auth-ui.js";
 import { notifySessionChanged } from "../utils/auth-channel.js";
 import { resetForm } from "./reset-form.js";
+import { setAuthState } from "../utils/auth-state.js";
+import { showNotice } from "../components/show-notice.js";
+import { closeEmailEditModal } from "../profile/edit-email.js";
 
 let emailVerificationController: AbortController | null = null;
 
 export function initEmailVerification(pendingVerificationEmail: string) {
   resetForm();
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const source = searchParams.get("source") || "";
 
   const verificationMessage = getElement<HTMLSpanElement>(
     "[data-js='verification-message']",
@@ -75,17 +81,33 @@ export function initEmailVerification(pendingVerificationEmail: string) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: pendingVerificationEmail, otp }),
+          body: JSON.stringify({
+            email: pendingVerificationEmail,
+            otp,
+            source,
+          }),
         },
       );
 
       if (response.success) {
-        window.__AUTH_STATE__.isUserAuthenticated = true;
-        notifySessionChanged(response.user_id);
         authStore.clearPendingVerificationEmail();
-        initHeaderAuthUI();
-        history.replaceState({}, "", "/home");
-        navigate();
+
+        if (source === "profile") {
+          closeEmailEditModal();
+          window.__AUTH_STATE__.isGoogleUser = false;
+          history.replaceState({}, "", "/profile");
+          navigate();
+          showNotice({
+            message: "Email updated successfully.",
+            type: "success",
+          });
+        } else {
+          setAuthState(response);
+          notifySessionChanged(response.user_id);
+          initHeaderAuthUI();
+          history.replaceState({}, "", "/home");
+          navigate();
+        }
       }
     } catch (error: unknown) {
       console.error(error);

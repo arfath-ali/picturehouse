@@ -2,6 +2,13 @@ import type { AppState } from "../types/app-state.js";
 
 const TITLES: Partial<Record<AppState, string>> = {
   "": "Picturehouse",
+  "sign-in": "Sign In | Picturehouse",
+  "sign-up": "Sign Up | Picturehouse",
+  "verify-email": "Verify Email | Picturehouse",
+  "forgot-password": "Forgot Password | Picturehouse",
+  "reset-password-email-sent": "Check Your Email | Picturehouse",
+  "reset-password": "Reset Password | Picturehouse",
+  "reset-password-success": "Password Reset Successful | Picturehouse",
   home: "Picturehouse | Discover Cinema",
   movies: "Movies | Picturehouse",
   "tv-shows": "TV Shows | Picturehouse",

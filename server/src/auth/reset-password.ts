@@ -127,6 +127,14 @@ export async function resetPassword(
       [user.id],
     );
 
+    await pool.query(
+      `
+    DELETE FROM user_sessions 
+    WHERE  user_id=$1
+    `,
+      [user.id],
+    );
+
     await client.query('COMMIT');
   } catch (error) {
     await client.query('ROLLBACK');

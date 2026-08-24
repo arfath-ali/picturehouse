@@ -27,10 +27,12 @@ export function MediaCard(
   cardItem.classList.add("media-card__item");
   cardItem.dataset.tmdbId = media.id;
   cardItem.dataset.mediaType = media.type;
+  cardItem.setAttribute("aria-hidden", "true");
 
   const cardLink = document.createElement("a");
   cardLink.className = "media-card__link";
   cardLink.href = `/${media.type}/${createSlug(media.title)}-${media.id}`;
+  cardLink.setAttribute("tabindex", "-1");
 
   const cardPosterWrapper = document.createElement("div");
   cardPosterWrapper.classList.add("media-card__poster-wrapper");
@@ -70,6 +72,7 @@ export function MediaCard(
 
   const watchlistBtn = document.createElement("button");
   watchlistBtn.classList.add("watchlist-btn", "watchlist-btn--badge");
+  watchlistBtn.setAttribute("tabindex", "-1");
 
   if (isWatchlistPage) {
     const watchlistIconRemove = createIcon("icon-watchlist-remove", [

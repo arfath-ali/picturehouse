@@ -18,10 +18,17 @@ export async function googleAuth(req: IncomingMessage, res: ServerResponse) {
   const params = new URLSearchParams(queryString);
   const mode = params.get('mode');
 
-  if (!mode || (mode !== 'signin' && mode !== 'delete')) {
+  if (
+    !mode ||
+    (mode !== 'signin' &&
+      mode !== 'delete' &&
+      mode !== 'link-account' &&
+      mode !== 'unlink-account')
+  ) {
     throwApiError(400, {
       code: 'INVALID_MODE',
-      message: 'A valid mode parameter ("signin" or "delete") is required.',
+      message:
+        'A valid mode parameter ("signin", "delete", "link-account", or "unlink-account") is required.',
     });
   }
 

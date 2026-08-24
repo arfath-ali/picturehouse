@@ -3,6 +3,7 @@ import { mockApiResponse } from "../api/mock-api.js";
 import { MediaCard } from "../components/media-card.js";
 import { API_BASE_URL } from "../config/api.js";
 import { API_ENDPOINTS } from "../constants/api.js";
+import { updateShelfCardsFocus } from "../scroll/media-shelf.js";
 import { setAppState } from "../state/app.js";
 import type { SearchResultsResponse } from "../types/api-response.js";
 import type { MediaPreview } from "../types/media-preview.js";
@@ -14,7 +15,7 @@ import { createSkeletonFragment } from "../utils/skeleton-structure.js";
 
 export async function renderSearch(
   query: string,
-  searchActionBtn: HTMLElement,
+  searchActionBtn: HTMLButtonElement,
   emptyStateContainer: HTMLElement,
   searchResultsContainer: HTMLElement,
   signal: AbortSignal,
@@ -49,6 +50,7 @@ export async function renderSearch(
       );
 
     searchActionBtn.classList.remove("is-loading");
+    searchActionBtn.disabled = false;
 
     if (searchResults.length === 0) {
       searchResultsContainer.classList.remove("is-visible");
@@ -72,6 +74,8 @@ export async function renderSearch(
       searchResults.forEach((result: MediaPreview) => {
         searchResultsList.appendChild(MediaCard(result, signal));
       });
+
+      updateShelfCardsFocus(searchResultsList);
 
       if (totalPages > 1) {
         const loadMoreContainer = document.createElement("div");
@@ -117,6 +121,8 @@ export async function renderSearch(
                 searchResults.forEach((result: MediaPreview) => {
                   searchResultsList.appendChild(MediaCard(result, signal));
                 });
+
+                updateShelfCardsFocus(searchResultsList);
               }
 
               const updatedShownCount = searchResultsList.children.length;
@@ -172,6 +178,7 @@ export async function renderSearch(
     }
   } catch (error: unknown) {
     searchActionBtn.classList.remove("is-loading");
+    searchActionBtn.disabled = false;
 
     searchResultsContainer.classList.remove("is-visible");
     searchResultsContainer.innerHTML = "";

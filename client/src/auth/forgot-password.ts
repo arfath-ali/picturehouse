@@ -4,10 +4,7 @@ import { API_ENDPOINTS } from "../constants/api.js";
 import { navigate } from "../router/navigate.js";
 import { setAppState } from "../state/app.js";
 import { authStore } from "../state/auth-store.js";
-import type {
-  ForgotPasswordResponse,
-  SignUpResponse,
-} from "../types/api-response.js";
+import type { ForgotPasswordResponse } from "../types/api-response.js";
 import type { FormValidationResult } from "../types/form-validation-result.js";
 import { getElement } from "../utils/dom.js";
 import { setFieldErrorStatus } from "../utils/form-ui.js";
@@ -21,8 +18,11 @@ let forgotPasswordController: AbortController | null = null;
 export function initForgotPassword() {
   resetForm();
 
+  const searchParams = new URLSearchParams(window.location.search);
+  const source = searchParams.get("source") || "";
+
   const emailInput = getElement<HTMLInputElement>(
-    "[data-js='forgot-password-email'",
+    "[data-js='forgot-password-email']",
   );
   const emailInputErrorElement = getElement<HTMLSpanElement>(
     "[data-js='forgot-password-email-error']",
@@ -85,7 +85,7 @@ export function initForgotPassword() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email: emailInput.value }),
+            body: JSON.stringify({ email: emailInput.value, source }),
           },
         );
 

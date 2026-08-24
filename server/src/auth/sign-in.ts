@@ -7,7 +7,6 @@ import { pool } from '../database/pool.js';
 import { sendJsonResponse } from '../http/send-json-response.js';
 import { sendEmailVerification } from '../services/mailer.js';
 import { createHash, randomInt } from 'node:crypto';
-import { generateToken } from '../utils/session/jwt.js';
 import { createUserSession } from '../utils/session/user-session.js';
 
 export async function signIn(
@@ -35,7 +34,7 @@ export async function signIn(
   const {
     rows: [user],
   } = await pool.query(
-    `SELECT id, email, password, is_verified, otp, otp_expires_at FROM users WHERE username=$1 OR email=$1`,
+    `SELECT id, google_id, avatar_url, email, password, is_verified, otp, otp_expires_at FROM users WHERE username=$1 OR email=$1`,
     [identifier],
   );
 
@@ -84,6 +83,9 @@ export async function signIn(
     success: true,
     is_verified: user.is_verified,
     user_id: user.id,
+    avatar_url: user.avatar_url,
     ...(user.is_verified ? {} : { email: user.email }),
+    is_google_user: Boolean(user.google_id),
+    has_password: Boolean(user.password),
   });
 }

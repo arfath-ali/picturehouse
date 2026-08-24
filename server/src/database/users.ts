@@ -8,8 +8,9 @@ export async function initializeUsersTable() {
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             google_id VARCHAR(255) UNIQUE,
 
+            avatar_url TEXT,
             full_name VARCHAR(256),
-            username VARCHAR(30) UNIQUE,
+            username VARCHAR(30) UNIQUE NOT NULL,
             email VARCHAR(256) UNIQUE NOT NULL,
             password VARCHAR(256),
 

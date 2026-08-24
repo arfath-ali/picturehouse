@@ -13,7 +13,35 @@ import type {
 } from "../types/api-response.js";
 import { isApiError } from "../utils/is-api-error.js";
 import { handleSessionExpiration } from "../utils/session-expiration.js";
-import { mockApiResponse } from "../api/mock-api.js";
+import { notifyWatchlistChanged } from "../utils/auth-channel.js";
+
+export function updateWatchlistButton(
+  mediaId: string | number,
+  watchlistState: boolean,
+) {
+  const page = location.pathname.slice(1) as pageCategory;
+  const validPages: pageCategory[] = ["home", "movies", "tv-shows"];
+
+  if (!validPages.includes(page)) return;
+
+  const watchlistBtns = getElements(`[data-tmdb-id="${mediaId}"]`);
+
+  watchlistBtns.forEach((btn) => {
+    btn
+      .querySelector(".watchlist-btn__icon-add")
+      ?.classList.toggle("is-hidden", watchlistState);
+    btn
+      .querySelector(".watchlist-btn__icon-check")
+      ?.classList.toggle("is-visible", watchlistState);
+
+    const textEl = btn.querySelector(".watchlist-btn__text");
+    if (textEl) {
+      textEl.textContent = watchlistState
+        ? "Added to Watchlist"
+        : "Add to Watchlist";
+    }
+  });
+}
 
 export async function toggleWatchlist(
   watchlistBtn: HTMLElement,
@@ -41,47 +69,24 @@ export async function toggleWatchlist(
     mediaPayload.type,
   );
 
-  const updateWatchlistButton = (watchlistState: boolean) => {
-    const page = location.pathname.slice(1) as pageCategory;
-
-    const validPages: pageCategory[] = ["home", "movies", "tv-shows"];
-
+  const applyLocalUpdates = (watchlistState: boolean) => {
     watchlistAddIcon?.classList.toggle("is-hidden", watchlistState);
     watchlistCheckIcon?.classList.toggle("is-visible", watchlistState);
 
-    if (watchlistBtnText)
+    if (watchlistBtnText) {
       watchlistBtnText.textContent = watchlistState
         ? "Added to Watchlist"
         : "Add to Watchlist";
+    }
 
-    if (!validPages.includes(page)) return;
-
-    const watchlistBtns = getElements(`[data-tmdb-id="${mediaPayload.id}"]`);
-
-    watchlistBtns.forEach((btn) => {
-      btn
-        .querySelector(".watchlist-btn__icon-add")
-        ?.classList.toggle("is-hidden", watchlistState);
-      btn
-        .querySelector(".watchlist-btn__icon-check")
-        ?.classList.toggle("is-visible", watchlistState);
-
-      const textEl = btn.querySelector(".watchlist-btn__text");
-      if (textEl) {
-        textEl.textContent = watchlistState
-          ? "Added to Watchlist"
-          : "Add to Watchlist";
-      }
-    });
+    updateWatchlistButton(mediaPayload.id, watchlistState);
   };
 
   if (isMediaWatchlisted) {
     try {
       const response = await apiRequest<RemoveFromWatchlistResponse>(
         `${API_BASE_URL}/${API_ENDPOINTS.WATCHLIST}/${mediaPayload.type}/${mediaPayload.id}`,
-        {
-          method: "DELETE",
-        },
+        { method: "DELETE" },
       );
 
       watchlistBtn.classList.remove("is-loading");
@@ -91,7 +96,8 @@ export async function toggleWatchlist(
         watchlistMediaElement?.remove();
       }, 200);
 
-      updateWatchlistButton(response.isWatchlisted);
+      applyLocalUpdates(response.isWatchlisted);
+      notifyWatchlistChanged(mediaPayload.id, response.isWatchlisted);
     } catch (error: unknown) {
       watchlistBtn.classList.remove("is-loading");
 
@@ -118,15 +124,14 @@ export async function toggleWatchlist(
         `${API_BASE_URL}/${API_ENDPOINTS.WATCHLIST}`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(mediaPayload),
         },
       );
       watchlistBtn.classList.remove("is-loading");
 
-      updateWatchlistButton(response.isWatchlisted);
+      applyLocalUpdates(response.isWatchlisted);
+      notifyWatchlistChanged(mediaPayload.id, response.isWatchlisted);
     } catch (error: unknown) {
       watchlistBtn.classList.remove("is-loading");
 

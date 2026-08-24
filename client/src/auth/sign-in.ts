@@ -12,6 +12,7 @@ import { setAppState } from "../state/app.js";
 import { authStore } from "../state/auth-store.js";
 import type { SignInResponse } from "../types/api-response.js";
 import { notifySessionChanged } from "../utils/auth-channel.js";
+import { setAuthState } from "../utils/auth-state.js";
 import { getElement } from "../utils/dom.js";
 import { setFieldErrorStatus } from "../utils/form-ui.js";
 import { isApiError } from "../utils/is-api-error.js";
@@ -122,9 +123,9 @@ export function initSignIn() {
         if (response.success) {
           if (!response.is_verified) {
             authStore.setPendingVerificationEmail(response.email);
-            history.replaceState({}, "", "/verify-email");
+            history.replaceState({}, "", "/verify-email?source=signin");
           } else {
-            window.__AUTH_STATE__.isUserAuthenticated = true;
+            setAuthState(response);
             notifySessionChanged(response.user_id);
             clearAllScrollStorage();
             initHeaderAuthUI();

@@ -10,7 +10,8 @@ export async function initializeUserSessionsTable() {
         ip_address VARCHAR(45),
         user_agent TEXT,
         expires_at TIMESTAMPTZ NOT NULL,
-        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
         )`);
 
     console.log('✅ User sessions table is ready');

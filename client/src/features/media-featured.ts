@@ -70,10 +70,12 @@ export async function renderfeatured() {
       itemEl.classList.add("featured__item");
       itemEl.dataset.tmdbId = media.id;
       itemEl.dataset.mediaType = media.type;
+      itemEl.setAttribute("aria-hidden", "true");
 
       const linkEl = document.createElement("a");
       linkEl.href = detailsURL;
       linkEl.classList.add("featured__link");
+      linkEl.setAttribute("tabindex", "-1");
 
       const backdropURL = media.images?.backdrop;
 
@@ -195,7 +197,12 @@ export async function renderfeatured() {
       const actionsEl = document.createElement("div");
       actionsEl.classList.add("featured__actions");
 
-      actionsEl.appendChild(MediaActions(detailsURL, media, signal));
+      const mediaActionsFragment = MediaActions(detailsURL, media, signal);
+      mediaActionsFragment.querySelectorAll("a, button").forEach((el) => {
+        el.setAttribute("tabindex", "-1");
+      });
+
+      actionsEl.appendChild(mediaActionsFragment);
 
       linkEl.append(headerEl, overviewEl, actionsEl);
       itemEl.appendChild(linkEl);

@@ -67,6 +67,11 @@ export function MediaActions(
     "watchlist-btn__icon-check",
   ]);
 
+  if (isMediaWatchlisted) {
+    watchlistIconAdd.classList.add("is-hidden");
+    watchlistIconCheck.classList.add("is-visible");
+  }
+
   const watchlistBtnText = document.createElement("span");
   watchlistBtnText.classList.add("watchlist-btn__text");
   watchlistBtnText.textContent = isMediaWatchlisted

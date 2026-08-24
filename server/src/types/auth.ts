@@ -1,3 +1,5 @@
+import type { SignOutType } from './signout-type.js';
+
 export interface SignUpBody {
   username: string;
   email: string;
@@ -12,11 +14,13 @@ export interface SignInBody {
 
 export interface ForgotPasswordBody {
   email: string;
+  source: string;
 }
 
 export interface VerifyEmailBody {
   email: string;
   otp: string;
+  source: string;
 }
 
 export interface ResendVerificationEmailBody {
@@ -33,4 +37,27 @@ export interface ResetPasswordBody {
 export interface PasswordResetTokenValidationBody {
   token: string;
   email: string;
+}
+
+export interface SignoutBody {
+  signoutType: SignOutType;
+}
+
+export interface ProfileIdentityEditBody {
+  full_name: string;
+  username: string;
+}
+
+export interface ProfileEmailEditBody {
+  email: string;
+}
+
+export interface ProfilePasswordEditBody {
+  current_password: string;
+  new_password: string;
+  confirm_password: string;
+}
+
+export interface DeleteAccountBody {
+  password: string;
 }

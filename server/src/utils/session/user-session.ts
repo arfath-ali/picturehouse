@@ -3,7 +3,8 @@ import { decodeJwt, generateToken } from './jwt.js';
 import type { ServerResponse } from 'node:http';
 import type { IncomingRequest } from '../../types/http.js';
 import { throwApiError } from '../../http/api-error.js';
-import { verifyAuth } from '../../middlewares/verify-auth.js';
+import type { UserSessionScope } from '../../types/session-scope.js';
+import type { TokenPayload } from '../../types/jwt.js';
 
 export async function createUserSession(
   req: IncomingRequest<unknown>,
@@ -25,16 +26,15 @@ export async function createUserSession(
     rows: [session],
   } = await pool.query(
     `
-        INSERT INTO user_sessions(user_id, ip_address, user_agent, expires_at)
-        VALUES ($1, $2, $3, $4)
-        RETURNING id
-        `,
+    INSERT INTO user_sessions(user_id, ip_address, user_agent, expires_at)
+    VALUES ($1, $2, $3, $4)
+    RETURNING id
+    `,
     [userId, ipAddress, userAgent, expiresAt],
   );
 
   try {
     const token = generateToken(userId, session.id);
-
     const isProd = process.env.NODE_ENV === 'production';
 
     res.setHeader(
@@ -47,18 +47,28 @@ export async function createUserSession(
   }
 }
 
-export async function refreshUserSession(token: string, res: ServerResponse) {
+export async function refreshUserSession(
+  token: string,
+  res: ServerResponse,
+): Promise<TokenPayload> {
   const expiredToken = decodeJwt(token);
+
+  if (!expiredToken?.sessionId || !expiredToken?.userId) {
+    throwApiError(401, {
+      code: 'INVALID_TOKEN',
+      message: 'Invalid authentication token.',
+    });
+  }
 
   const {
     rows: [session],
   } = await pool.query(
     `
-    SELECT expires_at
+    SELECT expires_at, updated_at
     FROM user_sessions
     WHERE id = $1 AND user_id = $2 AND expires_at > NOW()
     `,
-    [expiredToken?.sessionId, expiredToken?.userId],
+    [expiredToken.sessionId, expiredToken.userId],
   );
 
   if (!session) {
@@ -78,31 +88,47 @@ export async function refreshUserSession(token: string, res: ServerResponse) {
     });
   }
 
-  if (expiredToken) {
-    const newToken = generateToken(
-      expiredToken?.userId,
-      expiredToken?.sessionId,
-    );
+  if (session.updated_at) {
+    const timeSinceLastUpdate =
+      Date.now() - new Date(session.updated_at).getTime();
+    if (timeSinceLastUpdate < 10000) {
+      return expiredToken;
+    }
+  }
 
+  await pool.query(
+    `UPDATE user_sessions SET updated_at = NOW() WHERE id = $1`,
+    [expiredToken.sessionId],
+  );
+
+  const newToken = generateToken(expiredToken.userId, expiredToken.sessionId);
+
+  const isProd = process.env.NODE_ENV === 'production';
+
+  if (res) {
     res.setHeader(
       'Set-Cookie',
-      `token=${newToken}; HttpOnly; SameSite=Lax; Max-Age=${remainingSeconds}; Path=/${
-        process.env.NODE_ENV === 'production' ? '; Secure' : ''
-      }`,
+      `token=${newToken}; HttpOnly; SameSite=Lax; Max-Age=${remainingSeconds}; Path=/;${isProd ? ' Secure;' : ''}`,
     );
-  } else {
-    throwApiError(401, {
-      code: 'INVALID_TOKEN',
-      message: 'Invalid authentication token.',
-    });
   }
+
+  return expiredToken;
 }
 
 export async function destroyUserSession(
   req: IncomingRequest<unknown>,
   res: ServerResponse,
+  scope: UserSessionScope,
 ) {
-  await pool.query(`DELETE FROM user_sessions WHERE id = $1`, [req.sessionId]);
+  if (scope === 'current') {
+    await pool.query(`DELETE FROM user_sessions WHERE id = $1`, [
+      req.sessionId,
+    ]);
+  } else if (scope === 'all') {
+    await pool.query(`DELETE FROM user_sessions WHERE user_id = $1`, [
+      req.userId,
+    ]);
+  }
 
   const isProd = process.env.NODE_ENV === 'production';
 

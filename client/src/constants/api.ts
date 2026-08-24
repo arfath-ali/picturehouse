@@ -4,6 +4,8 @@ import type { shelfCategoryId } from "../types/shelf-category-id.js";
 export const API_ENDPOINTS = {
   REGION: "api/geo/location",
 
+  PROFILE: "api/profile",
+
   SIGNIN: "api/sign-in",
 
   SIGNOUT: "api/sign-out",
@@ -21,6 +23,8 @@ export const API_ENDPOINTS = {
   VERIFY_EMAIL: "api/verify-email",
 
   RESEND_VERIFICATION_EMAIL: "api/resend-verification-email",
+
+  DELETE_ACCOUNT: "api/delete",
 
   USERNAME: (username: string) =>
     `api/check-username?username=${encodeURIComponent(username)}`,

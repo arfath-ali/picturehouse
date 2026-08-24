@@ -1,4 +1,5 @@
 import { MediaCard } from "../components/media-card.js";
+import { updateShelfCardsFocus } from "../scroll/media-shelf.js";
 import type { MediaPreview } from "../types/media-preview.js";
 import type { watchlistCategory } from "../types/watchlist-category.js";
 import { getElement } from "../utils/dom.js";
@@ -21,7 +22,7 @@ export function renderWatchlist(
   if (!validWatchlistCategories.includes(watchlistCategory)) return;
 
   const watchlistMedia = getElement(".watchlist__media");
-  const watchlistMediaList = getElement(".watchlist__media-list");
+  const watchlistMediaList = getElement<HTMLElement>(".watchlist__media-list");
 
   const fragment = document.createDocumentFragment();
   watchlistMediaList.innerHTML = "";
@@ -72,6 +73,9 @@ export function renderWatchlist(
     fragment.append(MediaCard(media, signal));
   });
   watchlistMediaList.append(fragment);
+
+  updateShelfCardsFocus(watchlistMediaList);
+
   watchlistMediaList.classList.remove("is-changing");
 }
 

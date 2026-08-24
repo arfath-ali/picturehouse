@@ -11,7 +11,7 @@ import { showPageError } from "./show-page-error.js";
 let usernameController: AbortController | null = null;
 let debounceTimer: number | null = null;
 
-export function clearUsernameDebounce() {
+export function clearUsernameDebounce(usernameInputRow: HTMLElement) {
   if (debounceTimer) {
     clearTimeout(debounceTimer);
     debounceTimer = null;
@@ -22,15 +22,14 @@ export function clearUsernameDebounce() {
     usernameController = null;
   }
 
-  const usernameInputRow = getElement("[data-js='signup-username-row']");
   usernameInputRow.setAttribute("data-status", "idle");
 }
 
 export function checkUsernameAvailability(
+  usernameInputRow: HTMLElement,
   username: string,
 ): Promise<FormValidationResult> {
   return new Promise((resolve) => {
-    const usernameInputRow = getElement("[data-js='signup-username-row']");
     usernameInputRow.setAttribute("data-status", "loading");
     debounceTimer = window.setTimeout(async () => {
       const validation: FormValidationResult = {
@@ -78,8 +77,7 @@ export function checkUsernameAvailability(
   });
 }
 
-export function resetUsernameStatus() {
-  const usernameInputRow = getElement("[data-js='signup-username-row']");
+export function resetUsernameStatus(usernameInputRow: HTMLElement) {
   usernameInputRow.setAttribute("data-status", "idle");
 }
 

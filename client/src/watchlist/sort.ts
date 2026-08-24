@@ -36,7 +36,9 @@ export function initWatchlistSort() {
   );
 
   const watchlistSortBtnIconUse = watchlistSortBtnIcon.querySelector("use")!;
-  const watchlistSortSelect = getElement(".watchlist__sort-select");
+  const watchlistSortSelect = getElement<HTMLUListElement>(
+    ".watchlist__sort-select",
+  );
   const watchlistSortSelectOptions = getElements<HTMLLIElement>(
     ".watchlist__sort-select-option",
   );
@@ -83,6 +85,87 @@ export function initWatchlistSort() {
     changeSortIcon(DROPDOWN_ICONS.down);
   };
 
+  const handleSelectOption = async (target: HTMLElement) => {
+    const watchlist = getWatchlistState();
+    const selectedOption = target.closest<HTMLElement>(
+      ".watchlist__sort-select-option",
+    );
+
+    if (!selectedOption) return;
+
+    const selectedSortValue = selectedOption.dataset.value;
+    if (!selectedSortValue) return;
+
+    const sortedList = [...watchlist].sort((a, b) => {
+      const titleA = a.title.toLowerCase();
+      const titleB = b.title.toLowerCase();
+
+      switch (selectedSortValue) {
+        case "recently-added":
+          return (
+            Date.parse(b.created_at ?? "") - Date.parse(a.created_at ?? "")
+          );
+        case "oldest-added":
+          return (
+            Date.parse(a.created_at ?? "") - Date.parse(b.created_at ?? "")
+          );
+        case "title-asc":
+          return titleA.localeCompare(titleB);
+        case "title-desc":
+          return titleB.localeCompare(titleA);
+        default:
+          return 0;
+      }
+    });
+    try {
+      await apiRequest<updateWatchlistSortPreferenceResponse>(
+        `${API_BASE_URL}/${API_ENDPOINTS.WATCHLIST}/sort-preference`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            watchlistSortPreference: selectedSortValue,
+          }),
+        },
+      );
+
+      watchlistSortBtn.dataset.value = selectedSortValue;
+      watchlistSortBtnValue.textContent = selectedOption.textContent;
+
+      renderWatchlist(sortedList);
+      syncActiveOption();
+      closeDropdown();
+
+      initWatchlistState();
+    } catch (error: any) {
+      if (isApiError(error) && error.status === 401) {
+        handleSessionExpiration();
+        initWatchlistUI();
+        return;
+      }
+
+      console.error("Search failed:", error);
+
+      if (isApiError(error)) {
+        if (error.status === 404) {
+          setAppState("not-found");
+        } else {
+          showNotice({
+            message:
+              "Couldn't update your watchlist sorting. Please try again.",
+            type: "error",
+          });
+          closeDropdown();
+        }
+
+        return;
+      }
+      showPageError("watchlist-page");
+    }
+  };
+
   watchlistSortBtn.addEventListener(
     "click",
     () => {
@@ -96,84 +179,18 @@ export function initWatchlistSort() {
 
   watchlistSortSelect.addEventListener(
     "click",
-    async (e) => {
-      const watchlist = getWatchlistState();
-      const selectedOption = (e.target as HTMLElement).closest<HTMLElement>(
-        ".watchlist__sort-select-option",
-      );
+    (e) => {
+      handleSelectOption(e.target as HTMLElement);
+    },
+    { signal },
+  );
 
-      if (!selectedOption) return;
-
-      const selectedSortValue = selectedOption.dataset.value;
-      if (!selectedSortValue) return;
-
-      const sortedList = [...watchlist].sort((a, b) => {
-        const titleA = a.title.toLowerCase();
-        const titleB = b.title.toLowerCase();
-
-        switch (selectedSortValue) {
-          case "recently-added":
-            return (
-              Date.parse(b.created_at ?? "") - Date.parse(a.created_at ?? "")
-            );
-          case "oldest-added":
-            return (
-              Date.parse(a.created_at ?? "") - Date.parse(b.created_at ?? "")
-            );
-          case "title-asc":
-            return titleA.localeCompare(titleB);
-          case "title-desc":
-            return titleB.localeCompare(titleA);
-          default:
-            return 0;
-        }
-      });
-      try {
-        await apiRequest<updateWatchlistSortPreferenceResponse>(
-          `${API_BASE_URL}/${API_ENDPOINTS.WATCHLIST}/sort-preference`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              watchlistSortPreference: selectedSortValue,
-            }),
-          },
-        );
-
-        watchlistSortBtn.dataset.value = selectedSortValue;
-        watchlistSortBtnValue.textContent = selectedOption.textContent;
-
-        renderWatchlist(sortedList);
-        syncActiveOption();
-        closeDropdown();
-
-        initWatchlistState();
-      } catch (error: any) {
-        if (isApiError(error) && error.status === 401) {
-          handleSessionExpiration();
-          initWatchlistUI();
-          return;
-        }
-
-        console.error("Search failed:", error);
-
-        if (isApiError(error)) {
-          if (error.status === 404) {
-            setAppState("not-found");
-          } else {
-            showNotice({
-              message:
-                "Couldn't update your watchlist sorting. Please try again.",
-              type: "error",
-            });
-            closeDropdown();
-          }
-
-          return;
-        }
-        showPageError("watchlist-page");
+  watchlistSortSelect.addEventListener(
+    "keydown",
+    (e: KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleSelectOption(e.target as HTMLElement);
       }
     },
     { signal },

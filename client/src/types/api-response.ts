@@ -2,11 +2,25 @@ import type { MediaPreview } from "./media-preview.js";
 import type { TMDBContent } from "./tmdb-content.js";
 import type { WatchlistSortPreferenceType } from "./watchlist-sort-preference.js";
 
+export type ProfileResponse = {
+  success: boolean;
+  avatar_url: string;
+  user_id: string;
+  full_name: string;
+  username: string;
+  email: string;
+  is_google_user: boolean;
+  has_password: boolean;
+};
+
 export type SignInResponse = {
   success: boolean;
   is_verified: boolean;
   user_id: string;
+  avatar_url: string | null;
   email: string;
+  is_google_user: boolean;
+  has_password: boolean;
 };
 
 export type SignOutResponse = {
@@ -41,9 +55,33 @@ export type CheckUsernameResponse = {
 export type VerifyEmailResponse = {
   success: boolean;
   user_id: string;
+  avatar_url: string | null;
+  is_google_user: boolean;
+  has_password: boolean;
 };
 
 export type ResendVerificationEmailResponse = {
+  success: boolean;
+};
+
+export type ProfileAvatarEditResponse = {
+  success: boolean;
+  avatar_url: string;
+};
+
+export type ProfileIdentityEditResponse = {
+  success: boolean;
+};
+
+export type ProfilePasswordEditResponse = {
+  success: boolean;
+};
+
+export type ProfileEmailEditResponse = {
+  success: boolean;
+};
+
+export type DeleteAccountResponse = {
   success: boolean;
 };
 

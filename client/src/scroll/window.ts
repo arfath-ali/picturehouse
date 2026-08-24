@@ -19,15 +19,6 @@ export function initWindowScrollManager() {
   windowScrollManagerController = new AbortController();
   const signal = windowScrollManagerController.signal;
 
-  const navEntry = window.performance?.getEntriesByType("navigation")[0] as
-    | PerformanceNavigationTiming
-    | undefined;
-  const isReload = navEntry?.type === "reload";
-
-  if (isReload || !sessionStorage.getItem("app-initialized")) {
-    clearAllScrollStorage();
-  }
-
   window.addEventListener(
     "scroll",
     () => {

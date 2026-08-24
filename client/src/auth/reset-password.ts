@@ -1,5 +1,6 @@
 import { apiRequest } from "../api/api-request.js";
 import { mockApiResponse } from "../api/mock-api.js";
+import { showNotice } from "../components/show-notice.js";
 import { API_BASE_URL } from "../config/api.js";
 import { API_ENDPOINTS } from "../constants/api.js";
 import { navigate } from "../router/navigate.js";
@@ -24,6 +25,9 @@ let resetPasswordController: AbortController | null = null;
 
 export async function initResetPassword(token: string, email: string) {
   resetForm();
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const source = searchParams.get("source") || "";
 
   const passwordInput = getElement<HTMLInputElement>(
     "[data-js='reset-password']",
@@ -203,6 +207,14 @@ export async function initResetPassword(token: string, email: string) {
           authStore.setIsPasswordResetSuccessful(true);
           history.replaceState({}, "", "/reset-password-success");
           navigate();
+
+          if (source === "profile" || source === "delete_form") {
+            showNotice({
+              message:
+                "Password updated successfully. Please sign in again with your new password.",
+              type: "success",
+            });
+          }
         }
       } catch (error: unknown) {
         if (error instanceof Error && error.name === "AbortError") return;

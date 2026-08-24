@@ -3,8 +3,9 @@ let pendingPasswordResetEmail: string = "<your-email@example.com>";
 let isPasswordResetSuccessful: boolean = false;
 
 export const authStore = {
-  setPendingVerificationEmail: (email: string) =>
-    (pendingVerificationEmail = email),
+  setPendingVerificationEmail: (email: string) => {
+    pendingVerificationEmail = email;
+  },
   getPendingVerificationEmail: () => pendingVerificationEmail,
   clearPendingVerificationEmail: () => {
     pendingVerificationEmail = "<your-email@example.com>";

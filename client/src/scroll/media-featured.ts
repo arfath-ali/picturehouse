@@ -38,6 +38,14 @@ export function initFeaturedScroll() {
     stopAutoplay,
     signal,
   );
+
+  window.addEventListener(
+    "resize",
+    () => {
+      updateFeaturedSlideFocus(featuredSlider);
+    },
+    { signal },
+  );
 }
 
 function initInfiniteScroll(
@@ -67,6 +75,8 @@ function initInfiniteScroll(
 
   featuredSlider.classList.remove("no-smooth");
 
+  updateFeaturedSlideFocus(featuredSlider);
+
   featuredSlider.addEventListener(
     "scroll",
     () => {
@@ -92,6 +102,8 @@ function initInfiniteScroll(
         void featuredSlider.offsetWidth;
         featuredSlider.classList.remove("no-smooth");
       }
+
+      updateFeaturedSlideFocus(featuredSlider);
     },
     { signal },
   );
@@ -143,6 +155,9 @@ function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
 
   featuredSlider.addEventListener("touchstart", stopAutoplay, { signal });
   featuredSlider.addEventListener("touchend", startAutoplay, { signal });
+
+  featuredSlider.addEventListener("focusin", stopAutoplay, { signal });
+  featuredSlider.addEventListener("focusout", startAutoplay, { signal });
 
   return { startAutoplay, stopAutoplay };
 }
@@ -199,6 +214,8 @@ function initNavButtons(
 
   scrollPrevBtn.addEventListener("mouseenter", stopAutoplay, { signal });
   scrollPrevBtn.addEventListener("mouseleave", startAutoplay, { signal });
+  scrollPrevBtn.addEventListener("focusin", stopAutoplay, { signal });
+  scrollPrevBtn.addEventListener("focusout", startAutoplay, { signal });
 
   scrollPrevBtn.addEventListener(
     "click",
@@ -210,6 +227,8 @@ function initNavButtons(
 
   scrollNextBtn.addEventListener("mouseenter", stopAutoplay, { signal });
   scrollNextBtn.addEventListener("mouseleave", startAutoplay, { signal });
+  scrollNextBtn.addEventListener("focusin", stopAutoplay, { signal });
+  scrollNextBtn.addEventListener("focusout", startAutoplay, { signal });
 
   scrollNextBtn.addEventListener(
     "click",
@@ -218,6 +237,29 @@ function initNavButtons(
     },
     { signal },
   );
+}
+
+export function updateFeaturedSlideFocus(featuredSlider: HTMLElement) {
+  const slideWidth = featuredSlider.clientWidth;
+  if (!slideWidth) return;
+
+  const activeIndex = Math.round(featuredSlider.scrollLeft / slideWidth);
+  const slides = Array.from(featuredSlider.children) as HTMLElement[];
+
+  slides.forEach((slide, index) => {
+    const isActive = index === activeIndex;
+
+    slide.setAttribute("aria-hidden", (!isActive).toString());
+
+    const focusableElements = slide.querySelectorAll<HTMLElement>("a, button");
+    focusableElements.forEach((el) => {
+      if (isActive) {
+        el.setAttribute("tabindex", "0");
+      } else {
+        el.setAttribute("tabindex", "-1");
+      }
+    });
+  });
 }
 
 export function cleanupFeaturedScroll() {

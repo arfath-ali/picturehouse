@@ -1,8 +1,8 @@
+import type { ServerResponse } from 'node:http';
 import type { IncomingRequest } from '../types/http.js';
 import { throwApiError } from '../http/api-error.js';
-import { decodeJwt, verifyJwt } from '../utils/session/jwt.js';
+import { verifyJwt } from '../utils/session/jwt.js';
 import type { TokenPayload } from '../types/jwt.js';
-import type { ServerResponse } from 'node:http';
 import { refreshUserSession } from '../utils/session/user-session.js';
 
 export async function verifyAuth(
@@ -20,7 +20,7 @@ export async function verifyAuth(
 
   const token = cookieHeader
     .split(';')
-    .find((cookie) => cookie.trim().startsWith('token'))
+    .find((cookie) => cookie.trim().startsWith('token='))
     ?.split('=')[1];
 
   if (!token) {
@@ -36,9 +36,8 @@ export async function verifyAuth(
     decodedToken = verifyJwt(token);
   } catch (error: unknown) {
     if (error instanceof Error && error.name === 'TokenExpiredError') {
-      await refreshUserSession(token, res);
-
-      decodedToken = decodeJwt(token);
+      // Catch the decoded payload returned directly from refreshUserSession
+      decodedToken = await refreshUserSession(token, res);
     } else {
       throwApiError(401, {
         code: 'INVALID_TOKEN',

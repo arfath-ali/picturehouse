@@ -7,6 +7,12 @@ export function parseRequestBody(
   res: ServerResponse,
   next: () => void,
 ) {
+  const contentType = req.headers['content-type'] || '';
+
+  if (contentType.includes('multipart/form-data')) {
+    return next();
+  }
+
   let body: string = '';
 
   req.on('data', (chunk) => {

@@ -1,17 +1,15 @@
 import { apiRequest } from "../api/api-request.js";
+import { showNotice } from "../components/show-notice.js";
 import { API_BASE_URL } from "../config/api.js";
 import { API_ENDPOINTS } from "../constants/api.js";
-import { setAppState } from "../state/app.js";
 import type { GoogleAuthResponse } from "../types/api-response.js";
 import { getElements } from "../utils/dom.js";
-import { isApiError } from "../utils/is-api-error.js";
-import { showPageError } from "../utils/show-page-error.js";
 
 let googleAuthController: AbortController | null = null;
 
 export function googleAuth() {
   const googleAuthBtns = getElements<HTMLButtonElement>(
-    "[data-js='google-auth-btn']",
+    "[data-js='google-auth-btn'], [data-js='google-auth-btn-connect']",
   );
 
   googleAuthController?.abort();
@@ -23,6 +21,17 @@ export function googleAuth() {
     authBtn.addEventListener(
       "click",
       async () => {
+        if (mode === "unlink-account") {
+          if (!window.__AUTH_STATE__.hasPassword) {
+            showNotice({
+              message:
+                "Please set up a password before unlinking your Google account.",
+              type: "info",
+            });
+            return;
+          }
+        }
+
         try {
           const response = await apiRequest<GoogleAuthResponse>(
             `${API_BASE_URL}/${API_ENDPOINTS.GOOGLE_AUTH}?mode=${mode}`,
@@ -35,15 +44,18 @@ export function googleAuth() {
         } catch (error: unknown) {
           console.error(error);
 
-          if (isApiError(error)) {
-            if (error.status === 404) {
-              setAppState("not-found");
-              return;
-            }
+          const message =
+            mode === "delete"
+              ? "Unable to initiate Google account verification."
+              : mode === "link-account"
+                ? "Unable to initiate Google account linking. Please try again."
+                : mode === "unlink-account"
+                  ? "Unable to initiate Google account unlinking. Please try again."
+                  : "Unable to initiate Google sign-in. Please try again.";
 
-            if (error.status === 400) return;
-          }
-          showPageError("signin-page");
+          showNotice({ message, type: "error" });
+
+          return;
         }
       },
       { signal },
