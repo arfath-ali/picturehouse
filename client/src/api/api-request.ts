@@ -4,7 +4,10 @@ export async function apiRequest<T>(
   input: RequestInfo,
   init: RequestInit,
 ): Promise<T> {
-  const response = await fetch(input, init);
+  const response = await fetch(input, {
+    ...init,
+    credentials: "include",
+  });
 
   const data = await response.json().catch(() => ({}));
 

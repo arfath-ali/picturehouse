@@ -10,20 +10,19 @@ export function initFeaturedScroll() {
   const { signal } = featuredScrollController;
 
   const page = location.pathname.slice(1) as pageCategory;
-
   const validPages: pageCategory[] = ["home", "movies", "tv-shows"];
 
   if (!validPages.includes(page)) return;
 
   const featuredSliderContainer = getElement<HTMLElement>(`.featured`);
   const featuredSlider = getElement<HTMLElement>(`.featured__slider`);
+
+  if (!featuredSlider) return;
+
   const isFeaturedSkeleton = featuredSlider.querySelector(
     ".featured__item-skeleton",
   );
-
-  if (isFeaturedSkeleton) return;
-
-  if (!featuredSlider || featuredSlider.children.length === 0) return;
+  if (isFeaturedSkeleton || featuredSlider.children.length === 0) return;
 
   initInfiniteScroll(page, featuredSlider, signal);
 
@@ -53,10 +52,17 @@ function initInfiniteScroll(
   featuredSlider: HTMLElement,
   signal: AbortSignal,
 ) {
+  const existingClones = featuredSlider.querySelectorAll("[data-clone='true']");
+  existingClones.forEach((clone) => clone.remove());
+
   const slides = Array.from(featuredSlider.children);
+  if (slides.length === 0) return;
 
   const firstClone = slides[0].cloneNode(true) as HTMLElement;
   const lastClone = slides[slides.length - 1].cloneNode(true) as HTMLElement;
+
+  firstClone.setAttribute("data-clone", "true");
+  lastClone.setAttribute("data-clone", "true");
 
   featuredSlider.appendChild(firstClone);
   featuredSlider.prepend(lastClone);
@@ -72,10 +78,14 @@ function initInfiniteScroll(
   }
 
   void featuredSlider.offsetWidth;
-
   featuredSlider.classList.remove("no-smooth");
 
   updateFeaturedSlideFocus(featuredSlider);
+
+  let isTouching = false;
+
+  featuredSlider.addEventListener("touchstart", () => { isTouching = true; }, { signal, passive: true });
+  featuredSlider.addEventListener("touchend", () => { isTouching = false; }, { signal, passive: true });
 
   featuredSlider.addEventListener(
     "scroll",
@@ -86,17 +96,22 @@ function initInfiniteScroll(
 
       sessionStorage.setItem(
         `scroll-featured-${page}`,
-        featuredSlider.scrollLeft.toString(),
+        scrollPosition.toString(),
       );
 
-      if (scrollPosition >= totalWidth - slideWidth) {
+      if (isTouching) {
+        updateFeaturedSlideFocus(featuredSlider);
+        return;
+      }
+
+      if (scrollPosition >= totalWidth - slideWidth - 5) {
         featuredSlider.classList.add("no-smooth");
         featuredSlider.scrollLeft = slideWidth;
         void featuredSlider.offsetWidth;
         featuredSlider.classList.remove("no-smooth");
       }
 
-      if (scrollPosition <= 0) {
+      if (scrollPosition <= 5) {
         featuredSlider.classList.add("no-smooth");
         featuredSlider.scrollLeft = totalWidth - 2 * slideWidth;
         void featuredSlider.offsetWidth;
@@ -105,7 +120,7 @@ function initInfiniteScroll(
 
       updateFeaturedSlideFocus(featuredSlider);
     },
-    { signal },
+    { signal, passive: true },
   );
 }
 
@@ -116,7 +131,7 @@ function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
     if (autoplayInterval) clearInterval(autoplayInterval);
 
     autoplayInterval = window.setInterval(() => {
-      featuredSlider.scrollBy({ left: featuredSlider.clientWidth });
+      featuredSlider.scrollBy({ left: featuredSlider.clientWidth, behavior: "smooth" });
     }, 5000);
   };
 
@@ -153,8 +168,8 @@ function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
   featuredSlider.addEventListener("mouseenter", stopAutoplay, { signal });
   featuredSlider.addEventListener("mouseleave", startAutoplay, { signal });
 
-  featuredSlider.addEventListener("touchstart", stopAutoplay, { signal });
-  featuredSlider.addEventListener("touchend", startAutoplay, { signal });
+  featuredSlider.addEventListener("touchstart", stopAutoplay, { signal, passive: true });
+  featuredSlider.addEventListener("touchend", startAutoplay, { signal, passive: true });
 
   featuredSlider.addEventListener("focusin", stopAutoplay, { signal });
   featuredSlider.addEventListener("focusout", startAutoplay, { signal });
@@ -173,19 +188,14 @@ function initWheelNavigation(featuredSlider: HTMLElement, signal: AbortSignal) {
       e.preventDefault();
 
       if (isScrolling) return;
-
       if (Math.abs(e.deltaX) < 50) return;
 
       isScrolling = true;
 
       if (e.deltaX > 0) {
-        featuredSlider.scrollBy({
-          left: featuredSlider.clientWidth,
-        });
+        featuredSlider.scrollBy({ left: featuredSlider.clientWidth });
       } else if (e.deltaX < 0) {
-        featuredSlider.scrollBy({
-          left: -featuredSlider.clientWidth,
-        });
+        featuredSlider.scrollBy({ left: -featuredSlider.clientWidth });
       }
 
       setTimeout(() => {
@@ -197,12 +207,14 @@ function initWheelNavigation(featuredSlider: HTMLElement, signal: AbortSignal) {
 }
 
 function initNavButtons(
-  featuredSliderContainer: HTMLElement,
+  featuredSliderContainer: HTMLElement | null,
   featuredSlider: HTMLElement,
   startAutoplay: () => void,
   stopAutoplay: () => void,
   signal: AbortSignal,
 ) {
+  if (!featuredSliderContainer) return;
+
   const scrollPrevBtn = featuredSliderContainer.querySelector(
     ".featured__slider-scroll-btn--prev",
   );

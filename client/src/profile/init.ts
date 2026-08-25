@@ -66,7 +66,6 @@ export async function initProfile() {
       `${API_BASE_URL}/${API_ENDPOINTS.PROFILE}`,
       {
         method: "GET",
-        credentials: "include",
         signal,
       },
     );
