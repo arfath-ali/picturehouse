@@ -1,5 +1,4 @@
 import { apiRequest } from "../api/api-request.js";
-import { mockApiResponse } from "../api/mock-api.js";
 import { MediaActions } from "../components/media-actions.js";
 import { API_BASE_URL } from "../config/api.js";
 import { USER_REGION } from "../config/region.js";

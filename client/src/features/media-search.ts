@@ -1,5 +1,4 @@
 import { apiRequest } from "../api/api-request.js";
-import { mockApiResponse } from "../api/mock-api.js";
 import { MediaCard } from "../components/media-card.js";
 import { API_BASE_URL } from "../config/api.js";
 import { API_ENDPOINTS } from "../constants/api.js";

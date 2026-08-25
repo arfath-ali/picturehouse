@@ -1,5 +1,4 @@
 import { apiRequest } from "../api/api-request.js";
-import { mockApiResponse } from "../api/mock-api.js";
 import { initHeaderAuthUI } from "../auth/header-auth-ui.js";
 import { showNotice } from "../components/show-notice.js";
 import { API_BASE_URL } from "../config/api.js";

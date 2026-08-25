@@ -1,8 +1,5 @@
 import { apiRequest } from "../api/api-request.js";
-import { mockApiResponse } from "../api/mock-api.js";
-import { cleanupDeleteAccountController } from "../auth/delete-account.js";
 import { initHeaderAuthUI } from "../auth/header-auth-ui.js";
-import { resetForm } from "../auth/reset-form.js";
 import { showNotice } from "../components/show-notice.js";
 import { API_BASE_URL } from "../config/api.js";
 import { API_ENDPOINTS } from "../constants/api.js";
@@ -10,7 +7,6 @@ import { navigate } from "../router/navigate.js";
 import { clearAllScrollStorage } from "../scroll/window.js";
 import { authStore } from "../state/auth-store.js";
 import type { ProfileEmailEditResponse } from "../types/api-response.js";
-import type { AppState } from "../types/app-state.js";
 import type { FormValidationResult } from "../types/form-validation-result.js";
 import { notifySessionTerminated } from "../utils/auth-channel.js";
 import { resetAuthState } from "../utils/auth-state.js";
