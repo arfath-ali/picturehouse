@@ -1,4 +1,4 @@
-import type { SignOutType } from './signout-type.js';
+import type { UserSessionScope } from './session-scope.js';
 
 export interface SignUpBody {
   username: string;
@@ -40,7 +40,7 @@ export interface PasswordResetTokenValidationBody {
 }
 
 export interface SignoutBody {
-  signoutType: SignOutType;
+  signoutType: UserSessionScope;
 }
 
 export interface ProfileIdentityEditBody {
