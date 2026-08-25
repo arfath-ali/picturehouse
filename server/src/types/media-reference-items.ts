@@ -1,5 +1,5 @@
 export interface MediaReferanceItems {
-  title: string;
+  title?: string;
   tmdbId: number | string;
   mediaType: string;
 }

@@ -8,9 +8,10 @@ import { enrichMediaWithRatings } from '../services/media-rating.js';
 import { inFlightIndexKeys, waitForFlightIn } from '../utils/in-flight.js';
 import type { TMDBMediaDetails } from '../types/tmdb-content.js';
 import { sendJsonResponse } from '../http/send-json-response.js';
+import type { IncomingRequest } from '../types/http.js';
 
 export async function getMediaDetails(
-  req: IncomingMessage,
+  req: IncomingRequest<unknown>,
   res: ServerResponse,
 ) {
   if (!req.params) return;

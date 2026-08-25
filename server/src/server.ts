@@ -197,7 +197,7 @@ const server = http.createServer(
 
           req.params = { mediaType, tmdbId };
 
-          asyncHandler(getMediaDetails)(req, res);
+          asyncHandler(getMediaDetails)(req as IncomingRequest<unknown>, res);
           return;
         }
 
