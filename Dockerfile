@@ -23,7 +23,6 @@ COPY server/package*.json ./server/
 RUN npm install --omit=dev
 
 COPY --from=builder /app/client/index.html /app/client/
-COPY --from=builder /app/client/src/assets /app/client/src/assets
 COPY --from=builder /app/client/dist /app/client/dist
 COPY --from=builder /app/server/dist /app/server/dist
 
