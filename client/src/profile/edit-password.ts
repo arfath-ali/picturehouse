@@ -78,7 +78,7 @@ export function initEditPassword() {
   const signal = passwordEditController.signal;
 
   function checkFormValidity() {
-    if (window.__AUTH_STATE__.hasPassword) {
+    if (window.__AUTH_STATE__?.hasPassword) {
       submitBtn.disabled = !(
         isCurrentPasswordValid &&
         isNewPasswordValid &&

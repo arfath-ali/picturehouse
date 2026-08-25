@@ -22,7 +22,7 @@ export function googleAuth() {
       "click",
       async () => {
         if (mode === "unlink-account") {
-          if (!window.__AUTH_STATE__.hasPassword) {
+          if (!window.__AUTH_STATE__?.hasPassword) {
             showNotice({
               message:
                 "Please set up a password before unlinking your Google account.",

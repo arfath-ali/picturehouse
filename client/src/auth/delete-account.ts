@@ -39,7 +39,7 @@ export function reopenDeleteAccountModal() {
 }
 
 export function initDeleteAccount() {
-  const isGoogleUser = window.__AUTH_STATE__.isGoogleUser;
+  const isGoogleUser = window.__AUTH_STATE__?.isGoogleUser;
 
   const deleteModalPage = getElement("[data-js='profile-delete']");
   const openDeleteModalBtn = getElement("[data-js='delete-account-btn']");

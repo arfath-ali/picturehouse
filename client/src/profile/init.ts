@@ -45,12 +45,12 @@ export async function initProfile() {
     "[data-js='google-auth-btn-connect'] .btn-text",
   );
 
-  if (window.__AUTH_STATE__.isGoogleUser) {
+  if (window.__AUTH_STATE__?.isGoogleUser) {
     googleAuthBtn.dataset.mode = "unlink-account";
     googleAuthBtnText.textContent = "Unlink Google Account";
   }
 
-  if (!window.__AUTH_STATE__.hasPassword) {
+  if (!window.__AUTH_STATE__?.hasPassword) {
     passwordEditBtn.textContent = "Set Password";
     passwordEditCurrentField.classList.add("is-hidden");
   }

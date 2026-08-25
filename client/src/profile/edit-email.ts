@@ -47,8 +47,8 @@ export function initEditEmail() {
   const signal = emailEditController.signal;
 
   emailEditBtn.addEventListener("click", () => {
-    if (!window.__AUTH_STATE__.hasPassword) {
-      const message = window.__AUTH_STATE__.isGoogleUser
+    if (!window.__AUTH_STATE__?.hasPassword) {
+      const message = window.__AUTH_STATE__?.isGoogleUser
         ? "Since you signed in with Google, please set an account password before changing your email address."
         : "Please set an account password before changing your email address.";
 

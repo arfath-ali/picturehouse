@@ -4,7 +4,7 @@ export function initHeaderAuthUI() {
   const isUserAuthenticated =
     window.__AUTH_STATE__?.isUserAuthenticated ?? false;
 
-  const avatar = window.__AUTH_STATE__.avatarURL;
+  const avatar = window.__AUTH_STATE__?.avatarURL;
 
   const signInBtn = getElement("[data-js='site-header-signin-btn']");
   const profileBtn = getElement<HTMLElement>(

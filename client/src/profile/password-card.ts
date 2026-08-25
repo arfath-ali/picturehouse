@@ -38,7 +38,7 @@ export function initPasswordCard() {
       passwordForm.classList.add("is-hidden");
       newPasswordForm.classList.add("is-visible");
       newPasswordForm.dataset.isEditing = "true";
-      if (window.__AUTH_STATE__.hasPassword) {
+      if (window.__AUTH_STATE__?.hasPassword) {
         currentPassword.focus();
       } else {
         newPassword.focus();
