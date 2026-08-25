@@ -1,11 +1,16 @@
 import type {
   ProfileResponse,
   SignInResponse,
+  UserSessionResponse,
   VerifyEmailResponse,
 } from "../types/api-response.js";
 
 export function setAuthState(
-  response: SignInResponse | VerifyEmailResponse | ProfileResponse,
+  response:
+    | SignInResponse
+    | VerifyEmailResponse
+    | ProfileResponse
+    | UserSessionResponse,
 ) {
   window.__AUTH_STATE__ = {
     isUserAuthenticated: true,
