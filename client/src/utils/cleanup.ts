@@ -29,8 +29,11 @@ import { cleanupPasswordVisibility } from "./password-visibility.js";
 import { cleanupPasswordEdit } from "../profile/edit-password.js";
 import { cleanupEmailEdit } from "../profile/edit-email.js";
 import { cleanupAvatarEdit } from "../profile/edit-avatar.js";
+import { cleanupUserSession } from "../auth/user-session.js";
 
 export function cleanupAllRequests() {
+  cleanupUserSession();
+
   cleanupGoogleAuth();
   cleanupSignInController();
   cleanupSignOutController();

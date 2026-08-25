@@ -68,6 +68,7 @@ import { editPassword } from './profile/edit-password.js';
 import { editEmail } from './profile/edit-email.js';
 import { editAvatar } from './profile/edit-avatar.js';
 import { deleteAvatar } from './profile/delete-avatar.js';
+import { checkUserSession } from './auth/user-session.js';
 
 const PORT = process.env.PORT;
 
@@ -106,6 +107,11 @@ const server = http.createServer(
     if (req.method === 'GET') {
       if (req.url === '/api/geo/location') {
         asyncHandler(getGeoLocation)(req, res);
+        return;
+      }
+
+      if (req.url === '/api/user-session') {
+        asyncHandler(checkUserSession)(req as IncomingRequest<unknown>, res);
         return;
       }
 

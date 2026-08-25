@@ -2,6 +2,14 @@ import type { MediaPreview } from "./media-preview.js";
 import type { TMDBContent } from "./tmdb-content.js";
 import type { WatchlistSortPreferenceType } from "./watchlist-sort-preference.js";
 
+export type UserSessionResponse = {
+  success: boolean;
+  avatar_url: string;
+  user_id: string;
+  is_google_user: boolean;
+  has_password: boolean;
+};
+
 export type ProfileResponse = {
   success: boolean;
   avatar_url: string;

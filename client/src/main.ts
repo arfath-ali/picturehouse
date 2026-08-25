@@ -1,5 +1,6 @@
 import { closeDeleteAccountModal } from "./auth/delete-account.js";
 import { initHeaderAuthUI } from "./auth/header-auth-ui.js";
+import { checkUserSession } from "./auth/user-session.js";
 import { initUserRegion } from "./config/region.js";
 import {
   closeEmailEditModal,
@@ -19,15 +20,8 @@ import { injectSprite } from "./utils/sprite.js";
 import { initWatchlistState } from "./watchlist/state.js";
 
 async function bootstrap() {
-  window.__AUTH_STATE__ = window.__AUTH_STATE__ ?? {
-    isUserAuthenticated: false,
-    isGoogleUser: false,
-    hasPassword: false,
-    userId: "",
-    avatarURL: null,
-  };
-
   sessionStorage.setItem("app-initialized", "true");
+  checkUserSession();
 
   const navEntry = window.performance?.getEntriesByType("navigation")[0] as
     | PerformanceNavigationTiming
