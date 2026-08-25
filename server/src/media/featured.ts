@@ -1,17 +1,14 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import path from 'node:path';
-import fs from 'node:fs';
 import type { TMDBMediaFeatured } from '../types/tmdb-content.js';
 import fetchFromTMDB from '../api/tmdb-service.js';
 import { redisClient } from '../cache/redis.js';
 import type { MediaReferanceItems } from '../types/media-reference-items.js';
 import { parseMediaFeatured } from '../services/tmdb-parser.js';
 import { inFlightIndexKeys, waitForFlightIn } from '../utils/in-flight.js';
-import { fileURLToPath } from 'node:url';
 import type { ApiErrorResponse } from '../types/errors.js';
 import { sendJsonResponse } from '../http/send-json-response.js';
-import { verifyAuth } from '../middlewares/verify-auth.js';
 import type { IncomingRequest } from '../types/http.js';
+import featuredData from '../data/featured.json' with { type: 'json' };
 
 export async function getMediaFeatured(
   req: IncomingRequest<unknown>,
@@ -19,32 +16,14 @@ export async function getMediaFeatured(
 ) {
   if (!req.params) return;
 
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
   const { page } = req.params;
   if (!page) return;
 
-  let featured = {};
-
-  try {
-    const jsonPath = path.join(__dirname, '..', 'data', 'featured.json');
-    const data = fs.readFileSync(jsonPath, 'utf-8');
-    featured = JSON.parse(data);
-  } catch (error: unknown) {
-    throw new Error(
-      `[File Error]: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      {
-        cause: error,
-      },
-    );
-  }
-
-  const contentReferenceItems = (featured as any)[page];
+  const featured = featuredData as Record<string, MediaReferanceItems[]>;
+  const contentReferenceItems = featured[page];
 
   if (!contentReferenceItems) {
-    throw new Error(
-      `Missing media shelf "${featured}" for page "${page}" in mediaShelves.json`,
-    );
+    throw new Error(`Missing media shelf for page "${page}" in featured.json`);
   }
   const featuredIndexKey = `featured-${page}`;
   const cachedIndexData = await redisClient.get(featuredIndexKey);

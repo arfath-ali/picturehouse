@@ -1,7 +1,4 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import fs from 'node:fs';
 import type { TMDBMediaShelf } from '../types/tmdb-content.js';
 import fetchFromTMDB from '../api/tmdb-service.js';
 import { redisClient } from '../cache/redis.js';
@@ -11,6 +8,9 @@ import { inFlightIndexKeys, waitForFlightIn } from '../utils/in-flight.js';
 import type { ApiErrorResponse } from '../types/errors.js';
 import { sendJsonResponse } from '../http/send-json-response.js';
 import type { IncomingRequest } from '../types/http.js';
+import mediaShelvesData from '../data/media-shelf.json' with { type: 'json' };
+
+type MediaShelvesSchema = Record<string, Record<string, MediaReferanceItems[]>>;
 
 export async function getMediaShelf(
   req: IncomingRequest<unknown>,
@@ -18,26 +18,11 @@ export async function getMediaShelf(
 ) {
   if (!req.params) return;
 
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
   const { page, mediaShelf } = req.params;
 
   if (!page || !mediaShelf) return;
 
-  let mediaShelves = {};
-
-  try {
-    const jsonPath = path.join(__dirname, '..', 'data', 'media-shelf.json');
-    const data = fs.readFileSync(jsonPath, 'utf-8');
-    mediaShelves = JSON.parse(data);
-  } catch (error: unknown) {
-    throw new Error(
-      `[File Error]: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      {
-        cause: error,
-      },
-    );
-  }
+  const mediaShelves = mediaShelvesData as MediaShelvesSchema;
 
   const isTrending =
     mediaShelf === 'trending-movies' || mediaShelf === 'trending-tv-shows';
@@ -45,7 +30,7 @@ export async function getMediaShelf(
   let contentReferenceItems: MediaReferanceItems[] = [];
 
   if (!isTrending) {
-    contentReferenceItems = (mediaShelves as any)[page][mediaShelf];
+    contentReferenceItems = mediaShelves[page]?.[mediaShelf];
 
     if (!contentReferenceItems) {
       throw new Error(
