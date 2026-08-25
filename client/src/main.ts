@@ -19,6 +19,14 @@ import { injectSprite } from "./utils/sprite.js";
 import { initWatchlistState } from "./watchlist/state.js";
 
 async function bootstrap() {
+  window.__AUTH_STATE__ = window.__AUTH_STATE__ ?? {
+    isUserAuthenticated: false,
+    isGoogleUser: false,
+    hasPassword: false,
+    userId: "",
+    avatarURL: null,
+  };
+
   sessionStorage.setItem("app-initialized", "true");
 
   const navEntry = window.performance?.getEntriesByType("navigation")[0] as

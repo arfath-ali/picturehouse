@@ -167,7 +167,7 @@ export async function navigate() {
 
   if (
     route === "profile" &&
-    window.__AUTH_STATE__?.isUserAuthenticated === false
+    window.__AUTH_STATE__.isUserAuthenticated === false
   ) {
     history.replaceState({}, "", "/home");
     route = "home";

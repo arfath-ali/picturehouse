@@ -4,7 +4,6 @@ import path from 'node:path';
 import dns from 'node:dns';
 dns.setDefaultResultOrder('ipv4first');
 import { checkDatabaseConnection } from './database/pool.js';
-import { serveHTMLFile, serveStaticFile } from './middlewares/static.js';
 import { getMediaFeatured } from './media/featured.js';
 import {
   VALID_MEDIA_SHELF_CATEGORIES,
@@ -104,300 +103,277 @@ const server = http.createServer(
       return;
     }
 
-    if (!req.url?.startsWith('/api')) {
-      const __filename = fileURLToPath(import.meta.url);
-      const __dirname = path.dirname(__filename);
-      const __clientdir = path.join(__dirname, '..', '..', 'client');
-      const extention = path.extname(req.url || '');
-
-      if (extention) {
-        serveStaticFile(
-          req as IncomingRequest<unknown>,
-          res,
-          extention,
-          __clientdir,
-        );
+    if (req.method === 'GET') {
+      if (req.url === '/api/geo/location') {
+        asyncHandler(getGeoLocation)(req, res);
         return;
       }
 
-      serveHTMLFile(req as IncomingRequest<unknown>, res, __clientdir);
+      const pathname = req.url?.split('?')[0];
+
+      if (pathname === '/api/auth/google') {
+        asyncHandler(googleAuth)(req, res);
+        return;
+      }
+
+      if (pathname === '/api/auth/google/callback') {
+        googleAuthCallback(req as IncomingRequest<unknown>, res);
+        return;
+      }
+
+      if (req.url?.startsWith('/api/check-username')) {
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const username = String(url.searchParams.get('username'));
+        req.params = { username };
+        asyncHandler(checkUsername)(req, res);
+        return;
+      }
+
+      if (req.url === '/api/profile') {
+        asyncHandler(getProfile)(req as IncomingRequest<unknown>, res);
+        return;
+      }
+
+      const featuredRegex = /^\/api\/([^/]+)\/featured$/;
+      const featuredMatch = req.url?.match(featuredRegex);
+
+      if (
+        featuredMatch &&
+        VALID_PAGE_CATEGORIES.includes(featuredMatch[1] as pageCategory)
+      ) {
+        const page = featuredMatch[1] as pageCategory;
+        req.params = { page };
+        asyncHandler(getMediaFeatured)(req as IncomingRequest<unknown>, res);
+        return;
+      }
+
+      const mediaShelfRegex = /^\/api\/([^/]+)\/shelf\/([^/]+)$/;
+      const mediaShelfMatch = req.url?.match(mediaShelfRegex);
+
+      if (
+        mediaShelfMatch &&
+        VALID_PAGE_CATEGORIES.includes(mediaShelfMatch[1] as pageCategory) &&
+        VALID_MEDIA_SHELF_CATEGORIES.includes(
+          mediaShelfMatch[2] as mediaShelfCategory,
+        )
+      ) {
+        const page = mediaShelfMatch[1] as pageCategory;
+        const mediaShelf = mediaShelfMatch[2] as mediaShelfCategory;
+
+        req.params = { page, mediaShelf };
+        asyncHandler(getMediaShelf)(req as IncomingRequest<unknown>, res);
+        return;
+      }
+
+      const mediaDetailsRegex = /^\/api\/details\/([^/]+)\/([0-9]+)$/;
+      const mediaDetailsMatch = req.url?.match(mediaDetailsRegex);
+
+      if (
+        mediaDetailsMatch &&
+        VALID_MEDIA_TYPES.includes(mediaDetailsMatch[1] as mediaTypes)
+      ) {
+        const mediaType = mediaDetailsMatch[1] as mediaTypes;
+        const tmdbId = mediaDetailsMatch[2];
+
+        req.params = { mediaType, tmdbId };
+
+        asyncHandler(getMediaDetails)(req as IncomingRequest<unknown>, res);
+        return;
+      }
+
+      if (req.url?.startsWith('/api/search')) {
+        const url = new URL(req.url || '', `http://${req.headers.host}`);
+
+        const query = url.searchParams.get('query');
+        const searchPage = url.searchParams.get('searchPage');
+
+        if (!query || !searchPage) {
+          sendJsonResponse(res, 400, {
+            code: 'MISSING_QUERY_PARAMETERS',
+            message: 'Missing query or searchPage parameter.',
+          });
+
+          return;
+        }
+        req.params = { query, searchPage };
+
+        asyncHandler(getMediaSearch)(req, res);
+        return;
+      }
+
+      if (req.url === '/api/watchlist') {
+        asyncHandler(getWatchlist)(req as IncomingRequest<unknown>, res);
+        return;
+      }
+
+      sendJsonResponse(res, 404, {
+        code: 'ROUTE_NOT_FOUND',
+        message: 'Route not found.',
+      });
       return;
-    } else if (req.url?.startsWith('/api')) {
-      if (req.method === 'GET') {
-        if (req.url === '/api/geo/location') {
-          asyncHandler(getGeoLocation)(req, res);
-          return;
-        }
-
-        const pathname = req.url?.split('?')[0];
-
-        if (pathname === '/api/auth/google') {
-          asyncHandler(googleAuth)(req, res);
-          return;
-        }
-
-        if (pathname === '/api/auth/google/callback') {
-          googleAuthCallback(req as IncomingRequest<unknown>, res);
-          return;
-        }
-
-        if (req.url.startsWith('/api/check-username')) {
-          const url = new URL(req.url, `http://${req.headers.host}`);
-          const username = String(url.searchParams.get('username'));
-          req.params = { username };
-          asyncHandler(checkUsername)(req, res);
-          return;
-        }
-
-        if (req.url === '/api/profile') {
-          asyncHandler(getProfile)(req as IncomingRequest<unknown>, res);
-          return;
-        }
-
-        const featuredRegex = /^\/api\/([^/]+)\/featured$/;
-        const featuredMatch = req.url.match(featuredRegex);
-
-        if (
-          featuredMatch &&
-          VALID_PAGE_CATEGORIES.includes(featuredMatch[1] as pageCategory)
-        ) {
-          const page = featuredMatch[1] as pageCategory;
-          req.params = { page };
-          asyncHandler(getMediaFeatured)(req as IncomingRequest<unknown>, res);
-          return;
-        }
-
-        const mediaShelfRegex = /^\/api\/([^/]+)\/shelf\/([^/]+)$/;
-        const mediaShelfMatch = req.url.match(mediaShelfRegex);
-
-        if (
-          mediaShelfMatch &&
-          VALID_PAGE_CATEGORIES.includes(mediaShelfMatch[1] as pageCategory) &&
-          VALID_MEDIA_SHELF_CATEGORIES.includes(
-            mediaShelfMatch[2] as mediaShelfCategory,
-          )
-        ) {
-          const page = mediaShelfMatch[1] as pageCategory;
-          const mediaShelf = mediaShelfMatch[2] as mediaShelfCategory;
-
-          req.params = { page, mediaShelf };
-          asyncHandler(getMediaShelf)(req as IncomingRequest<unknown>, res);
-          return;
-        }
-
-        const mediaDetailsRegex = /^\/api\/details\/([^/]+)\/([0-9]+)$/;
-        const mediaDetailsMatch = req.url.match(mediaDetailsRegex);
-
-        if (
-          mediaDetailsMatch &&
-          VALID_MEDIA_TYPES.includes(mediaDetailsMatch[1] as mediaTypes)
-        ) {
-          const mediaType = mediaDetailsMatch[1] as mediaTypes;
-          const tmdbId = mediaDetailsMatch[2];
-
-          req.params = { mediaType, tmdbId };
-
-          asyncHandler(getMediaDetails)(req as IncomingRequest<unknown>, res);
-          return;
-        }
-
-        if (req.url.startsWith('/api/search')) {
-          const url = new URL(req.url || '', `http://${req.headers.host}`);
-
-          const query = url.searchParams.get('query');
-          const searchPage = url.searchParams.get('searchPage');
-
-          if (!query || !searchPage) {
-            sendJsonResponse(res, 400, {
-              code: 'MISSING_QUERY_PARAMETERS',
-              message: 'Missing query or searchPage parameter.',
-            });
-
+    } else if (req.method === 'POST') {
+      parseRequestBody(
+        req as IncomingRequest<Record<string, unknown>>,
+        res,
+        () => {
+          if (req.url === '/api/sign-in') {
+            asyncHandler(signIn)(req as IncomingRequest<SignInBody>, res);
             return;
           }
-          req.params = { query, searchPage };
-
-          asyncHandler(getMediaSearch)(req, res);
-          return;
-        }
-
-        if (req.url === '/api/watchlist') {
-          asyncHandler(getWatchlist)(req as IncomingRequest<unknown>, res);
-          return;
-        }
-
-        sendJsonResponse(res, 404, {
-          code: 'ROUTE_NOT_FOUND',
-          message: 'Route not found.',
-        });
-        return;
-      } else if (req.method === 'POST') {
-        parseRequestBody(
-          req as IncomingRequest<Record<string, unknown>>,
-          res,
-          () => {
-            if (req.url === '/api/sign-in') {
-              asyncHandler(signIn)(req as IncomingRequest<SignInBody>, res);
-              return;
-            }
-            if (req.url === '/api/sign-out') {
-              asyncHandler(signOut)(req as IncomingRequest<SignoutBody>, res);
-              return;
-            }
-            if (req.url === '/api/forgot-password') {
-              asyncHandler(forgotPassword)(
-                req as IncomingRequest<ForgotPasswordBody>,
-                res,
-              );
-              return;
-            }
-            if (req.url === '/api/resend-password-reset-link') {
-              asyncHandler(resendPasswordResetLink)(
-                req as IncomingRequest<ForgotPasswordBody>,
-                res,
-              );
-              return;
-            }
-            if (req.url === '/api/reset-password/validate') {
-              asyncHandler(validatePasswordResetToken)(
-                req as IncomingRequest<PasswordResetTokenValidationBody>,
-                res,
-              );
-              return;
-            }
-            if (req.url === '/api/reset-password') {
-              asyncHandler(resetPassword)(
-                req as IncomingRequest<ResetPasswordBody>,
-                res,
-              );
-              return;
-            }
-            if (req.url === '/api/sign-up') {
-              asyncHandler(signUp)(req as IncomingRequest<SignUpBody>, res);
-              return;
-            }
-            if (req.url === '/api/verify-email') {
-              asyncHandler(verifyEmail)(
-                req as IncomingRequest<VerifyEmailBody>,
-                res,
-              );
-              return;
-            }
-            if (req.url === '/api/resend-verification-email') {
-              asyncHandler(resendVerificationEmail)(
-                req as IncomingRequest<SignUpBody>,
-                res,
-              );
-              return;
-            }
-            if (req.url === '/api/profile/identity') {
-              asyncHandler(editIdentity)(
-                req as IncomingRequest<ProfileIdentityEditBody>,
-                res,
-              );
-              return;
-            }
-
-            if (req.url === '/api/profile/email') {
-              asyncHandler(editEmail)(
-                req as IncomingRequest<ProfileEmailEditBody>,
-                res,
-              );
-              return;
-            }
-            if (req.url === '/api/profile/password') {
-              asyncHandler(editPassword)(
-                req as IncomingRequest<ProfilePasswordEditBody>,
-                res,
-              );
-              return;
-            }
-
-            if (req.url === '/api/watchlist') {
-              asyncHandler(addToWatchlist)(
-                req as IncomingRequest<WatchlistBody>,
-                res,
-              );
-              return;
-            }
-
-            if (req.url === '/api/delete') {
-              asyncHandler(deleteAccount)(
-                req as IncomingRequest<DeleteAccountBody>,
-                res,
-              );
-              return;
-            }
-
-            sendJsonResponse(res, 404, {
-              code: 'ROUTE_NOT_FOUND',
-              message: 'Route not found.',
-            });
-          },
-        );
-        return;
-      } else if (req.method === 'PATCH') {
-        parseRequestBody(
-          req as IncomingRequest<Record<string, unknown>>,
-          res,
-          () => {
-            if (req.url === '/api/watchlist/sort-preference') {
-              asyncHandler(updateWatchlistSortPreference)(
-                req as IncomingRequest<watchlistSortPreferenceBody>,
-                res,
-              );
-              return;
-            }
-            if (req.url === '/api/profile/avatar') {
-              asyncHandler(editAvatar)(req as IncomingRequest<unknown>, res);
-              return;
-            }
-            sendJsonResponse(res, 404, {
-              code: 'ROUTE_NOT_FOUND',
-              message: 'Route not found.',
-            });
-          },
-        );
-        return;
-      } else if (req.method === 'DELETE') {
-        if (req.url.startsWith('/api/watchlist')) {
-          const pathname = new URL(req.url, `http://${req.headers.host}`)
-            .pathname;
-          const [, , , mediaType, mediaId] = pathname.split('/');
-
-          if (!mediaType || !mediaId) {
-            sendJsonResponse(res, 400, {
-              code: 'INVALID_URL',
-              message: 'Invalid URL.',
-            });
+          if (req.url === '/api/sign-out') {
+            asyncHandler(signOut)(req as IncomingRequest<SignoutBody>, res);
+            return;
+          }
+          if (req.url === '/api/forgot-password') {
+            asyncHandler(forgotPassword)(
+              req as IncomingRequest<ForgotPasswordBody>,
+              res,
+            );
+            return;
+          }
+          if (req.url === '/api/resend-password-reset-link') {
+            asyncHandler(resendPasswordResetLink)(
+              req as IncomingRequest<ForgotPasswordBody>,
+              res,
+            );
+            return;
+          }
+          if (req.url === '/api/reset-password/validate') {
+            asyncHandler(validatePasswordResetToken)(
+              req as IncomingRequest<PasswordResetTokenValidationBody>,
+              res,
+            );
+            return;
+          }
+          if (req.url === '/api/reset-password') {
+            asyncHandler(resetPassword)(
+              req as IncomingRequest<ResetPasswordBody>,
+              res,
+            );
+            return;
+          }
+          if (req.url === '/api/sign-up') {
+            asyncHandler(signUp)(req as IncomingRequest<SignUpBody>, res);
+            return;
+          }
+          if (req.url === '/api/verify-email') {
+            asyncHandler(verifyEmail)(
+              req as IncomingRequest<VerifyEmailBody>,
+              res,
+            );
+            return;
+          }
+          if (req.url === '/api/resend-verification-email') {
+            asyncHandler(resendVerificationEmail)(
+              req as IncomingRequest<SignUpBody>,
+              res,
+            );
+            return;
+          }
+          if (req.url === '/api/profile/identity') {
+            asyncHandler(editIdentity)(
+              req as IncomingRequest<ProfileIdentityEditBody>,
+              res,
+            );
             return;
           }
 
-          req.params = { mediaType: mediaType as mediaTypes, mediaId };
+          if (req.url === '/api/profile/email') {
+            asyncHandler(editEmail)(
+              req as IncomingRequest<ProfileEmailEditBody>,
+              res,
+            );
+            return;
+          }
+          if (req.url === '/api/profile/password') {
+            asyncHandler(editPassword)(
+              req as IncomingRequest<ProfilePasswordEditBody>,
+              res,
+            );
+            return;
+          }
 
-          asyncHandler(removeFromWatchlist)(
-            req as IncomingRequest<unknown>,
-            res,
-          );
+          if (req.url === '/api/watchlist') {
+            asyncHandler(addToWatchlist)(
+              req as IncomingRequest<WatchlistBody>,
+              res,
+            );
+            return;
+          }
+
+          if (req.url === '/api/delete') {
+            asyncHandler(deleteAccount)(
+              req as IncomingRequest<DeleteAccountBody>,
+              res,
+            );
+            return;
+          }
+
+          sendJsonResponse(res, 404, {
+            code: 'ROUTE_NOT_FOUND',
+            message: 'Route not found.',
+          });
+        },
+      );
+      return;
+    } else if (req.method === 'PATCH') {
+      parseRequestBody(
+        req as IncomingRequest<Record<string, unknown>>,
+        res,
+        () => {
+          if (req.url === '/api/watchlist/sort-preference') {
+            asyncHandler(updateWatchlistSortPreference)(
+              req as IncomingRequest<watchlistSortPreferenceBody>,
+              res,
+            );
+            return;
+          }
+          if (req.url === '/api/profile/avatar') {
+            asyncHandler(editAvatar)(req as IncomingRequest<unknown>, res);
+            return;
+          }
+          sendJsonResponse(res, 404, {
+            code: 'ROUTE_NOT_FOUND',
+            message: 'Route not found.',
+          });
+        },
+      );
+      return;
+    } else if (req.method === 'DELETE') {
+      if (req.url?.startsWith('/api/watchlist')) {
+        const pathname = new URL(req.url, `http://${req.headers.host}`)
+          .pathname;
+        const [, , , mediaType, mediaId] = pathname.split('/');
+
+        if (!mediaType || !mediaId) {
+          sendJsonResponse(res, 400, {
+            code: 'INVALID_URL',
+            message: 'Invalid URL.',
+          });
           return;
         }
 
-        if (req.url === '/api/profile/avatar/delete') {
-          asyncHandler(deleteAvatar)(req as IncomingRequest<unknown>, res);
-          return;
-        }
-        sendJsonResponse(res, 404, {
-          code: 'ROUTE_NOT_FOUND',
-          message: 'Route not found.',
-        });
-      } else {
-        res.setHeader('Allow', 'GET, POST, PATCH, DELETE, OPTIONS');
-        sendJsonResponse(res, 405, {
-          code: 'METHOD_NOT_ALLOWED',
-          message: 'Method not allowed.',
-        });
+        req.params = { mediaType: mediaType as mediaTypes, mediaId };
+
+        asyncHandler(removeFromWatchlist)(req as IncomingRequest<unknown>, res);
         return;
       }
+
+      if (req.url === '/api/profile/avatar/delete') {
+        asyncHandler(deleteAvatar)(req as IncomingRequest<unknown>, res);
+        return;
+      }
+      sendJsonResponse(res, 404, {
+        code: 'ROUTE_NOT_FOUND',
+        message: 'Route not found.',
+      });
+    } else {
+      res.setHeader('Allow', 'GET, POST, PATCH, DELETE, OPTIONS');
+      sendJsonResponse(res, 405, {
+        code: 'METHOD_NOT_ALLOWED',
+        message: 'Method not allowed.',
+      });
+      return;
     }
   },
 );
