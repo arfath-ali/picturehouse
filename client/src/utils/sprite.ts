@@ -1,6 +1,6 @@
 export async function injectSprite(): Promise<void> {
   try {
-    const response = await fetch("/src/assets/images/icons.svg");
+    const response = await fetch("../assets/images/icons.svg");
 
     if (!response.ok) {
       throw new Error(
