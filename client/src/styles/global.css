@@ -1169,8 +1169,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     gap: 1rem;
 }
 
-.profile__card--banner[data-is-editing="true"] {}
-
 .profile__card-header {
     display: flex;
     flex-direction: column;

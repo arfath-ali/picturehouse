@@ -35,7 +35,7 @@ export async function googleAuthCallback(
     !FRONTEND_REDIRECT_URL
   ) {
     res.writeHead(302, {
-      Location: `${FRONTEND_REDIRECT_URL ?? 'http://localhost:8000'}?status=error&code=SERVER_CONFIG_ERROR`,
+      Location: `${FRONTEND_REDIRECT_URL}?status=error&code=SERVER_CONFIG_ERROR`,
     });
     res.end();
     return;
