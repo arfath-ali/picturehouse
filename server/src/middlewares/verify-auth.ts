@@ -36,7 +36,6 @@ export async function verifyAuth(
     decodedToken = verifyJwt(token);
   } catch (error: unknown) {
     if (error instanceof Error && error.name === 'TokenExpiredError') {
-      // Catch the decoded payload returned directly from refreshUserSession
       decodedToken = await refreshUserSession(token, res);
     } else {
       throwApiError(401, {

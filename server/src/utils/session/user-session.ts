@@ -36,10 +36,11 @@ export async function createUserSession(
   try {
     const token = generateToken(userId, session.id);
     const isProd = process.env.NODE_ENV === 'production';
+    const sameSite = isProd ? 'SameSite=None; Secure' : 'SameSite=Lax';
 
     res.setHeader(
       'Set-Cookie',
-      `token=${token}; HttpOnly; SameSite=Lax; Max-Age=${sevenDaysInSeconds}; Path=/;${isProd ? ' Secure;' : ''}`,
+      `token=${token}; HttpOnly; ${sameSite}; Max-Age=${sevenDaysInSeconds}; Path=/;`,
     );
   } catch (tokenError) {
     await pool.query(`DELETE FROM user_sessions WHERE id = $1`, [session.id]);
@@ -64,7 +65,7 @@ export async function refreshUserSession(
     rows: [session],
   } = await pool.query(
     `
-    SELECT expires_at, updated_at
+    SELECT expires_at
     FROM user_sessions
     WHERE id = $1 AND user_id = $2 AND expires_at > NOW()
     `,
@@ -88,14 +89,6 @@ export async function refreshUserSession(
     });
   }
 
-  if (session.updated_at) {
-    const timeSinceLastUpdate =
-      Date.now() - new Date(session.updated_at).getTime();
-    if (timeSinceLastUpdate < 10000) {
-      return expiredToken;
-    }
-  }
-
   await pool.query(
     `UPDATE user_sessions SET updated_at = NOW() WHERE id = $1`,
     [expiredToken.sessionId],
@@ -104,11 +97,12 @@ export async function refreshUserSession(
   const newToken = generateToken(expiredToken.userId, expiredToken.sessionId);
 
   const isProd = process.env.NODE_ENV === 'production';
+  const sameSite = isProd ? 'SameSite=None; Secure' : 'SameSite=Lax';
 
   if (res) {
     res.setHeader(
       'Set-Cookie',
-      `token=${newToken}; HttpOnly; SameSite=Lax; Max-Age=${remainingSeconds}; Path=/;${isProd ? ' Secure;' : ''}`,
+      `token=${newToken}; HttpOnly; ${sameSite}; Max-Age=${remainingSeconds}; Path=/;`,
     );
   }
 
@@ -131,9 +125,10 @@ export async function destroyUserSession(
   }
 
   const isProd = process.env.NODE_ENV === 'production';
+  const sameSite = isProd ? 'SameSite=None; Secure' : 'SameSite=Lax';
 
   res.setHeader(
     'Set-Cookie',
-    `token=; HttpOnly; SameSite=Lax; Max-Age=0; Path=/;${isProd ? ' Secure;' : ''}`,
+    `token=; HttpOnly; ${sameSite}; Max-Age=0; Path=/;`,
   );
 }
