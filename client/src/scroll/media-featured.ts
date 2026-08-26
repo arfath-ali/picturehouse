@@ -10,6 +10,7 @@ export function initFeaturedScroll() {
   const { signal } = featuredScrollController;
 
   const page = location.pathname.slice(1) as pageCategory;
+
   const validPages: pageCategory[] = ["home", "movies", "tv-shows"];
 
   if (!validPages.includes(page)) return;
@@ -22,6 +23,7 @@ export function initFeaturedScroll() {
   const isFeaturedSkeleton = featuredSlider.querySelector(
     ".featured__item-skeleton",
   );
+
   if (isFeaturedSkeleton || featuredSlider.children.length === 0) return;
 
   initInfiniteScroll(page, featuredSlider, signal);
@@ -78,14 +80,33 @@ function initInfiniteScroll(
   }
 
   void featuredSlider.offsetWidth;
+
   featuredSlider.classList.remove("no-smooth");
 
   updateFeaturedSlideFocus(featuredSlider);
 
   let isTouching = false;
+  let touchTimeout: number | null = null;
 
-  featuredSlider.addEventListener("touchstart", () => { isTouching = true; }, { signal, passive: true });
-  featuredSlider.addEventListener("touchend", () => { isTouching = false; }, { signal, passive: true });
+  featuredSlider.addEventListener(
+    "touchstart",
+    () => {
+      isTouching = true;
+      if (touchTimeout) clearTimeout(touchTimeout);
+    },
+    { signal, passive: true },
+  );
+
+  featuredSlider.addEventListener(
+    "touchend",
+    () => {
+      // Delay turning off touch state so mobile momentum scroll finishes smoothly
+      touchTimeout = window.setTimeout(() => {
+        isTouching = false;
+      }, 300);
+    },
+    { signal, passive: true },
+  );
 
   featuredSlider.addEventListener(
     "scroll",
@@ -99,6 +120,7 @@ function initInfiniteScroll(
         scrollPosition.toString(),
       );
 
+      // Skip boundary clone jumps during user touch or momentum scroll
       if (isTouching) {
         updateFeaturedSlideFocus(featuredSlider);
         return;
@@ -126,12 +148,16 @@ function initInfiniteScroll(
 
 function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
   let autoplayInterval: number | null = null;
+  let touchAutoplayTimeout: number | null = null;
 
   const startAutoplay = () => {
     if (autoplayInterval) clearInterval(autoplayInterval);
 
     autoplayInterval = window.setInterval(() => {
-      featuredSlider.scrollBy({ left: featuredSlider.clientWidth, behavior: "smooth" });
+      featuredSlider.scrollBy({
+        left: featuredSlider.clientWidth,
+        behavior: "smooth",
+      });
     }, 5000);
   };
 
@@ -139,6 +165,10 @@ function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
     if (autoplayInterval !== null) {
       clearInterval(autoplayInterval);
       autoplayInterval = null;
+    }
+    if (touchAutoplayTimeout !== null) {
+      clearTimeout(touchAutoplayTimeout);
+      touchAutoplayTimeout = null;
     }
   };
 
@@ -168,8 +198,23 @@ function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
   featuredSlider.addEventListener("mouseenter", stopAutoplay, { signal });
   featuredSlider.addEventListener("mouseleave", startAutoplay, { signal });
 
-  featuredSlider.addEventListener("touchstart", stopAutoplay, { signal, passive: true });
-  featuredSlider.addEventListener("touchend", startAutoplay, { signal, passive: true });
+  featuredSlider.addEventListener("touchstart", stopAutoplay, {
+    signal,
+    passive: true,
+  });
+
+  featuredSlider.addEventListener(
+    "touchend",
+    () => {
+      stopAutoplay();
+      // Delay resuming autoplay after touch swipe finishes
+      touchAutoplayTimeout = window.setTimeout(startAutoplay, 3000);
+    },
+    {
+      signal,
+      passive: true,
+    },
+  );
 
   featuredSlider.addEventListener("focusin", stopAutoplay, { signal });
   featuredSlider.addEventListener("focusout", startAutoplay, { signal });
@@ -188,14 +233,19 @@ function initWheelNavigation(featuredSlider: HTMLElement, signal: AbortSignal) {
       e.preventDefault();
 
       if (isScrolling) return;
+
       if (Math.abs(e.deltaX) < 50) return;
 
       isScrolling = true;
 
       if (e.deltaX > 0) {
-        featuredSlider.scrollBy({ left: featuredSlider.clientWidth });
+        featuredSlider.scrollBy({
+          left: featuredSlider.clientWidth,
+        });
       } else if (e.deltaX < 0) {
-        featuredSlider.scrollBy({ left: -featuredSlider.clientWidth });
+        featuredSlider.scrollBy({
+          left: -featuredSlider.clientWidth,
+        });
       }
 
       setTimeout(() => {
