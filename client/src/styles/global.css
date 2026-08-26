@@ -1326,8 +1326,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .profile__delete-overlay .profile__card {
     position: relative;
     z-index: 1;
-    background-color: color-mix(in srgb, var(--color-surface) 88%, transparent);
-    border-color: color-mix(in srgb, var(--color-border) 45%, transparent);
 }
 
 .profile__email-edit-overlay.is-visible,
@@ -2551,7 +2549,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .watchlist {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100dvh;
     background-color: var(--color-neutral-950);
     animation: content-reveal 0.6s forwards;
 }
@@ -2563,7 +2561,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .watchlist__heading {
     position: relative;
     z-index: 51;
-    padding-top: clamp(5rem, 4.429rem + 2.857vw, 7rem);
+    padding-top: clamp(5rem, 4.714rem + 1.429vw, 6rem);
     @apply content-padding;
     animation: content-reveal 0.6s forwards;
 }
@@ -2584,7 +2582,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     position: absolute;
     left: 0;
     right: 0;
-    top: calc(-1 * clamp(5rem, 4.429rem + 2.857vw, 7rem));
+    top: calc(-1 * clamp(5rem, 4.714rem + 1.429vw, 6rem));
     bottom: 0;
     z-index: -1;
     background-color: color-mix(in srgb, var(--color-neutral-950) 90%, transparent);
@@ -2602,6 +2600,8 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 
 .watchlist__search-bar-container {
     justify-self: stretch;
+    min-width: 0;
+    width: 100%;
 }
 
 .watchlist__search-bar {
