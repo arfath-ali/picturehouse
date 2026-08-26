@@ -1322,6 +1322,12 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     z-index: 1000;
 }
 
+.profile__email-edit-overlay .profile__card,
+.profile__delete-overlay .profile__card {
+    position: relative;
+    z-index: 1;
+}
+
 .profile__email-edit-overlay.is-visible,
 .profile__delete-overlay.is-visible {
     display: flex;
