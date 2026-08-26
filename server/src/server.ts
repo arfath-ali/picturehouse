@@ -80,6 +80,7 @@ const server = http.createServer(
       const origin = req.headers.origin;
       const allowedOrigin = process.env.FRONTEND_URL;
 
+      console.log('headers:', req.headers);
       console.log(origin, allowedOrigin);
 
       if (origin && origin === allowedOrigin) {
