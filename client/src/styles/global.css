@@ -1959,7 +1959,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .media-details::before,
 .media-details::after {
     content: '';
-    position: absolute;
+    position: fixed;
     inset: 0;
     z-index: -10;
     will-change: transform;
@@ -1979,6 +1979,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    background-attachment: fixed;
     animation: content-reveal 0.6s ease forwards
 }
 
@@ -1993,6 +1994,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
+    background-attachment: fixed;
     animation: content-reveal 0.6s ease forwards
 }
 
