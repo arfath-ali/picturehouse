@@ -9,35 +9,25 @@ export async function checkUserSession(
   req: IncomingRequest<unknown>,
   res: ServerResponse,
 ) {
-  let isUserAuthenticated = false;
-
   let avatarURL: string | null = null;
-
   let isGoogleUser: boolean = false;
-
   let hasPassword: boolean = false;
 
-  try {
-    verifyAuth(req, res);
+  await verifyAuth(req, res);
 
-    isUserAuthenticated = true;
+  const {
+    rows: [user],
+  } = await pool.query(
+    'SELECT google_id, avatar_url, password FROM users WHERE id = $1',
 
-    const {
-      rows: [user],
-    } = await pool.query(
-      'SELECT google_id, avatar_url, password FROM users WHERE id = $1',
+    [req.userId],
+  );
 
-      [req.userId],
-    );
+  avatarURL = user?.avatar_url ?? null;
 
-    avatarURL = user?.avatar_url ?? null;
+  isGoogleUser = Boolean(user?.google_id);
 
-    isGoogleUser = Boolean(user?.google_id);
-
-    hasPassword = Boolean(user?.password);
-  } catch {
-    isUserAuthenticated = false;
-  }
+  hasPassword = Boolean(user?.password);
 
   sendJsonResponse(res, 200, {
     success: true,
