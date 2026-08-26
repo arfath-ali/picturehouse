@@ -1326,6 +1326,8 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .profile__delete-overlay .profile__card {
     position: relative;
     z-index: 1;
+    background-color: color-mix(in srgb, var(--color-surface) 88%, transparent);
+    border-color: color-mix(in srgb, var(--color-border) 45%, transparent);
 }
 
 .profile__email-edit-overlay.is-visible,
