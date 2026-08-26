@@ -45,7 +45,7 @@ export function initSearchInput() {
   searchInput.addEventListener(
     "input",
     () => {
-      clearTimeout(inputDebounce);
+      if (inputDebounce) clearTimeout(inputDebounce);
 
       const query = searchInput?.value.trim();
 
@@ -59,18 +59,22 @@ export function initSearchInput() {
       if (query.length < 2) {
         searchFetchController?.abort();
         searchFetchController = null;
+
         searchActionBtn.classList.remove("is-loading");
         searchActionBtn.disabled = false;
+        emptyStateContainer.classList.remove("is-visible");
+        searchResultsContainer.classList.remove("is-visible");
+        searchResultsContainer.innerHTML = "";
 
         return;
       }
 
-      searchActionBtn.classList.add("is-loading");
-      searchActionBtn.disabled = true;
-
       inputDebounce = setTimeout(async () => {
         searchFetchController?.abort();
         searchFetchController = new AbortController();
+
+        searchActionBtn.classList.add("is-loading");
+        searchActionBtn.disabled = true;
 
         await renderSearch(
           query,

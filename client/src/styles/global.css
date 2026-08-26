@@ -565,7 +565,7 @@ body:not(:is([data-state='home'], [data-state='movies'], [data-state='tv-shows']
 }
 
 body:is([data-state='details']) .site-header {
-    display: none
+    display: none;
 }
 
 .site-header.is-scrolled {

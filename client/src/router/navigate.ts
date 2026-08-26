@@ -19,7 +19,7 @@ import {
 } from "../scroll/window.js";
 import { googleAuth } from "../auth/google-auth.js";
 import { googleAuthCallback } from "../auth/google-auth-callback.js";
-import { initHeaderScroll } from "../scroll/header.js";
+import { cleanupHeaderScroll, initHeaderScroll } from "../scroll/header.js";
 import { initForgotPassword } from "../auth/forgot-password.js";
 import { initResetPasswordEmailSent } from "../auth/reset-password-email-sent.js";
 import { initResetPassword } from "../auth/reset-password.js";
@@ -177,6 +177,7 @@ export async function navigate() {
   const isMediaDetailsPage = route.match(/(tv|movie)\/(.+-)?([0-9]+)$/i);
 
   if (isMediaDetailsPage) {
+    cleanupHeaderScroll();
     const mediaType = isMediaDetailsPage[1];
     const currentTitleSlug = (isMediaDetailsPage[2] || "").replace(/-$/, "");
     const tmdbId = isMediaDetailsPage[3];
