@@ -28,11 +28,13 @@ export async function initShelves() {
   categories.forEach((category) => {
     const shelfWrapper = createShelf(category.title, category.identifier);
 
-    const shelfList = getElement<HTMLElement>(
+    const shelfList = shelfWrapper.querySelector<HTMLElement>(
       `.media-shelf__list--${category.identifier}`,
     );
 
-    shelfList.append(createSkeletonFragment(20, "media-card__skeleton"));
+    if (shelfList) {
+      shelfList.append(createSkeletonFragment(20, "media-card__skeleton"));
+    }
 
     fragment.appendChild(shelfWrapper);
   });
