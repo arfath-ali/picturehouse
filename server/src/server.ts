@@ -76,10 +76,19 @@ if (!PORT) throw new Error('PORT environment variable is not defined');
 
 const server = http.createServer(
   (req: IncomingMessage, res: ServerResponse) => {
-    if (process.env.NODE_ENV === 'production') {
-      const allowedOrigin =
-        process.env.FRONTEND_URL || 'https://picturehouse.vercel.app';
-      res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+    const origin = req.headers.origin;
+    const allowedOrigin =
+      process.env.FRONTEND_URL || 'https://picturehouse.vercel.app';
+
+    if (origin) {
+      const isAllowedLocal =
+        process.env.NODE_ENV !== 'production' &&
+        origin.startsWith('http://localhost:');
+
+      if (origin === allowedOrigin || isAllowedLocal) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+      }
     }
 
     res.setHeader(
