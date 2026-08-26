@@ -1987,7 +1987,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
         var(--bg-backdrop);
 
     background-size: cover;
-    background-position: center;
+    background-position: center top;
     background-repeat: no-repeat;
 
     animation: content-reveal .6s ease forwards;
@@ -3227,6 +3227,11 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 
     .featured__meta {
         gap: 0.75rem;
+    }
+
+    .media-details.has-backdrop::after,
+    .media-details.has-poster-backdrop::after {
+        background-position: center;
     }
 
     .search__results-load-wrapper {
