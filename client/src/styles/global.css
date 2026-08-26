@@ -1959,7 +1959,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .media-details::before,
 .media-details::after {
     content: '';
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: -10;
     will-change: transform;
@@ -1972,7 +1972,14 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     animation: content-reveal 0.6s ease forwards
 }
 
-.media-details.has-backdrop::after {
+.media-details.has-backdrop::after,
+.media-details.has-poster-backdrop::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
     background-image:
         linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
         var(--bg-backdrop);
@@ -1988,14 +1995,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 }
 
 .media-details.has-poster-backdrop::after {
-    background-image:
-        linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-        var(--bg-backdrop);
-    background-size: cover;
-    background-repeat: no-repeat;
     background-position: top center;
-    background-attachment: fixed;
-    animation: content-reveal 0.6s ease forwards
 }
 
 .media-details__content {
