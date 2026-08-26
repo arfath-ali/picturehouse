@@ -182,6 +182,8 @@ export async function navigate() {
     route = "details";
     setAppState("details");
 
+    initHeaderScroll();
+
     await renderDetails(mediaType, currentTitleSlug, tmdbId);
 
     return;
