@@ -1946,7 +1946,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     min-height: 100dvh;
 }
 
-
 .media-details:not(:has(.media-details__content)) {
     background-color: var(--color-page);
 }
