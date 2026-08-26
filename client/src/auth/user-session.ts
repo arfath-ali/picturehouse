@@ -30,8 +30,6 @@ export async function checkUserSession() {
       notifySessionChanged(response.user_id);
       clearAllScrollStorage();
       initHeaderAuthUI();
-      history.replaceState({}, "", "/home");
-      navigate();
     }
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") {
