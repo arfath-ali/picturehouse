@@ -1327,7 +1327,9 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 
 .profile__email-edit-overlay .profile__card,
 .profile__delete-overlay .profile__card {
-    background-color: var(--color-surface);
+    border: 1px solid color-mix(in srgb, var(--color-border) 25%, transparent);
+    background-color: color-mix(in srgb, var(--color-surface) 18%, transparent);
+
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
 }
@@ -2628,8 +2630,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 }
 
 .watchlist__search-bar:has(.watchlist__search-input:focus-visible) {
-    border: 0;
-    outline: 2px solid var(--color-brand-500);
+    border-color: var(--color-brand-500);
 }
 
 .watchlist__search-action-btn {
