@@ -86,6 +86,8 @@ export function initEditAvatar() {
           avatarImg.src = response.avatar_url;
           avatarContainer.dataset.hasAvatar = "true";
 
+          initHeaderAuthUI();
+
           showNotice({
             message: "Profile Picture updated successfully!",
             type: "success",
@@ -160,6 +162,7 @@ export function initEditAvatar() {
 
         if (response.success) {
           window.__AUTH_STATE__.avatarURL = response.avatar_url;
+          initHeaderAuthUI();
 
           avatarImg.src = response.avatar_url;
           avatarContainer.dataset.hasAvatar = "false";
