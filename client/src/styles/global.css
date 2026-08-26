@@ -1101,6 +1101,9 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     flex-direction: column;
     gap: 1.25rem;
 
+    position: relative;
+    z-index: 1;
+
     padding: 1.5rem;
     border: 1px solid color-mix(in srgb, var(--color-border) 25%, transparent);
     border-radius: var(--rounded-md);
@@ -1322,12 +1325,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     z-index: 1000;
 }
 
-.profile__email-edit-overlay .profile__card,
-.profile__delete-overlay .profile__card {
-    position: relative;
-    z-index: 1;
-}
-
 .profile__email-edit-overlay.is-visible,
 .profile__delete-overlay.is-visible {
     display: flex;
@@ -1337,6 +1334,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .profile__delete-backdrop {
     position: absolute;
     inset: 0;
+    z-index: 0;
     background-color: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(4px);
 }
@@ -2599,9 +2597,10 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 }
 
 .watchlist__search-bar-container {
-    justify-self: stretch;
+    justify-self: end;
     min-width: 0;
     width: 100%;
+    max-width: 60%;
 }
 
 .watchlist__search-bar {
@@ -2623,8 +2622,8 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 }
 
 .watchlist__search-bar:has(.watchlist__search-input:focus-visible) {
-    outline: none;
-    box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.4), 0 0 0 4px var(--color-brand-500);
+    border: 0;
+    outline: 2px solid var(--color-brand-500);
 }
 
 .watchlist__search-action-btn {
