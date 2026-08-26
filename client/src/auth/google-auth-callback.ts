@@ -14,7 +14,7 @@ export function googleAuthCallback() {
   const mode = params.get("mode");
   const status = params.get("status");
   const userId = params.get("user_id");
-  const errorCode = params.get("code") || params.get("error");
+  const errorCode = params.get("code");
 
   const redirectAndNavigate = (targetPath: string) => {
     history.replaceState({}, "", targetPath);
