@@ -505,6 +505,13 @@ body.no-scroll {
     overflow: hidden;
 }
 
+
+/* ---Main--- */
+
+main {
+    padding-bottom: 5rem;
+}
+
 /* ---Header & Nav--- */
 
 .site-header {
@@ -3192,6 +3199,10 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 
 @media (min-width: 768px) {
 
+    main {
+        padding-bottom: 0;
+    }
+
     .site-mobile-navigation {
         display: none
     }
@@ -3240,7 +3251,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
         grid-column: 2;
         grid-row: 1;
         justify-self: flex-end;
-        max-width: 60%;
+        max-width: 70%;
     }
 
     .watchlist__sort {
