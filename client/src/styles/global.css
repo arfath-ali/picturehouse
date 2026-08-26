@@ -1976,14 +1976,17 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     content: '';
     position: fixed;
     inset: 0;
+    z-index: -1;
+
     background-image:
-        linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+        linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .75)),
         var(--bg-backdrop);
+
     background-size: cover;
-    background-repeat: no-repeat;
     background-position: center;
-    background-attachment: fixed;
-    animation: content-reveal 0.6s ease forwards
+    background-repeat: no-repeat;
+
+    animation: content-reveal .6s ease forwards;
 }
 
 .media-details.has-poster-backdrop::before {
