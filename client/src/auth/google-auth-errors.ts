@@ -13,6 +13,10 @@ export function handleGoogleAuthErrors(
   let errorMessage = "Google authentication failed. Please try again.";
 
   switch (errorCode) {
+    case "access_denied":
+      errorMessage = "Google sign-in was canceled or access was denied.";
+      break;
+
     case "PASSWORD_REQUIRED":
       errorMessage =
         "Please set an account password before unlinking your Google account.";
