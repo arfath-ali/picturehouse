@@ -78,13 +78,13 @@ const server = http.createServer(
   (req: IncomingMessage, res: ServerResponse) => {
     if (process.env.NODE_ENV === 'production') {
       const origin = req.headers.origin;
-      const allowedOrigin = process.env.FRONTEND_URL;
+      const allowedOrigin =
+        process.env.FRONTEND_URL || 'https://picturehouse.vercel.app';
 
-      console.log('headers:', req.headers);
-      console.log(origin, allowedOrigin);
-
-      if (origin && origin === allowedOrigin) {
+      if (origin) {
         res.setHeader('Access-Control-Allow-Origin', origin);
+      } else {
+        res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
       }
     }
     res.setHeader(
