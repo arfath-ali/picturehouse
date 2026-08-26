@@ -509,7 +509,7 @@ body.no-scroll {
 /* ---Main--- */
 
 main {
-    padding-bottom: 5rem;
+    padding-bottom: 4rem;
 }
 
 /* ---Header & Nav--- */
@@ -1628,7 +1628,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .featured {
     position: relative;
     width: 100dvw;
-    height: 80dvh;
+    height: 80svh;
     min-height: 400px;
 }
 
@@ -1674,6 +1674,8 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     z-index: -10;
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
     background-color: var(--bg-color);
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .featured__link.has-backdrop::before {
@@ -1937,7 +1939,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     flex-direction: column;
     align-items: center;
     width: 100%;
-    min-height: 100dvh;
+    min-height: 100svh;
 }
 
 .media-details:not(:has(.media-details__content)) {
@@ -1955,6 +1957,8 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     position: fixed;
     inset: 0;
     z-index: -10;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .media-details::before {
