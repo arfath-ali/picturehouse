@@ -1937,7 +1937,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     width: 100%;
     min-height: 100svh;
 }
@@ -1954,9 +1954,11 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .media-details::before,
 .media-details::after {
     content: '';
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: -10;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .media-details::before {
@@ -1996,7 +1998,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     gap: clamp(1rem, 0.857rem + 0.714vw, 1.5rem);
     width: 100%;
     max-width: 680px;
-    margin-inline: auto;
     padding: clamp(1rem, 0.143rem + 4.286vw, 4rem);
     animation: content-reveal 0.6s ease forwards
 }
