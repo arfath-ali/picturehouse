@@ -21,7 +21,7 @@ import { initWatchlistState } from "./watchlist/state.js";
 
 async function bootstrap() {
   sessionStorage.setItem("app-initialized", "true");
-  checkUserSession();
+  await checkUserSession();
 
   const navEntry = window.performance?.getEntriesByType("navigation")[0] as
     | PerformanceNavigationTiming
