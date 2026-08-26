@@ -95,6 +95,8 @@ export async function renderShelf(identifier: shelfCategoryId) {
       shelfList.scrollLeft = parseInt(savedHorizontalScroll, 10);
     }
   } catch (error: unknown) {
+    if (error instanceof Error && error.name === "AbortError") return;
+    
     console.error(`Failed to load shelf content for [${identifier}]:`, error);
 
     if (isApiError(error) && error.status === 404) {

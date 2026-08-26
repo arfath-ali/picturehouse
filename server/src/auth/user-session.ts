@@ -15,6 +15,8 @@ export async function checkUserSession(
 
   await verifyAuth(req, res);
 
+  console.log(req.userId)
+
   const {
     rows: [user],
   } = await pool.query(

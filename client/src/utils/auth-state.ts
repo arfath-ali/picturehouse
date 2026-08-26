@@ -22,7 +22,6 @@ export function setAuthState(
 }
 
 export function resetAuthState() {
-  console.trace("shilpaa");
   window.__AUTH_STATE__ = {
     isUserAuthenticated: false,
     isGoogleUser: false,

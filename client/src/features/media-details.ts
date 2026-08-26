@@ -681,6 +681,8 @@ export async function renderDetails(
       initCastScroll();
     }
   } catch (error: unknown) {
+    if (error instanceof Error && error.name === "AbortError") return;
+
     console.error(`Failed to load media details for [${tmdbId}]:`, error);
 
     if (isApiError(error) && error.status === 404) {

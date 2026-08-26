@@ -212,6 +212,8 @@ export async function renderfeatured() {
 
     await Promise.all(assetLoadPromises);
   } catch (error: unknown) {
+    if (error instanceof Error && error.name === "AbortError") return;
+    
     console.error(`Failed to load featured content for [${page}] page:`, error);
 
     if (isApiError(error) && error.status === 404) {
