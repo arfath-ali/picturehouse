@@ -177,12 +177,13 @@ export async function navigate() {
   const isMediaDetailsPage = route.match(/(tv|movie)\/(.+-)?([0-9]+)$/i);
 
   if (isMediaDetailsPage) {
-    cleanupHeaderScroll();
     const mediaType = isMediaDetailsPage[1];
     const currentTitleSlug = (isMediaDetailsPage[2] || "").replace(/-$/, "");
     const tmdbId = isMediaDetailsPage[3];
     route = "details";
     setAppState("details");
+
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
     await renderDetails(mediaType, currentTitleSlug, tmdbId);
 
