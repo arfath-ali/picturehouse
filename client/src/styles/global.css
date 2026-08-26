@@ -334,10 +334,6 @@
     backface-visibility: hidden;
     perspective: 1000px;
 
-    &:hover:not(.watchlist__sort-btn):not(.btn--auth):not(.btn--profile) {
-        transform: scale(1.1);
-    }
-
     &.force-reset {
         transform: scale(1) !important;
         transition: none !important;
@@ -357,23 +353,10 @@
     background-color: var(--color-secondary-btn);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-
-    &:hover:not(.watchlist__sort-btn):not(.site-header__signin-btn):not(.btn--profile) {
-        border-color: var(--color-neutral-400);
-        background-color: var(--color-secondary-btn-hover);
-    }
 }
 
 .btn--auth {
     width: 100%;
-}
-
-.btn--auth:hover {
-    transform: none;
-}
-
-.btn--primary.btn--auth:hover {
-    background-color: var(--color-brand-500);
 }
 
 .btn-spinner {
@@ -571,9 +554,9 @@ body:not(:is([data-state='home'], [data-state='movies'], [data-state='tv-shows']
 }
 
 .site-header.is-scrolled {
-    background-color: color-mix(in srgb, var(--color-neutral-950) 80%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background-color: color-mix(in srgb, var(--color-neutral-950) 88%, transparent);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
 }
 
 .site-header.is-hidden {
@@ -604,12 +587,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 
 .site-header__signin-btn {
     padding-block: 0.75rem;
-}
-
-.site-header__signin-btn:hover {
-    color: var(--color-brand-400);
-    border-color: var(--color-brand-400);
-    background-color: var(--color-secondary-btn-hover);
 }
 
 .site-header__signin-btn.is-hidden {
@@ -686,10 +663,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 
     border-top-left-radius: var(--rounded-lg);
     border-top-right-radius: var(--rounded-lg);
-
-    &:hover {
-        color: var(--color-brand-400);
-    }
 }
 
 .site-header__profile-menu> :last-child>* {
@@ -703,10 +676,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     display: flex;
     align-items: center;
     gap: 0.5rem;
-}
-
-.site-header__profile-menu .site-header__signout-btn:hover {
-    color: var(--color-exit-500);
 }
 
 .site-header__signout-btn[data-loading=true] {
@@ -977,20 +946,11 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     opacity: 1;
 }
 
-.auth-form__checkbox-label:hover .auth-form__checkbox-icon {
-    border-color: var(--color-brand-400);
-}
-
 .auth-link {
     font-weight: var(--font-semibold);
     color: var(--color-brand-400);
     cursor: pointer;
     border-radius: var(--rounded-sm);
-}
-
-.auth-link:hover {
-    color: var(--color-brand-300);
-    text-decoration: underline;
 }
 
 .auth-link--forgot-password {
@@ -1089,10 +1049,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     color: var(--color-neutral-200);
     border-radius: var(--rounded-sm);
     transition: color 0.2s ease;
-}
-
-.profile__back-link:hover {
-    color: var(--color-brand-400);
 }
 
 .profile {
@@ -1251,11 +1207,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     display: flex;
 }
 
-.profile__avatar-edit-btn:hover {
-    background-color: var(--color-brand-900);
-    border-color: var(--color-brand-300);
-}
-
 .profile__avatar-remove-btn {
     grid-row: 2;
     display: none;
@@ -1267,11 +1218,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 
 .profile__card--banner[data-is-editing="true"] .profile__avatar[data-has-avatar="true"][data-is-updating="false"]~.profile__avatar-remove-btn {
     display: block;
-}
-
-.profile__avatar-remove-btn:hover {
-    border-color: var(--color-border-hover, #52525b);
-    color: var(--color-exit-500);
 }
 
 .profile__user-meta {
@@ -1298,10 +1244,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     display: none
 }
 
-.profile__edit-identity-btn:hover {
-    border-color: var(--color-brand-400);
-    background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
-}
 
 .profile__edit-identity-icon {
     fill: var(--color-brand-400);
@@ -1324,11 +1266,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     border: 1px solid var(--color-border);
     color: var(--color-neutral-300);
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-}
-
-.profile__signout-btn:hover {
-    border-color: var(--color-border-hover);
-    color: var(--color-exit-500);
 }
 
 .profile__signout-btn[data-loading=true] {
@@ -1375,11 +1312,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     border-top-color: var(--color-exit-700)
 }
 
-.profile__delete-btn:hover {
-    background-color: var(--color-exit-700);
-    border-color: var(--color-exit-700);
-}
-
 .profile__email-edit-overlay,
 .profile__delete-overlay {
     display: none;
@@ -1408,6 +1340,8 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     display: none;
     flex-direction: column;
     gap: 1.25rem;
+    position: relative;
+    z-index: 1;
     width: 100%;
     max-width: 48rem;
 }
@@ -1449,11 +1383,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     border: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
     white-space: nowrap;
     transition: background-color 0.2s ease, border-color 0.2s ease;
-
-    &:hover {
-        background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
-        border-color: color-mix(in srgb, var(--color-border) 80%, transparent);
-    }
 }
 
 .profile__divider {
@@ -1487,11 +1416,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 
 .profile__google-auth-btn--delete {
     display: none;
-}
-
-.profile__google-auth-btn:hover {
-    background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
-    border-color: color-mix(in srgb, var(--color-border) 80%, transparent);
 }
 
 .profile__delete-step[data-is-google-user='true'] .profile__google-auth-btn--delete,
@@ -1677,11 +1601,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     border: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
     white-space: nowrap;
     transition: background-color 0.2s ease, border-color 0.2s ease;
-
-    &:hover {
-        background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
-        border-color: color-mix(in srgb, var(--color-border) 80%, transparent);
-    }
 }
 
 
@@ -1811,7 +1730,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 }
 
 .featured__slider-scroll-container {
-    display: none;
     z-index: 40;
 }
 
@@ -1889,10 +1807,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     scroll-snap-align: start;
     transition: transform 300ms;
     animation: content-reveal 1s ease;
-
-    &:hover {
-        transform: scale(1.1);
-    }
 }
 
 .media-card__link {
@@ -2641,7 +2555,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 .watchlist__heading {
     position: relative;
     z-index: 51;
-    padding-top: clamp(4rem, 3.429rem + 2.857vw, 6rem);
+    padding-top: clamp(5rem, 4.429rem + 2.857vw, 7rem);
     @apply content-padding;
     animation: content-reveal 0.6s forwards;
 }
@@ -2662,7 +2576,7 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     position: absolute;
     left: 0;
     right: 0;
-    top: calc(-1 * clamp(4rem, 3.429rem + 2.857vw, 6rem));
+    top: calc(-1 * clamp(5rem, 4.429rem + 2.857vw, 7rem));
     bottom: 0;
     z-index: -1;
     background-color: color-mix(in srgb, var(--color-neutral-950) 90%, transparent);
@@ -3002,6 +2916,101 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     fill: var(--color-error-50);
 }
 
+
+/* ---HOVER--- */
+
+@media (hover: hover) and (pointer: fine) {
+
+    .btn:hover:not(.watchlist__sort-btn):not(.btn--auth):not(.btn--profile) {
+        transform: scale(1.1);
+    }
+
+    .btn--secondary:hover:not(.watchlist__sort-btn):not(.site-header__signin-btn):not(.btn--profile) {
+        border-color: var(--color-neutral-400);
+        background-color: var(--color-secondary-btn-hover);
+    }
+
+    .btn--auth:hover {
+        transform: none;
+    }
+
+    .btn--primary.btn--auth:hover {
+        background-color: var(--color-brand-500);
+    }
+
+    .site-header__signin-btn:hover {
+        color: var(--color-brand-400);
+        border-color: var(--color-brand-400);
+        background-color: var(--color-secondary-btn-hover);
+    }
+
+    .site-header__profile-menu> :first-child>*:hover {
+        color: var(--color-brand-400);
+    }
+
+    .site-header__profile-menu .site-header__signout-btn:hover {
+        color: var(--color-exit-500);
+    }
+
+    .auth-form__checkbox-label:hover .auth-form__checkbox-icon {
+        border-color: var(--color-brand-400);
+    }
+
+    .auth-link:hover {
+        color: var(--color-brand-300);
+        text-decoration: underline;
+    }
+
+    .profile__back-link:hover {
+        color: var(--color-brand-400);
+    }
+
+    .profile__avatar-edit-btn:hover {
+        background-color: var(--color-brand-900);
+        border-color: var(--color-brand-300);
+    }
+
+    .profile__avatar-remove-btn:hover {
+        border-color: var(--color-border-hover, #52525b);
+        color: var(--color-exit-500);
+    }
+
+    .profile__edit-identity-btn:hover {
+        border-color: var(--color-brand-400);
+        background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+    }
+
+    .profile__signout-btn:hover {
+        border-color: var(--color-border-hover);
+        color: var(--color-exit-500);
+    }
+
+    .profile__delete-btn:hover {
+        background-color: var(--color-exit-700);
+        border-color: var(--color-exit-700);
+    }
+
+    .profile__modal-btn-secondary:hover {
+        background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+        border-color: color-mix(in srgb, var(--color-border) 80%, transparent);
+    }
+
+    .profile__google-auth-btn:hover {
+        background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+        border-color: color-mix(in srgb, var(--color-border) 80%, transparent);
+    }
+
+    .profile__form-btn-secondary:hover {
+        background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+        border-color: color-mix(in srgb, var(--color-border) 80%, transparent);
+    }
+
+    .media-card__item:hover {
+        transform: scale(1.1);
+    }
+}
+
+
 /* ---RESPONSIVE--- */
 
 @media (min-width: 375px) {
@@ -3180,10 +3189,6 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
 
     .featured__meta {
         gap: 0.75rem;
-    }
-
-    .featured:not(:has(.featured__item-skeleton)) .featured__slider-scroll-container {
-        display: block;
     }
 
     .search__results-load-wrapper {

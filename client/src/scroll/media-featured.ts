@@ -86,24 +86,18 @@ function initInfiniteScroll(
   updateFeaturedSlideFocus(featuredSlider);
 
   let isTouching = false;
-  let touchTimeout: number | null = null;
 
   featuredSlider.addEventListener(
     "touchstart",
     () => {
       isTouching = true;
-      if (touchTimeout) clearTimeout(touchTimeout);
     },
     { signal, passive: true },
   );
-
   featuredSlider.addEventListener(
     "touchend",
     () => {
-      // Delay turning off touch state so mobile momentum scroll finishes smoothly
-      touchTimeout = window.setTimeout(() => {
-        isTouching = false;
-      }, 300);
+      isTouching = false;
     },
     { signal, passive: true },
   );
@@ -120,7 +114,6 @@ function initInfiniteScroll(
         scrollPosition.toString(),
       );
 
-      // Skip boundary clone jumps during user touch or momentum scroll
       if (isTouching) {
         updateFeaturedSlideFocus(featuredSlider);
         return;
@@ -148,7 +141,6 @@ function initInfiniteScroll(
 
 function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
   let autoplayInterval: number | null = null;
-  let touchAutoplayTimeout: number | null = null;
 
   const startAutoplay = () => {
     if (autoplayInterval) clearInterval(autoplayInterval);
@@ -165,10 +157,6 @@ function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
     if (autoplayInterval !== null) {
       clearInterval(autoplayInterval);
       autoplayInterval = null;
-    }
-    if (touchAutoplayTimeout !== null) {
-      clearTimeout(touchAutoplayTimeout);
-      touchAutoplayTimeout = null;
     }
   };
 
@@ -202,19 +190,10 @@ function initAutoplay(featuredSlider: HTMLElement, signal: AbortSignal) {
     signal,
     passive: true,
   });
-
-  featuredSlider.addEventListener(
-    "touchend",
-    () => {
-      stopAutoplay();
-      // Delay resuming autoplay after touch swipe finishes
-      touchAutoplayTimeout = window.setTimeout(startAutoplay, 3000);
-    },
-    {
-      signal,
-      passive: true,
-    },
-  );
+  featuredSlider.addEventListener("touchend", startAutoplay, {
+    signal,
+    passive: true,
+  });
 
   featuredSlider.addEventListener("focusin", stopAutoplay, { signal });
   featuredSlider.addEventListener("focusout", startAutoplay, { signal });
