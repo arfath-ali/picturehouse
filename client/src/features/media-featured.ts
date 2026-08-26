@@ -25,8 +25,6 @@ export async function renderfeatured() {
 
   const featuredSlider = getElement(".featured__slider");
 
-  featuredSlider.append(createSkeletonFragment(1, "featured__item-skeleton"));
-
   featuredController?.abort();
   featuredController = new AbortController();
 
@@ -57,7 +55,6 @@ export async function renderfeatured() {
       return;
     }
 
-    featuredSlider.innerHTML = "";
     const fragment = document.createDocumentFragment();
 
     const assetLoadPromises: Promise<void>[] = [];

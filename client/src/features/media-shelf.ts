@@ -27,9 +27,6 @@ export async function renderShelf(identifier: shelfCategoryId) {
   const shelfList = getElement<HTMLElement>(
     `.media-shelf__list--${identifier}`,
   );
-  shelfList.innerHTML = "";
-
-  shelfList.append(createSkeletonFragment(20, "media-card__skeleton"));
 
   shelfControllers.get(identifier)?.abort();
 

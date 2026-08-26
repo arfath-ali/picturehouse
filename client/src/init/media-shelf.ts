@@ -4,6 +4,7 @@ import { renderShelf } from "../features/media-shelf.js";
 import { initShelfScroll } from "../scroll/media-shelf.js";
 import type { pageCategory } from "../types/page-category.js";
 import { getElement } from "../utils/dom.js";
+import { createSkeletonFragment } from "../utils/skeleton-structure.js";
 
 export async function initShelves() {
   const currentPage = location.pathname.slice(1) as pageCategory;
@@ -26,6 +27,13 @@ export async function initShelves() {
 
   categories.forEach((category) => {
     const shelfWrapper = createShelf(category.title, category.identifier);
+
+    const shelfList = getElement<HTMLElement>(
+      `.media-shelf__list--${category.identifier}`,
+    );
+
+    shelfList.append(createSkeletonFragment(20, "media-card__skeleton"));
+
     fragment.appendChild(shelfWrapper);
   });
 
