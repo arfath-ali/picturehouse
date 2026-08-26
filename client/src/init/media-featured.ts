@@ -15,6 +15,8 @@ export async function initFeatured() {
 
   slider.append(createSkeletonFragment(1, "featured__item-skeleton"));
 
+  slider.innerHTML = "";
+
   fragment.append(slider, prevBtnContainer, nextBtnContainer);
 
   featuredContainer.appendChild(fragment);
