@@ -1978,7 +1978,8 @@ body:not([data-state='movies'], [data-state="tv-shows"]) .filter-tabs-container 
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100svh;
+    height: 100vh;
+    min-height: -webkit-fill-available;
     z-index: -1;
 
     background-image:
