@@ -71,6 +71,7 @@ function restoreVerticalScroll(category: string) {
 
 export async function navigate() {
   cleanupAllRequests();
+  initHeaderScroll();
 
   let route = location.pathname.slice(1) as AppState;
 
@@ -182,8 +183,6 @@ export async function navigate() {
     route = "details";
     setAppState("details");
 
-    initHeaderScroll();
-
     await renderDetails(mediaType, currentTitleSlug, tmdbId);
 
     return;
@@ -250,14 +249,12 @@ export async function navigate() {
       initFeatured();
       initShelves();
       restoreVerticalScroll(route);
-      initHeaderScroll();
       profileDropdown();
       initSignOut();
     } else if (route === "search") {
       initWindowScrollManager();
       initSearchInput();
       restoreVerticalScroll(route);
-      initHeaderScroll();
       profileDropdown();
       initSignOut();
     } else if (
@@ -268,7 +265,6 @@ export async function navigate() {
       initWindowScrollManager();
       initWatchlist();
       restoreVerticalScroll(route);
-      initHeaderScroll();
       profileDropdown();
       initSignOut();
     } else if (route === "profile") {

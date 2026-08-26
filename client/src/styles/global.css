@@ -564,6 +564,10 @@ body:not(:is([data-state='home'], [data-state='movies'], [data-state='tv-shows']
     display: none
 }
 
+body:is([data-state='details']) .site-header {
+    display: none
+}
+
 .site-header.is-scrolled {
     background-color: color-mix(in srgb, var(--color-neutral-950) 88%, transparent);
     backdrop-filter: blur(24px);
